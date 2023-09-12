@@ -1,7 +1,8 @@
 import styled from "styled-components";
-import { MdOutlinePowerSettingsNew , MdArrowRight, MdRestartAlt, MdOutlineListAlt, MdOutlineFormatListBulleted, MdLocalShipping, MdPerson, MdLightbulbOutline, MdOutlineStickyNote2, MdSettings } from "react-icons/md";
+import { MdOutlinePowerSettingsNew , MdArrowRight, MdRestartAlt, MdOutlineListAlt, MdOutlineFormatListBulleted, MdLocalShipping, MdPerson, MdLightbulbOutline, MdOutlineStickyNote2, MdSettings, MdHome } from "react-icons/md";
 import { useState } from "react";
 import Main from "./main";
+import Product from "./product";
 const AdminBox = styled.div`
   width: 100%;
   height: fit-content;
@@ -21,6 +22,7 @@ const SideMenuBox = styled.div`
     width: 200px;
     filter: brightness(1.7);
     margin: 30px 0px 30px 0px;
+    cursor: pointer;
   }
 `
 const MenuItem = styled.div`
@@ -76,7 +78,7 @@ const ContentNavBox = styled.div`
       margin-left: 10px;
       transition: all 0.2s;
       &:hover {
-        opacity: 0.5;
+        color: var(--color);
       }
     }
   }
@@ -92,43 +94,36 @@ const ContentBox = styled.div`
 `
 const Admin = () => {
 
-  const [tab, setTab] = useState('a');
-
+  const [tab, setTab] = useState('홈');
+  const menuItems = [
+    { icon: <MdHome className="icon" />, title: "홈" },
+    { icon: <MdOutlineFormatListBulleted className="icon" />, title: "상품관리" },
+    { icon: <MdLocalShipping className="icon" />, title: "주문/배송관리" },
+    { icon: <MdPerson className="icon" />, title: "회원관리" },
+    { icon: <MdOutlineStickyNote2 className="icon" />, title: "문의내역" },
+    { icon: <MdLightbulbOutline className="icon" />, title: "공지사항" },
+    { icon: <MdSettings className="icon" />, title: "설정" },
+  ];
   return (
     <AdminBox>
       <SideMenuBox>
-        <img className="logo" src={process.env.PUBLIC_URL + '/logo.png'}/>
-        <MenuItem>
-          <MdOutlineFormatListBulleted className="icon"/>
-          <span className="itemtitle">상품관리</span>
-        </MenuItem>
-        <MenuItem>
-          <MdLocalShipping className="icon"/>
-          <span className="itemtitle">주문/배송관리</span>
-        </MenuItem>
-        <MenuItem>
-          <MdPerson className="icon"/>
-          <span className="itemtitle">회원관리</span>
-        </MenuItem>
-        <MenuItem>
-          <MdOutlineStickyNote2 className="icon"/>
-          <span className="itemtitle">문의내역</span>
-        </MenuItem>
-        <MenuItem>
-          <MdLightbulbOutline className="icon"/>
-          <span className="itemtitle">공지사항</span>
-        </MenuItem>
-        <MenuItem>
-          <MdSettings className="icon"/>
-          <span className="itemtitle">설정</span>
-        </MenuItem>
-        
+        <img className="logo" src={process.env.PUBLIC_URL + '/logo.png'} onClick={()=>{setTab('홈')}}/>
+        {
+          menuItems.map((item, i)=>{
+            return (
+              <MenuItem key={i} onClick={()=>{setTab(item.title)}}>
+                {item.icon}
+                <span className="itemtitle">{item.title}</span>
+              </MenuItem>
+            )
+          })
+        }       
       </SideMenuBox>
       <ContentBox>
         <ContentNavBox>
           <div className="inner">
             <MdArrowRight className="icon"/>
-            <span className="menu">Home</span>
+            <span className="menu">{tab}</span>
             {/* <button onClick={()=>{setTab('a')}}>A</button>
             <button onClick={()=>{setTab('b')}}>B</button>      */}
           </div>
@@ -144,15 +139,18 @@ const Admin = () => {
 };
 
 const Container = ({ tab }) => {
-  let componentToRender;
 
-  if (tab === 'a') {
-    componentToRender = <Main/>;
-  } else if (tab === 'b') {
-    componentToRender = <span>2</span>;
-  } else if (tab === 'c') {
-    componentToRender = <span>3</span>;
-  }
+  const tabMapping = {
+    '홈': <Main />,
+    '상품관리': <Product/>,
+    '주문/배송관리': <span>3</span>,
+    '회원관리': <span>4</span>,
+    '문의내역': <span>5</span>,
+    '공지사항': <span>6</span>,
+    '설정': <span>7</span>,
+  };
+  const componentToRender = tabMapping[tab] || null;
+  console.log(tabMapping);
   return <div>{componentToRender}</div>
 }
 

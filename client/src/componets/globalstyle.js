@@ -11,7 +11,7 @@ const GlobalStyle = createGlobalStyle`
   padding: 0;
   margin: 0;
   font-family: 'NanumSquare';
-
+  color: #444;
   }
   div {
     box-sizing: border-box;
