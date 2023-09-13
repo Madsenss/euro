@@ -10,7 +10,7 @@ const GlobalStyle = createGlobalStyle`
   body {
   padding: 0;
   margin: 0;
-  font-family: 'NanumSquare';
+  font-family: 'NanumBarunGothic';
   color: #444;
   }
   div {

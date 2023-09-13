@@ -155,7 +155,7 @@ const TableCell = styled.td`
 `;
 
 const TableHeaderCell = styled.th`
-  padding: 10px 0px 10px 0px;
+  padding: 14px 0px 14px 0px;
   text-align: center;
   color: #fff;
   border-bottom: 2px solid #aaa;
@@ -211,7 +211,7 @@ const Product = () => {
     { 카테고리: '라면3', 제조사: '오뚜기3', 제품명: '진라면', 가격: '3000원3', 수량: '3개'},
     { 카테고리: '라면3', 제조사: '오뚜기3', 제품명: '진라면', 가격: '3000원3', 수량: '3개'},
     { 카테고리: '라면3', 제조사: '오뚜기3', 제품명: '진라면', 가격: '3000원3', 수량: '3개'},
-  ]
+  ];
   return (
     <>
       <ProductBox>

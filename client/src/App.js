@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import GlobalStyle from "./componets/globalstyle";
 import { useEffect } from "react";
 import Admin from "./componets/admin/admin.js";
+import Home from "./componets/home/home";
 
 function App() {
   const setScreenSize = () => {
@@ -15,8 +16,8 @@ function App() {
   return (
     <div className="App">
       <Routes>
+        <Route path="/" element={<><GlobalStyle/><Home/></>}/>
         <Route path="/admin" element={<><GlobalStyle/><Admin/></>}/>
-        <Route path="/admin2" element={<><GlobalStyle/><Admin/></>}/>
       </Routes>
     </div>
   );
