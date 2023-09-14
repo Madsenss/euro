@@ -7,25 +7,25 @@ const FooterBox = styled.div`
   height: fit-content;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: end;
 `
 
 const FooterInner = styled.div`
   width: 100%;
-  height: fit-content;
+  height: 300px;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 40px 0px 40px;
 `
 const LogoBox = styled.div`
-  padding: 0px 0px 0px 50px;
-  width: 450px;
-  height: fit-content;
+  width: fit-content;
+  height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   .logo {
-    width: 240px;
-    margin-bottom: 60px;
+    width: 320px;
   }
   .textbox {
     width: fit-content;
@@ -47,8 +47,15 @@ const LogoBox = styled.div`
   }
 `
 const InfoBox = styled.div`
-  width: 400px;
-  height: fit-content;
+  /* border: 2px solid black; */
+  width: fit-content;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  .flex {
+    width: 420px;
+  }
   .title {
     font-size: 22px;
     font-weight: bold;
@@ -56,11 +63,12 @@ const InfoBox = styled.div`
   }
   .inner {
     display: inline-flex;
+    /* border: 1px solid red; */
     width: 50%;
+    padding-left: 70px;
     height: fit-content;
     flex-direction: column;
     vertical-align: top;
-    margin-bottom: 20px;
     .item {
       width: fit-content;
       cursor: pointer;
@@ -75,8 +83,8 @@ const InfoBox = styled.div`
 `
 
 const CallBox = styled.div`
-  width: 450px;
-  height: fit-content;
+  width: fit-content;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -86,17 +94,20 @@ const CallBox = styled.div`
     margin-bottom: 10px;
   }
   .topbox {
+    width: 100%;
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: start;
     .left {
-      width: 50%;
+      vertical-align: top;
       height: fit-content;
       display: flex;
       flex-direction: column;
-      margin-right: 20px;
+      margin-right: 40px;
     }
     .right {
-      width: 50%;
+      vertical-align: top;
       height: fit-content;
       display: flex;
       flex-direction: column;
@@ -128,7 +139,6 @@ const CallBox = styled.div`
     font-weight: bold;
   }
   .snsbox {
-    margin-top: 40px;
     width: 100%;
     height: fit-content;
     display: flex;
@@ -162,11 +172,11 @@ const CallBox = styled.div`
 const Copyright = styled.div`
   width: 100%;
   height: fit-content;
-  background-color: #444;
+  background-color: var(--color);
   color: #eee;
   text-align: center;
   font-weight: bold;
-  /* border-radius: 10px; */
+  border-radius: 2px;
   padding: 3px 0px 3px 0px;
   margin-top: 20px;
 `
@@ -175,6 +185,9 @@ const Edge = styled(Copyright)`
   margin-bottom: 20px;
   margin-top: 0;
 `
+
+
+// 박스 3개 아우터 juscti Center 해서 패딩마진 조절해야할듯? 아우터 maxheight도 설정해야함
 
 const Footer = () => {
   return (
@@ -185,6 +198,7 @@ const Footer = () => {
       <FooterInner>
         <LogoBox>
           <img className="logo" src={process.env.PUBLIC_URL + '/logo.png'} />
+
           <div className="textbox">
             <div className="item">
               <MdBusiness className="icon" />
@@ -217,30 +231,34 @@ const Footer = () => {
         </LogoBox>
 
         <InfoBox>
-          <div className="inner">
-            <span className="title">회사안내</span>
-            <span className="item">회사소개</span>
-            <span className="item">찾아오시는길</span>
-            <span className="item">개인정보처리방침</span>
-            <span className="item">이용안내</span>
+          <div className="flex">
+            <div className="inner">
+              <span className="title">회사안내</span>
+              <span className="item">회사소개</span>
+              <span className="item">찾아오시는길</span>
+              <span className="item">개인정보처리방침</span>
+              <span className="item">이용안내</span>
+            </div>
+            <div className="inner">
+              <span className="title">뉴스센터</span>
+              <span className="item">공지사항</span>
+              <span className="item">이벤트</span>
+            </div>
           </div>
-          <div className="inner">
-            <span className="title">뉴스센터</span>
-            <span className="item">공지사항</span>
-            <span className="item">이벤트</span>
-          </div>
-          <div className="inner">
-            <span className="title">고객센터</span>
-            <span className="item">상품문의</span>
-            <span className="item">상품후기</span>
-            <span className="item">업무제휴</span>
-            <span className="item">카탈로그 신청</span>
-          </div>
-          <div className="inner">
-            <span className="title">배송관련</span>
-            <span className="item">배송조회</span>
-            <span className="item">주문취소</span>
-            <span className="item">자주묻는질문</span>
+          <div className="flex">      
+            <div className="inner">
+              <span className="title">고객센터</span>
+              <span className="item">상품문의</span>
+              <span className="item">상품후기</span>
+              <span className="item">업무제휴</span>
+              <span className="item">카탈로그 신청</span>
+            </div>
+            <div className="inner">
+              <span className="title">배송관련</span>
+              <span className="item">배송조회</span>
+              <span className="item">주문취소</span>
+              <span className="item">자주묻는질문</span>
+            </div>
           </div>
         </InfoBox>
 
