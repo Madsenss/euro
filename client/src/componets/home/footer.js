@@ -197,7 +197,7 @@ const Footer = () => {
       </Edge>
       <FooterInner>
         <LogoBox>
-          <img className="logo" src={process.env.PUBLIC_URL + '/logo.png'} />
+          <img className="logo" src={process.env.PUBLIC_URL + '/logo2.png'} />
 
           <div className="textbox">
             <div className="item">
