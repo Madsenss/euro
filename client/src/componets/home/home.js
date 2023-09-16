@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Footer from "./footer";
 import Banner from "./banner";
 import Nav from "./nav";
-import Best from "./best";
+import MiddleEdge from "./middleedge.js";
 
 const HomeBox = styled.div`
   width: 100%;
@@ -11,13 +11,26 @@ const HomeBox = styled.div`
   flex-direction: column;
   align-items: center;
 `
+const T = styled.div`
+  width: 1350px;
+  height: 800px;
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+  font-weight: bold;
+`
 
 const Home = () => {
   return (
     <HomeBox>
       <Nav/>
       <Banner/>
-      <Best/>
+      <MiddleEdge/>
+      <T>
+        <span>상품 이미지 리스트 구역</span>
+      </T>
       <Footer/>
     </HomeBox>
   )

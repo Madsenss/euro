@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 const Banner = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [animate, setAnimate] = useState(false);
-  const sliderRef = useRef(null); // React Slick 슬라이더에 대한 참조
+  const sliderRef = useRef(null);
   const settings = {
     dots: true,
     infinite: true,
@@ -20,27 +20,22 @@ const Banner = () => {
     cssEase: "linear",
     afterChange: (current) => {
       setCurrentSlide(current);
-      console.log(current);
     }
   };
 
   useEffect(() => {
-    console.log('True');
     setAnimate(true);
-    const animationDuration = 5000; // 5초
+    const animationDuration = 5000;
 
-    // 5초 후에 setAnimate(false)를 호출하고 슬라이드를 변경하는 타이머 설정
     const timer = setTimeout(() => {
       setAnimate(false);
-      console.log('false');
-      // 슬라이드를 변경하는 함수를 호출하여 다음 슬라이드로 이동
       sliderRef.current.slickNext();
     }, animationDuration);
 
-    // 컴포넌트 언마운트 또는 다른 효과를 위한 정리 코드
     return () => {
       clearTimeout(timer);
     };
+
   }, [currentSlide]);
 
 

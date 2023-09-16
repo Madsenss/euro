@@ -17,7 +17,7 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<><GlobalStyle/><Home/></>}/>
-        <Route path="/admin" element={<><GlobalStyle/><Admin/></>}/>
+        <Route path="/admintest" element={<><GlobalStyle/><Admin/></>}/>
       </Routes>
     </div>
   );

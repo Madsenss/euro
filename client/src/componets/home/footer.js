@@ -186,14 +186,11 @@ const Edge = styled(Copyright)`
   margin-top: 0;
 `
 
-
-// 박스 3개 아우터 juscti Center 해서 패딩마진 조절해야할듯? 아우터 maxheight도 설정해야함
-
 const Footer = () => {
   return (
     <FooterBox>
       <Edge>
-        We are a team of designers and developers that create high quality Magento, Prestashop, Opencart...
+      --------------------------------배치 수정예정 메뉴만 만들어놓음--------------------------------
       </Edge>
       <FooterInner>
         <LogoBox>
