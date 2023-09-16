@@ -206,67 +206,85 @@ const MenuItem = styled.div`
 `
 const SubMenu = styled.div`
   z-index: 999;
-  padding: 20px;
   top: ${props => props.top};
   left: 259.5px;
   position: absolute;
-  width: 500px;
-  height: fit-content;
+  width: fit-content;
+  height: 400px;
   background-color: #fff;
   box-shadow: 0px 0px 4px 0.5px rgb(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   .text {
     margin-bottom: 80px;
     .item {
+      padding: 10px 10px 10px 15px;
       color: #666;
       cursor: pointer;
-      display: inline-flex;
-      width: 50%;
-      font-weight: bold;
-      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      height: 45px;
       font-size: 14px;
       &:hover {
-        color: var(--color);
+        color: black;
+        font-weight: bold;
+        background-color: #eee;
       }
     }
   }
   .img {
+    padding: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
     img {
-      width: 300px;
+      width: 150px;
     }
+  }
+  transition: all 0.3s;
+  &.a {
+    transform: translateX(0px);
+    visibility: visible;
+    opacity: 1;
+  }
+  &.b {
+    transform: translateX(50px);
+    visibility: hidden;
+    opacity: 0;
   }
 `
 const Nav = () => {
-  const [dropdown, setDropdown] = useState(false);
-  const [category, setCategory] = useState({ id: 0, category: '' });
-  const [subCategory, setSubCategory] = useState('');
-
   const initData = [
-    { 
+    {
       id: 0,
       category: '나사/너트/스크류/압정',
       subcategory: [
-        {category: '나사/너트/스크류/압정', subname: '나사', src: '나사.png'},
-        {category: '나사/너트/스크류/압정', subname: '너트', src: '너트.png'},
-        {category: '나사/너트/스크류/압정', subname: '스크류', src: '스크류.png'},
-        {category: '나사/너트/스크류/압정', subname: '압정', src: '압정.png'},
+        { category: '나사/너트/스크류/압정', subname: '나사', src: '나사.png' },
+        { category: '나사/너트/스크류/압정', subname: '너트', src: '너트.png' },
+        { category: '나사/너트/스크류/압정', subname: '스크류', src: '스크류.png' },
+        { category: '나사/너트/스크류/압정', subname: '압정', src: '압정.png' },
       ]
     },
-    { 
+    {
       id: 1,
       category: '프레스 금형용 표준부품',
       subcategory: [
-        {category: '프레스 금형용 표준부품', subname: '펀치 & 다이', src: '나사.png'},
-        {category: '프레스 금형용 표준부품', subname: '가이드 부품', src: '너트.png'},
-        {category: '프레스 금형용 표준부품', subname: '소형/주변부품', src: '스크류.png'},
-        {category: '프레스 금형용 표준부품', subname: '압력원', src: '압정.png'},
+        { category: '프레스 금형용 표준부품', subname: '펀치 & 다이', src: '펀치.png' },
+        { category: '프레스 금형용 표준부품', subname: '가이드 부품', src: '가이드.png' },
+        { category: '프레스 금형용 표준부품', subname: '소형/주변부품', src: '소형.png' },
+        { category: '프레스 금형용 표준부품', subname: '압력원', src: '압력원.png' },
       ]
     },
   ];
+  const [dropdown, setDropdown] = useState(false);
+  const [subMenu, setSubMenu] = useState(false);
+  const [category, setCategory] = useState({ id: 0, category: '' });
+  const [subCategory, setSubCategory] = useState(initData[0]?.subcategory[0]?.subname);
+
+
   const menuHeight = () => {
     let result = 0;
     result = initData.length * 45;
@@ -274,13 +292,13 @@ const Nav = () => {
     return result;
   };
   const topResult = () => {
-    if(category.id === 0) {
-      return 60 + 'px';
+    if (category.id === 0) {
+      return 60.5 + 'px';
     } else {
-      return 60 + (category.id) * 45 + 'px';
+      return 60.5 + (category.id) * 45 + 'px';
     }
   };
-  
+
   return (
     <NavBox>
       <TopBox>
@@ -308,14 +326,23 @@ const Nav = () => {
         <div className="inner">
           <CategoryButton onClick={() => { setDropdown(!dropdown); }}>
             <MdDehaze className="icon" />
-            <span className="text">Browse Categoryies</span>
+            <span className="text">전체상품 카테고리</span>
             <MdOutlineKeyboardArrowDown className={'d ' + `${dropdown ? 'a' : 'b'}`} />
           </CategoryButton>
           <CategoryMenu height={menuHeight()} className={dropdown ? "a" : 'b'}>
             {
-              initData.map((item, i)=>{
+              initData.map((item, i) => {
                 return (
-                  <MenuItem onMouseOver={()=>{setCategory({id : item.id, category: item.category})}}>
+                  <MenuItem
+                    onMouseOver={() => {
+                      setCategory({ id: item.id, category: item.category });
+                      setSubMenu(true);
+                      setSubCategory(initData[i]?.subcategory[0]?.subname);
+                    }}
+                    onMouseLeave={() => {
+                      setSubMenu(false);
+                    }}
+                  >
                     <span className="itemtext">{item.category}</span>
                     <MdOutlineKeyboardArrowRight className="right" />
                   </MenuItem>
@@ -323,25 +350,28 @@ const Nav = () => {
               })
             }
           </CategoryMenu>
-          <SubMenu top={topResult}>
+          <SubMenu className={subMenu ? 'a' : 'b'} top={topResult} onMouseOver={() => { setSubMenu(true); }} onMouseLeave={() => { setSubMenu(false); }}>
             <div className="text">
-            {
-              initData.map((item, i) => {
-                return item.subcategory.map((item2, j) => {
-                  if (item2.category === category.category) {
-                    return <div className="item" key={j} onMouseOver={()=>{setSubCategory(item2.subname)}}>{item2.subname}</div>
-                  }
-                  return null;
+              {
+                initData.map((item, i) => {
+                  return item.subcategory.map((item2, j) => {
+                    if (item2.category === category.category) {
+                      return <div className="item" key={j} onMouseOver={() => { setSubCategory(item2.subname); }}>
+                        <span className="subname">{item2.subname}</span>
+                        <MdOutlineKeyboardArrowRight className="right" />
+                      </div>
+                    }
+                    return null;
+                  })
                 })
-              })
-            }
+              }
             </div>
             <div className="img">
               {
                 initData.map((item, i) => {
                   return item.subcategory.map((item2, j) => {
-                    if(item2.subname === subCategory) {
-                      return <img key={j} src={process.env.PUBLIC_URL + '/' + item2.src} alt={item2.subname}/>
+                    if (item2.subname === subCategory) {
+                      return <img key={j} src={process.env.PUBLIC_URL + '/' + item2.src} alt={item2.subname} />
                     }
                     return null;
                   })
