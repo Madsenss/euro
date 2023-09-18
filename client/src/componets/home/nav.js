@@ -9,6 +9,7 @@ const NavBox = styled.div`
   flex-direction: column;
   align-items: center;
 `
+
 const TopBox = styled.div`
   width: 1350px;
   height: fit-content;
@@ -98,6 +99,7 @@ const CartBox = styled.div`
   }
 `
 
+
 const CategoryBox = styled.div`
   width: 100%;
   height: 60px;
@@ -160,6 +162,21 @@ const CategoryButton = styled.div`
     transform: rotate(0deg);
   }
 `
+const NavMenu = styled.div`
+  cursor: pointer;
+  width: fit-content;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  font-weight: bold;
+  margin-left: 60px;
+  color: #666;
+  &:hover {
+    color: var(--color);
+  }
+`
 const CategoryMenu = styled.div`
   z-index: 998;
   position: absolute;
@@ -210,7 +227,7 @@ const SubMenu = styled.div`
   left: 259.5px;
   position: absolute;
   width: fit-content;
-  height: 400px;
+  height: 500px;
   background-color: #fff;
   box-shadow: 0px 0px 4px 0.5px rgb(0, 0, 0, 0.1);
   display: flex;
@@ -257,6 +274,7 @@ const SubMenu = styled.div`
   }
 `
 const Nav = () => {
+
   const initData = [
     {
       id: 0,
@@ -279,6 +297,7 @@ const Nav = () => {
       ]
     },
   ];
+
   const [dropdown, setDropdown] = useState(false);
   const [subMenu, setSubMenu] = useState(false);
   const [category, setCategory] = useState({ id: 0, category: '' });
@@ -291,6 +310,7 @@ const Nav = () => {
     result += 'px';
     return result;
   };
+
   const topResult = () => {
     if (category.id === 0) {
       return 60.5 + 'px';
@@ -329,11 +349,17 @@ const Nav = () => {
             <span className="text">전체상품 카테고리</span>
             <MdOutlineKeyboardArrowDown className={'d ' + `${dropdown ? 'a' : 'b'}`} />
           </CategoryButton>
+          <NavMenu>회사소개</NavMenu>
+          <NavMenu>뉴스센터</NavMenu>
+          <NavMenu>고객센터</NavMenu>
+          <NavMenu>상품후기</NavMenu>
+          <NavMenu>자료실</NavMenu>
           <CategoryMenu height={menuHeight()} className={dropdown ? "a" : 'b'}>
             {
               initData.map((item, i) => {
                 return (
                   <MenuItem
+                    key={i}
                     onMouseOver={() => {
                       setCategory({ id: item.id, category: item.category });
                       setSubMenu(true);
@@ -350,7 +376,7 @@ const Nav = () => {
               })
             }
           </CategoryMenu>
-          <SubMenu className={subMenu ? 'a' : 'b'} top={topResult} onMouseOver={() => { setSubMenu(true); }} onMouseLeave={() => { setSubMenu(false); }}>
+          <SubMenu className={subMenu ? 'a' : 'b'} top={topResult()} onMouseOver={() => { setSubMenu(true); }} onMouseLeave={() => { setSubMenu(false); }}>
             <div className="text">
               {
                 initData.map((item, i) => {
