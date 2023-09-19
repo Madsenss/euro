@@ -109,6 +109,7 @@ const BottomMenu = () => {
             <MdOutlineAccountBalance className="icon" />
             <span className="title">입금계좌</span>
           </div>
+          <span className="master">예금주 : (주)유로시스템즈</span>
           <span className="text">기업은행 031-366-5433</span>
           <span className="text">우리은행 1005-703-290234</span>
           <span className="text">국민은행 647701-04-032896</span>
