@@ -239,7 +239,7 @@ const HomeProduct = () => {
                   <div className="img">
                     <img src={process.env.PUBLIC_URL + '/inititem.png'}/>
                   </div>
-                  <div className="title">쎄니타리 레듀샤2페럴(MK) 간다 슝간 다람쥐 가나 다라(SUS304)(12145)</div>
+                  <div className="title">쎄니타리 레듀샤2페럴(MK)</div>
                   <span className="price">12,345원</span>
                   <div className="star">
                     <MdStar className="star-icon"/>

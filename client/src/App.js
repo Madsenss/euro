@@ -2,7 +2,9 @@ import { Route, Routes } from "react-router-dom";
 import GlobalStyle from "./componets/globalstyle";
 import { useEffect } from "react";
 import Admin from "./componets/admin/admin.js";
-import Home from "./componets/home/home";
+import Home from "./componets/home/home.js";
+import ProductHome from "./componets/product/producthome.js";
+import Top from "./componets/top";
 
 function App() {
   const setScreenSize = () => {
@@ -16,7 +18,8 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<><GlobalStyle/><Home/></>}/>
+        <Route path="/" element={<><GlobalStyle/><Home/><Top/></>}/>
+        <Route path="/product" element={<><GlobalStyle/><ProductHome/><Top/></>}/>
         <Route path="/admintest" element={<><GlobalStyle/><Admin/></>}/>
       </Routes>
     </div>

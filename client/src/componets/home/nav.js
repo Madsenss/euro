@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 import { MdDehaze, MdOutlineFavoriteBorder, MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowRight, MdOutlineShoppingCart, MdSearch } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const NavBox = styled.div`
+  /* background-color: #fff;
+  z-index: 999;
+  position: fixed;
+  top: 0; */
   width: 100%;
   height: fit-content;
   display: flex;
@@ -16,6 +21,7 @@ const TopBox = styled.div`
   padding: 20px 0px 20px 0px;
   .logo {
     width: 220px;
+    cursor: pointer;
   }
   display: flex;
   flex-direction: row;
@@ -302,7 +308,7 @@ const Nav = () => {
   const [subMenu, setSubMenu] = useState(false);
   const [category, setCategory] = useState({ id: 0, category: '' });
   const [subCategory, setSubCategory] = useState(initData[0]?.subcategory[0]?.subname);
-
+  const navigate = useNavigate();
 
   const menuHeight = () => {
     let result = 0;
@@ -322,7 +328,7 @@ const Nav = () => {
   return (
     <NavBox>
       <TopBox>
-        <img className="logo" src={process.env.PUBLIC_URL + '/logo2.png'} alt="logo" />
+        <img onClick={()=>{navigate('/')}} className="logo" src={process.env.PUBLIC_URL + '/logo2.png'} alt="logo" />
         <SearchBox>
           <input type="text" placeholder="Search entire store here ..." />
           <div className="button">
@@ -350,10 +356,10 @@ const Nav = () => {
             <MdOutlineKeyboardArrowDown className={'d ' + `${dropdown ? 'a' : 'b'}`} />
           </CategoryButton>
           <NavMenu>회사소개</NavMenu>
+          <NavMenu onClick={()=>{navigate('/product')}}>제품소개</NavMenu>
           <NavMenu>뉴스센터</NavMenu>
           <NavMenu>고객센터</NavMenu>
           <NavMenu>상품후기</NavMenu>
-          <NavMenu>자료실</NavMenu>
           <CategoryMenu height={menuHeight()} className={dropdown ? "a" : 'b'}>
             {
               initData.map((item, i) => {
