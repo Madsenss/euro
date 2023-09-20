@@ -128,7 +128,7 @@ const ContactBox = styled.div`
     position: relative;
     padding: 50px 0px 50px 0px;
     width: 1350px;
-    height: fit-content;
+    height: 350px;
     display: flex;
     flex-direction: row;
     .textbox {
@@ -169,6 +169,7 @@ const ContactBox = styled.div`
         gap: 30px;
         img {
           height: 40px;
+          margin-bottom: 15px;
           filter: brightness(1.4);
         }
       }
@@ -231,12 +232,12 @@ const ProductCategory = () => {
         <div className="dark">
           <div className="inner">
             <div className="textbox">
-              <span className="title">유로시스템즈의 동반자를 찾습니다</span>
+              <span className="title">유로시스템의 동반자를 찾습니다</span>
               <span className="subtitle">세계적으로 경쟁력 있는 기업으로서 도약할 파트너를 찾습니다</span>
               <span className="subtitle">열정넘치는 당신을 기다리겠습니다</span>
             </div>
             <div className="brandbox">
-              <span className="brandtitle">Brand</span>
+              <span className="brandtitle">BRNAD LIST</span>
               <div className="imgbox">
                 {
                   imgInit.map((item, i) => {

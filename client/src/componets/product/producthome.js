@@ -7,7 +7,6 @@ import Footer from "../home/footer";
 const ProductBox = styled.div`
   width: 100%;
   height: fit-content;
-  border: 1px solid black;
   display: flex;
   flex-direction: column;
   justify-content: center;

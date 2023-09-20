@@ -355,7 +355,7 @@ const Nav = () => {
             <span className="text">전체상품 카테고리</span>
             <MdOutlineKeyboardArrowDown className={'d ' + `${dropdown ? 'a' : 'b'}`} />
           </CategoryButton>
-          <NavMenu>회사소개</NavMenu>
+          <NavMenu onClick={()=>{navigate('/company')}}>회사소개</NavMenu>
           <NavMenu onClick={()=>{navigate('/product')}}>제품소개</NavMenu>
           <NavMenu>뉴스센터</NavMenu>
           <NavMenu>고객센터</NavMenu>

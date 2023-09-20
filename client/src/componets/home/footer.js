@@ -146,7 +146,7 @@ const Footer = () => {
               <div className="col">
                 <div className="item">
                   <MdBusiness className="icon" />
-                  <span>EuroSystems | 대표이사 홍길동</span>
+                  <span>EuroSystem | 대표이사 김규한</span>
                 </div>
                 <div className="item">
                   <MdLocationOn className="icon" />
@@ -156,9 +156,9 @@ const Footer = () => {
               <div className="col">
                 <div className="item">
                   <MdPhone className="icon" />
-                  <span>031-489-6500&nbsp;|&nbsp;</span>
+                  <span>031-123-4567&nbsp;|&nbsp;</span>
                   <MdFax className="icon" />
-                  <span>031-489-6229</span>
+                  <span>031-123-4567</span>
                 </div>
                 <div className="item">
                   <MdEmail className="icon" />
@@ -188,7 +188,7 @@ const Footer = () => {
           </ImgBox>
         </FooterInner>
       </FooterBox>
-      <Copyright>Copyright 2023 Euro Systems. All Rights Reserved.</Copyright>
+      <Copyright>Copyright 2023 EuroSystem. All Rights Reserved.</Copyright>
     </>
   )
 };

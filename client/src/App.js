@@ -5,6 +5,7 @@ import Admin from "./componets/admin/admin.js";
 import Home from "./componets/home/home.js";
 import ProductHome from "./componets/product/producthome.js";
 import Top from "./componets/top";
+import CompanyHome from "./componets/company/companyhome";
 
 function App() {
   const setScreenSize = () => {
@@ -19,6 +20,7 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<><GlobalStyle/><Home/><Top/></>}/>
+        <Route path="/company" element={<><GlobalStyle/><CompanyHome/><Top/></>}/>
         <Route path="/product" element={<><GlobalStyle/><ProductHome/><Top/></>}/>
         <Route path="/admintest" element={<><GlobalStyle/><Admin/></>}/>
       </Routes>
