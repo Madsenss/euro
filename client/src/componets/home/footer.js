@@ -150,7 +150,7 @@ const Footer = () => {
                 </div>
                 <div className="item">
                   <MdLocationOn className="icon" />
-                  <span>경기 안산시 단원구 산단로 242</span>
+                  <span>경기 안산시 단원구 ??로 ???</span>
                 </div>
               </div>
               <div className="col">
@@ -172,7 +172,7 @@ const Footer = () => {
                 </div>
                 <div className="item">
                   <MdDescription className="icon" />
-                  <span>통신판매업신고번호 : 2023-경기안산-11호</span>
+                  <span>통신판매업신고번호 : 2023-경기안산-??호</span>
                 </div>
               </div>
             </div>

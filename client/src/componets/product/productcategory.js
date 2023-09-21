@@ -34,9 +34,6 @@ const PCBox = styled.div`
       font-size: 20px;
       font-weight: bold;
       color: #555;
-      &.r {
-        margin-left: auto;
-      }
     }
   }
 `

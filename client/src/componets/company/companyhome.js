@@ -63,7 +63,7 @@ const TabBox = styled.div`
     justify-content: center;
     align-items: center;
     width: 120px;
-    height: 40px;
+    height: 45px;
     font-size: 16px;
     font-weight: bold;
     border: 1px solid #ddd;
