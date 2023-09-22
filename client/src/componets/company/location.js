@@ -136,7 +136,7 @@ const SubwayIcon = styled.div`
 
 const KaKaoMap = () => {
   const setting = {
-    center: { lat: 37.31681109060725, lng: 126.79012830991658 },
+    center: { lat: 37.32338866665412, lng: 126.78513165063413 },
     level: 4
   }
   return (
@@ -157,7 +157,7 @@ const Location = () => {
         <div className="textbox">
           <div className="item">
             <MdLocationOn className="icon"/>
-            <span>경기도 안산시 단원구 ??로 777</span>
+            <span>경기도 안산시 단원구 산단로 325, 8층 F822호</span>
           </div>
           <div className="item">
             <MdPhone className="icon"/>
@@ -183,7 +183,7 @@ const Location = () => {
             <span className="text">안산역</span>
           </SubwayIcon>
           <div className="rootbox">
-            <span className="roottitle">지하철 4호선 안산역 ?번 출구(도보 약 ?분 소요)</span>
+            <span className="roottitle">지하철 4호선 안산역 2번 출구(도보 약 5분 소요)</span>
             <div className="arrow">
               <MdArrowRight className="icon"/>
               <span className="arrowtext">(출구 앞 KFC) 오른쪽 뒷편으로 돌아서 서울고 방향 언덕 오르막길(도보) → 청권사</span>

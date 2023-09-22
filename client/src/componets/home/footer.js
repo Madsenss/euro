@@ -150,7 +150,7 @@ const Footer = () => {
                 </div>
                 <div className="item">
                   <MdLocationOn className="icon" />
-                  <span>경기 안산시 단원구 ??로 ???</span>
+                  <span>경기도 안산시 단원구 산단로 325, 8층 F822호</span>
                 </div>
               </div>
               <div className="col">

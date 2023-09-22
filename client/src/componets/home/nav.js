@@ -267,7 +267,7 @@ const SubMenu = styled.div`
       width: 150px;
     }
   }
-  transition: all 0.3s;
+  transition: opacity 0.3s, transform 0.3s, visibility 0.1s;
   &.a {
     transform: translateX(0px);
     visibility: visible;
@@ -284,22 +284,22 @@ const Nav = () => {
   const initData = [
     {
       id: 0,
-      category: '나사/너트/스크류/압정',
+      category: 'A-Category',
       subcategory: [
-        { category: '나사/너트/스크류/압정', subname: '나사', src: '나사.png' },
-        { category: '나사/너트/스크류/압정', subname: '너트', src: '너트.png' },
-        { category: '나사/너트/스크류/압정', subname: '스크류', src: '스크류.png' },
-        { category: '나사/너트/스크류/압정', subname: '압정', src: '압정.png' },
+        { category: 'A-Category', subname: 'A-SubCategory-1', src: '나사.png' },
+        { category: 'A-Category', subname: 'A-SubCategory-2', src: '너트.png' },
+        { category: 'A-Category', subname: 'A-SubCategory-3', src: '스크류.png' },
+        { category: 'A-Category', subname: 'A-SubCategory-4', src: '압정.png' },
       ]
     },
     {
       id: 1,
-      category: '프레스 금형용 표준부품',
+      category: 'B-Category',
       subcategory: [
-        { category: '프레스 금형용 표준부품', subname: '펀치 & 다이', src: '펀치.png' },
-        { category: '프레스 금형용 표준부품', subname: '가이드 부품', src: '가이드.png' },
-        { category: '프레스 금형용 표준부품', subname: '소형/주변부품', src: '소형.png' },
-        { category: '프레스 금형용 표준부품', subname: '압력원', src: '압력원.png' },
+        { category: 'B-Category', subname: 'B-Subcategory-1', src: '펀치.png' },
+        { category: 'B-Category', subname: 'B-Subcategory-2', src: '가이드.png' },
+        { category: 'B-Category', subname: 'B-Subcategory-3', src: '소형.png' },
+        { category: 'B-Category', subname: 'B-Subcategory-4', src: '압력원.png' },
       ]
     },
   ];
@@ -328,7 +328,7 @@ const Nav = () => {
   return (
     <NavBox>
       <TopBox>
-        <img onClick={()=>{navigate('/')}} className="logo" src={process.env.PUBLIC_URL + '/logo2.png'} alt="logo" />
+        <img onClick={() => { navigate('/') }} className="logo" src={process.env.PUBLIC_URL + '/logo2.png'} alt="logo" />
         <SearchBox>
           <input type="text" placeholder="Search entire store here ..." />
           <div className="button">
@@ -355,8 +355,8 @@ const Nav = () => {
             <span className="text">전체상품 카테고리</span>
             <MdOutlineKeyboardArrowDown className={'d ' + `${dropdown ? 'a' : 'b'}`} />
           </CategoryButton>
-          <NavMenu onClick={()=>{navigate('/company')}}>회사소개</NavMenu>
-          <NavMenu onClick={()=>{navigate('/product')}}>제품소개</NavMenu>
+          <NavMenu onClick={() => { navigate('/company') }}>회사소개</NavMenu>
+          <NavMenu onClick={() => { navigate('/product') }}>제품소개</NavMenu>
           <NavMenu>뉴스센터</NavMenu>
           <NavMenu>고객센터</NavMenu>
           <NavMenu>상품후기</NavMenu>
@@ -374,6 +374,11 @@ const Nav = () => {
                     onMouseLeave={() => {
                       setSubMenu(false);
                     }}
+                    onClick={() => {
+                      navigate('/category/' + item.category);
+                      setSubMenu(false);
+                      setDropdown(false);
+                    }}
                   >
                     <span className="itemtext">{item.category}</span>
                     <MdOutlineKeyboardArrowRight className="right" />
@@ -388,7 +393,15 @@ const Nav = () => {
                 initData.map((item, i) => {
                   return item.subcategory.map((item2, j) => {
                     if (item2.category === category.category) {
-                      return <div className="item" key={j} onMouseOver={() => { setSubCategory(item2.subname); }}>
+                      return <div className="item"
+                        key={j}
+                        onMouseOver={() => { setSubCategory(item2.subname); }}
+                        onClick={() => {
+                          navigate('/category/' + item.category + '/' + item2.subname);
+                          setSubMenu(false);
+                          setDropdown(false);
+                        }}
+                      >
                         <span className="subname">{item2.subname}</span>
                         <MdOutlineKeyboardArrowRight className="right" />
                       </div>
