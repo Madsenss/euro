@@ -284,22 +284,22 @@ const Nav = () => {
   const initData = [
     {
       id: 0,
-      category: 'A-Category',
+      category: 'Category-A',
       subcategory: [
-        { category: 'A-Category', subname: 'A-SubCategory-1', src: '나사.png' },
-        { category: 'A-Category', subname: 'A-SubCategory-2', src: '너트.png' },
-        { category: 'A-Category', subname: 'A-SubCategory-3', src: '스크류.png' },
-        { category: 'A-Category', subname: 'A-SubCategory-4', src: '압정.png' },
+        { category: 'Category-A', subname: 'A-SubCategory-1', src: '나사.png' },
+        { category: 'Category-A', subname: 'A-SubCategory-2', src: '너트.png' },
+        { category: 'Category-A', subname: 'A-SubCategory-3', src: '스크류.png' },
+        { category: 'Category-A', subname: 'A-SubCategory-4', src: '압정.png' },
       ]
     },
     {
       id: 1,
-      category: 'B-Category',
+      category: 'Category-B',
       subcategory: [
-        { category: 'B-Category', subname: 'B-Subcategory-1', src: '펀치.png' },
-        { category: 'B-Category', subname: 'B-Subcategory-2', src: '가이드.png' },
-        { category: 'B-Category', subname: 'B-Subcategory-3', src: '소형.png' },
-        { category: 'B-Category', subname: 'B-Subcategory-4', src: '압력원.png' },
+        { category: 'Category-B', subname: 'B-SubCategory-1', src: '펀치.png' },
+        { category: 'Category-B', subname: 'B-SubCategory-2', src: '가이드.png' },
+        { category: 'Category-B', subname: 'B-SubCategory-3', src: '소형.png' },
+        { category: 'Category-B', subname: 'B-SubCategory-4', src: '압력원.png' },
       ]
     },
   ];
