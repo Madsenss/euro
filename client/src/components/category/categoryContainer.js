@@ -424,10 +424,9 @@ const CategoryContainer = ({ category, subCategory }) => {
   ];
   const initCount = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
   const [info, setInfo] = useState([]);
-
   useEffect(() => {
     const copyInfo = [];
-    for (let i = 0; i < initCount && initCount.length; i++) {
+    for (let i = 0; i < initCount && initCount.length(); i++) {
       copyInfo.push(false);
     }
     setInfo(copyInfo);
@@ -504,7 +503,7 @@ const CategoryContainer = ({ category, subCategory }) => {
               grid === 'grid'
                 ? initCount.map((item, i) => {
                     return (
-                      <GridItem key={i}>
+                      <GridItem key={i} onClick={(e)=>{e.stopPropagation(); navigate('/detail');}}>
                         <img src={process.env.PUBLIC_URL + '/air.png'} alt="item" />
                         <span className="title">[Norgen]Excelon Plus box set (FRL) for extreme applications, G1/2, automatic drain, with shut-off valve</span>
                         <span className="price">49,000원</span>
@@ -513,7 +512,8 @@ const CategoryContainer = ({ category, subCategory }) => {
                           <MdOutlineAddShoppingCart className="icon" />
                         </div>
                         <InfoButton
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.stopPropagation();
                             var copyinfo = [...info];
                             copyinfo[i] = !info[i];
                             setInfo(copyinfo);
@@ -551,7 +551,7 @@ const CategoryContainer = ({ category, subCategory }) => {
 
                 : initCount.map((item, i) => {
                     return (
-                      <ListItem>
+                      <ListItem key={i} onClick={()=>{navigate('/detail')}}>
                         <img src={process.env.PUBLIC_URL + '/air.png'} alt="item" />
                         <div className="column">
                           <span className="title">[Norgen]Excelon Plus box set (FRL) for extreme applications, G1/2, automatic drain, with shut-off valve</span>

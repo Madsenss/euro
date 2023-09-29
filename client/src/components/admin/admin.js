@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { MdOutlinePowerSettingsNew , MdArrowRight, MdRestartAlt, MdOutlineListAlt, MdOutlineFormatListBulleted, MdLocalShipping, MdPerson, MdLightbulbOutline, MdOutlineStickyNote2, MdSettings, MdHome } from "react-icons/md";
+import { MdOutlinePowerSettingsNew , MdArrowRight, MdRestartAlt, MdOutlineFormatListBulleted, MdLocalShipping, MdPerson, MdLightbulbOutline, MdOutlineStickyNote2, MdSettings, MdHome } from "react-icons/md";
 import { useState } from "react";
 import Main from "./main";
 import Product from "./product";
@@ -107,7 +107,7 @@ const Admin = () => {
   return (
     <AdminBox>
       <SideMenuBox>
-        <img className="logo" src={process.env.PUBLIC_URL + '/logo.png'} onClick={()=>{setTab('홈')}}/>
+        <img className="logo" src={process.env.PUBLIC_URL + '/logo.png'} onClick={()=>{setTab('홈')}} alt="logo"/>
         {
           menuItems.map((item, i)=>{
             return (

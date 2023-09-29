@@ -1,4 +1,4 @@
-import { MdAddShoppingCart, MdEast, MdFavoriteBorder, MdStar, MdStarHalf, MdStarOutline, MdWest } from "react-icons/md";
+import { MdAddShoppingCart, MdEast, MdFavoriteBorder, MdStar, MdStarHalf, MdWest } from "react-icons/md";
 import Slider from "react-slick";
 import styled from "styled-components";
 import "slick-carousel/slick/slick.css";
@@ -237,7 +237,7 @@ const HomeProduct = () => {
               {boxData.map((item, j) => (
                 <Item key={j} onMouseOver={()=>{setHoverActive(true);}} onMouseLeave={()=>{setHoverActive(false);}}>
                   <div className="img">
-                    <img src={process.env.PUBLIC_URL + '/inititem.png'}/>
+                    <img src={process.env.PUBLIC_URL + '/inititem.png'} alt="item"/>
                   </div>
                   <div className="title">쎄니타리 레듀샤2페럴(MK)</div>
                   <span className="price">12,345원</span>

@@ -1,4 +1,4 @@
-import { MdBusiness, MdInfoOutline, MdNewspaper, MdOutlineAccountBalance, MdOutlineCall, MdPerson } from "react-icons/md";
+import { MdBusiness, MdNewspaper, MdOutlineAccountBalance, MdOutlineCall, MdPerson } from "react-icons/md";
 import styled from "styled-components";
 
 const MenuBox = styled.div`

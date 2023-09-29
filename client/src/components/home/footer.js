@@ -1,4 +1,4 @@
-import { MdBusiness, MdDescription, MdEmail, MdFax, MdLocationOn, MdLockPerson, MdPhone } from "react-icons/md";
+import { MdBusiness, MdDescription, MdEmail, MdFax, MdLocationOn, MdPhone } from "react-icons/md";
 import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import styled from "styled-components";
 
@@ -183,8 +183,8 @@ const Footer = () => {
             <FaTwitter className="icon" />
           </SNSBox>
           <ImgBox>
-            <img className="es" src={process.env.PUBLIC_URL + '/es.png'} />
-            <img className="es2" src={process.env.PUBLIC_URL + '/es2.png'} />
+            <img className="es" src={process.env.PUBLIC_URL + '/es.png'} alt="img" />
+            <img className="es2" src={process.env.PUBLIC_URL + '/es2.png'} alt="img" />
           </ImgBox>
         </FooterInner>
       </FooterBox>

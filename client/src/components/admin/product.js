@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MdArrowDropDown, MdArrowRight, MdFilterAlt, MdSearch } from "react-icons/md";
+import { MdFilterAlt, MdSearch } from "react-icons/md";
 import styled from "styled-components";
 const ProductNav = styled.div`
   width: 100%;

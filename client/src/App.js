@@ -1,12 +1,13 @@
 import { Route, Routes } from "react-router-dom";
-import GlobalStyle from "./componets/globalstyle";
+import GlobalStyle from "./components/globalstyle";
 import { useEffect } from "react";
-import Admin from "./componets/admin/admin.js";
-import Home from "./componets/home/home.js";
-import ProductHome from "./componets/product/producthome.js";
-import Top from "./componets/top";
-import CompanyHome from "./componets/company/companyhome";
-import CategoryHome from "./componets/category/categoryhome";
+import Admin from "./components/admin/admin.js";
+import Home from "./components/home/home.js";
+import ProductHome from "./components/product/producthome.js";
+import Top from "./components/top";
+import CompanyHome from "./components/company/companyhome";
+import CategoryHome from "./components/category/categoryhome";
+import DetailHome from "./components/detail/detailhome";
 
 function App() {
   const setScreenSize = () => {
@@ -26,6 +27,7 @@ function App() {
         <Route path="/company" element={<><GlobalStyle/><CompanyHome/><Top/></>}/>
         <Route path="/product" element={<><GlobalStyle/><ProductHome/><Top/></>}/>
         <Route path="/admintest" element={<><GlobalStyle/><Admin/></>}/>
+        <Route path="/detail" element={<><GlobalStyle/><DetailHome/></>}/>
       </Routes>
     </div>
   );
