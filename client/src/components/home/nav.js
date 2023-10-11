@@ -178,7 +178,7 @@ const CategoryButton = styled.div`
 `
 const NavMenu = styled.div`
   cursor: pointer;
-  width: fit-content;
+  width: 60px;
   height: 60px;
   display: flex;
   justify-content: center;
@@ -287,6 +287,43 @@ const SubMenu = styled.div`
     opacity: 0;
   }
 `
+
+const CommunityBox = styled.div`
+  position: absolute;
+  top: 59px;
+  left: 530px;
+  width: 120px;
+  height: 180px;
+  background-color: red;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  .item {
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 45px;
+    transition: all 0.2s;
+    font-size: 14px;
+    &:hover {
+      background-color: #eee;
+      font-weight: bold;
+    }
+  }
+  &.show {
+    visibility: visible;
+    opacity: 1;
+  }
+  &.hide {
+    visibility: hidden;
+    opacity: 0;
+  }
+`
+
 const Nav = () => {
 
   const initData = [
@@ -317,6 +354,7 @@ const Nav = () => {
   const [category, setCategory] = useState({ id: 0, category: '' });
   const [subCategory, setSubCategory] = useState(initData[0]?.subcategory[0]?.subname);
   const [fix, setFix] = useState(false);
+  const [showCommunity, setShowCommunity] = useState(false);
   const navigate = useNavigate();
 
   const menuHeight = () => {
@@ -386,9 +424,13 @@ const Nav = () => {
           </CategoryButton>
           <NavMenu onClick={() => { navigate('/company'); window.scrollTo({top: 0, behavior: 'auto'}); }}>회사소개</NavMenu>
           <NavMenu onClick={() => { navigate('/product'); window.scrollTo({top: 0, behavior: 'auto'}); }}>제품소개</NavMenu>
-          <NavMenu>뉴스센터</NavMenu>
-          <NavMenu>고객센터</NavMenu>
-          <NavMenu>상품후기</NavMenu>
+          <NavMenu onClick={() => { navigate('/community'); window.scrollTo({top: 0, behavior: 'auto'}); }} onMouseOver={()=>{setShowCommunity(true);}} onMouseLeave={()=>{setShowCommunity(false);}}>커뮤니티</NavMenu>
+          <CommunityBox className={showCommunity ? 'show' : 'hide'} onMouseOver={()=>{setShowCommunity(true);}} onMouseLeave={()=>{setShowCommunity(false);}}>
+            <div className="item" onClick={()=>{ navigate('/community/notice'); setShowCommunity(false); window.scrollTo({top: 0, behavior: 'auto'}); }}>공지사항</div>
+            <div className="item" onClick={()=>{ navigate('/community/faq'); setShowCommunity(false); window.scrollTo({top: 0, behavior: 'auto'}); }}>자주묻는 질문</div>
+            <div className="item" onClick={()=>{ navigate('/community/qna'); setShowCommunity(false); window.scrollTo({top: 0, behavior: 'auto'}); }}>상품문의</div>
+            <div className="item" onClick={()=>{ navigate('/community/review'); setShowCommunity(false); window.scrollTo({top: 0, behavior: 'auto'}); }}>상품후기</div>
+          </CommunityBox>
           <CategoryMenu height={menuHeight()} className={dropdown ? "a" : 'b'}>
             {
               initData.map((item, i) => {

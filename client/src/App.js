@@ -8,6 +8,7 @@ import Top from "./components/top";
 import CompanyHome from "./components/company/companyhome";
 import CategoryHome from "./components/category/categoryhome";
 import DetailHome from "./components/detail/detailhome";
+import CommunityHome from "./components/community/communityhome";
 
 function App() {
   const setScreenSize = () => {
@@ -28,6 +29,8 @@ function App() {
         <Route path="/product" element={<><GlobalStyle/><ProductHome/><Top/></>}/>
         <Route path="/admintest" element={<><GlobalStyle/><Admin/></>}/>
         <Route path="/detail" element={<><GlobalStyle/><DetailHome/><Top/></>}/>
+        <Route path="/community" element={<><GlobalStyle/><CommunityHome/><Top/></>}/>
+        <Route path="/community/:path" element={<><GlobalStyle/><CommunityHome/><Top/></>}/>
       </Routes>
     </div>
   );
