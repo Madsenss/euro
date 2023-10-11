@@ -184,7 +184,6 @@ const Footer = () => {
           </SNSBox>
           <ImgBox>
             <img className="es" src={process.env.PUBLIC_URL + '/es.png'} alt="img" />
-            <img className="es2" src={process.env.PUBLIC_URL + '/es2.png'} alt="img" />
           </ImgBox>
         </FooterInner>
       </FooterBox>

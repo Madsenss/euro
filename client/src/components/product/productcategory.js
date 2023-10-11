@@ -1,4 +1,5 @@
 import { MdArrowRightAlt } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const PCBox = styled.div`
@@ -193,7 +194,7 @@ const ContactBox = styled.div`
 `
 
 const ProductCategory = () => {
-
+  const navigate = useNavigate();
   const init = [
     { id: 0, name: 'Air Preparation', text: 'Filters, pressure regulators, lubricators and more air preparation components', src: 'air' },
     { id: 1, name: 'Electric Motion', text: 'Electric motion offers the perfect solution when precise control, accurate positioning, repeatabillity, or wear-free operation are essential', src: 'elec' },
@@ -216,7 +217,7 @@ const ProductCategory = () => {
                   <span className="title">{item.name}</span>
                   <span className="text">{item.text}</span>
                 </div>
-                <div className="button">
+                <div className="button" onClick={()=>{navigate('/category/임시카테고리'); window.scrollTo({top: 0, behavior: 'auto'})}}>
                   <span className="btn-text">View More</span>
                   <MdArrowRightAlt className="btn-icon" />
                 </div>

@@ -11,7 +11,6 @@ const DetailReviewBox = styled.div`
   display: flex;
   flex-direction: column;
 `
-
 const Table = styled.table`
   width: 1350px;
   border-collapse: collapse;
@@ -26,13 +25,10 @@ const Table = styled.table`
   .w {
     max-width: 25px;
   }
-  .icon {
-    color: rgb(255, 165, 0);
-  }
 `;
 
 const TableHeader = styled.thead`
-  background-color: var(--color);
+  background-color: rgb(255, 200, 0);
 `;
 
 const TableRow = styled.tr`
@@ -103,7 +99,7 @@ const SortBox = styled.div`
   .title {
     width: fit-content;
     height: fit-content;
-    border: 2px solid var(--color);
+    border: 2px solid rgb(255, 200, 0);
     border-radius: 100px;
     padding: 6px 13px 6px 13px;
     font-size: 16px;
@@ -141,13 +137,13 @@ const SortMenu = styled.div`
   right: 0;
   top: 40px;
   width: 150px;
-  height: 500px;
+  height: 140px;
   box-shadow: 0px 0px 2px 0.5px rgb(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   transition: all 0.1s;
   &.show {
-    height: 210px;
+    height: 140px;
     visibility: visible;
     opacity: 1;
   }
@@ -174,52 +170,60 @@ const SortMenu = styled.div`
   }
 `
 
-const DetailReview = () => {
-  const initCount = [0, 0, 0, 0];
+const WriteButton = styled.div`
+  cursor: pointer;
+  margin-top: 30px;
+  margin-left: auto;
+  width: 100px;
+  height: 35px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(255, 200, 0);
+  color: #fff;
+  font-weight: bold;
+  border-radius: 3px;
+`
 
-  const [sort, setSort] = useState('별점순 보기');
+const DetailQNA = () => {
+
+  const initReview = [1, 2, 3, 4, 5];
+  const [sort, setSort] = useState('문의유형');
   const [sortActive, setSortActive] = useState(false);
 
   return (
     <DetailReviewBox>
       <SortBox>
-        <div className="title">상품후기 내역</div>
+        <div className="title">상품문의 내역</div>
         <SortDropdownBox onClick={() => { setSortActive(!sortActive) }}>
           <span>{sort}</span>
           <MdKeyboardArrowDown className={'down ' + `${sortActive ? 'active' : ''}`} />
         </SortDropdownBox>
         <SortMenu className={sortActive ? 'show' : 'hide'}>
-          <div className="item" onClick={() => { setSort('별점순 보기'); setSortActive(false) }}>별점순 보기</div>
-          <div className="item" onClick={() => { setSort(<><MdStarRate className="icon" /><MdStarRate className="icon" /><MdStarRate className="icon" /><MdStarRate className="icon" /><MdStarRate className="icon" /></>); setSortActive(false) }}><MdStarRate className="icon" /><MdStarRate className="icon" /><MdStarRate className="icon" /><MdStarRate className="icon" /><MdStarRate className="icon" /></div>
-          <div className="item" onClick={() => { setSort(<><MdStarRate className="icon" /><MdStarRate className="icon" /><MdStarRate className="icon" /><MdStarRate className="icon" /></>); setSortActive(false) }}><MdStarRate className="icon" /><MdStarRate className="icon" /><MdStarRate className="icon" /><MdStarRate className="icon" /></div>
-          <div className="item" onClick={() => { setSort(<><MdStarRate className="icon" /><MdStarRate className="icon" /><MdStarRate className="icon" /></>); setSortActive(false) }}><MdStarRate className="icon" /><MdStarRate className="icon" /><MdStarRate className="icon" /></div>
-          <div className="item" onClick={() => { setSort(<><MdStarRate className="icon" /><MdStarRate className="icon" /></>); setSortActive(false) }}><MdStarRate className="icon" /><MdStarRate className="icon" /></div>
-          <div className="item" onClick={() => { setSort(<><MdStarRate className="icon" /></>); setSortActive(false) }}><MdStarRate className="icon" /></div>
+          <div className="item" onClick={() => { setSort('문의유형'); setSortActive(false) }}>문의유형</div>
+          <div className="item" onClick={() => { setSort('상품문의'); setSortActive(false) }}>상품문의</div>
+          <div className="item" onClick={() => { setSort('견적/재고문의'); setSortActive(false) }}>견적/재고문의</div>
+          <div className="item" onClick={() => { setSort('기타문의'); setSortActive(false) }}>기타문의</div>
         </SortMenu>
       </SortBox>
       <Table>
         <TableHeader>
           <TableRow>
             <TableHeaderCell className="n">번호</TableHeaderCell>
-            <TableHeaderCell>상품후기</TableHeaderCell>
-            <TableHeaderCell className="s">별점</TableHeaderCell>
+            <TableHeaderCell className="s">상태</TableHeaderCell>
+            <TableHeaderCell>문의</TableHeaderCell>
             <TableHeaderCell className="w">작성자</TableHeaderCell>
           </TableRow>
         </TableHeader>
         <tbody>
           {
-            initCount.map((item, i) => {
+            initReview.map((item, i) => {
               return (
                 <TableRowHover key={i}>
                   <TableCell className="n">{i}</TableCell>
-                  <TableCell>배송이 너무 빨라서 좋아요</TableCell>
-                  <TableCell className="s">
-                    <MdStarRate className="icon" />
-                    <MdStarRate className="icon" />
-                    <MdStarRate className="icon" />
-                    <MdStarRate className="icon" />
-                    <MdStarRate className="icon" />
-                  </TableCell>
+                  <TableCell className="s">답변완료</TableCell>
+                  <TableCell>재고 여유분이 있나요?</TableCell>
                   <TableCell className="w">
                     <Writer>
                       <span className="">IDIDIDID***</span>
@@ -233,8 +237,10 @@ const DetailReview = () => {
           }
         </tbody>
       </Table>
+      <WriteButton>문의하기</WriteButton>
     </DetailReviewBox>
   )
 };
 
-export default DetailReview;
+export default DetailQNA;
+

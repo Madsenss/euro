@@ -400,6 +400,17 @@ const CategoryContainer = ({ category, subCategory }) => {
   const [grid, setGrid] = useState('grid');
   const [sortActive, setSortActive] = useState(false);
   const [sort, setSort] = useState('인기순');
+
+  const setListView = () => {
+    setGrid('list');
+    localStorage.setItem('viewMode', 'list');
+  };
+  
+  const setGridView = () => {
+    setGrid('grid');
+    localStorage.setItem('viewMode', 'grid');
+  };
+
   const initData = [
     {
       id: 0,
@@ -430,7 +441,13 @@ const CategoryContainer = ({ category, subCategory }) => {
       copyInfo.push(false);
     }
     setInfo(copyInfo);
+
+    const savedViewMode = localStorage.getItem('viewMode');
+    if (savedViewMode) {
+      setGrid(savedViewMode);
+    }
   }, []);
+
   return (
     <CCBox>
       <div className="inner">
@@ -494,8 +511,8 @@ const CategoryContainer = ({ category, subCategory }) => {
               <div className="item" onClick={() => { setSort('최신등록순'); setSortActive(false) }}>최신등록순</div>
             </SortMenu>
             <div className="iconbox">
-              <MdViewModule onClick={() => { setGrid('grid') }} className={'icon ' + `${grid === 'grid' ? 'active' : ''}`} />
-              <MdViewList onClick={() => { setGrid('list') }} className={'icon ' + `${grid === 'list' ? 'active' : ''}`} />
+              <MdViewModule onClick={() => { setGridView(); }} className={'icon ' + `${grid === 'grid' ? 'active' : ''}`} />
+              <MdViewList onClick={() => { setListView(); }} className={'icon ' + `${grid === 'list' ? 'active' : ''}`} />
             </div>
           </SortBox>
           <GridBox className={grid === 'grid' ? 'grid' : 'list'}>
@@ -503,7 +520,7 @@ const CategoryContainer = ({ category, subCategory }) => {
               grid === 'grid'
                 ? initCount.map((item, i) => {
                     return (
-                      <GridItem key={i} onClick={(e)=>{e.stopPropagation(); navigate('/detail');}}>
+                      <GridItem key={i} onClick={(e)=>{e.stopPropagation(); navigate('/detail'); window.scrollTo({top: 0, behavior: 'auto'}); }}>
                         <img src={process.env.PUBLIC_URL + '/air.png'} alt="item" />
                         <span className="title">[Norgen]Excelon Plus box set (FRL) for extreme applications, G1/2, automatic drain, with shut-off valve</span>
                         <span className="price">49,000원</span>
@@ -551,7 +568,7 @@ const CategoryContainer = ({ category, subCategory }) => {
 
                 : initCount.map((item, i) => {
                     return (
-                      <ListItem key={i} onClick={()=>{navigate('/detail')}}>
+                      <ListItem key={i} onClick={()=>{navigate('/detail'); window.scrollTo({top: 0, behavior: 'auto'}); }}>
                         <img src={process.env.PUBLIC_URL + '/air.png'} alt="item" />
                         <div className="column">
                           <span className="title">[Norgen]Excelon Plus box set (FRL) for extreme applications, G1/2, automatic drain, with shut-off valve</span>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdDehaze, MdOutlineFavoriteBorder, MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowRight, MdOutlineShoppingCart, MdSearch } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -14,11 +14,9 @@ const NavBox = styled.div`
   flex-direction: column;
   align-items: center;
 `
-
 const TopBox = styled.div`
   width: 1350px;
-  height: fit-content;
-  padding: 20px 0px 20px 0px;
+  height: 90px;
   .logo {
     width: 220px;
     cursor: pointer;
@@ -107,6 +105,7 @@ const CartBox = styled.div`
 
 
 const CategoryBox = styled.div`
+  z-index: 1000;
   width: 100%;
   height: 60px;
   background-color: #fff;
@@ -135,6 +134,15 @@ const CategoryBox = styled.div`
     .d {
       font-size: 16px;
     }
+  }
+  &.a {
+    position: fixed;
+    top: 0;
+    border: none;
+    background-color: rgb(255, 255, 255, 0.95);
+  }
+  &.b {
+    position: relative;
   }
 `
 const CategoryButton = styled.div`
@@ -308,6 +316,7 @@ const Nav = () => {
   const [subMenu, setSubMenu] = useState(false);
   const [category, setCategory] = useState({ id: 0, category: '' });
   const [subCategory, setSubCategory] = useState(initData[0]?.subcategory[0]?.subname);
+  const [fix, setFix] = useState(false);
   const navigate = useNavigate();
 
   const menuHeight = () => {
@@ -324,11 +333,31 @@ const Nav = () => {
       return 60.5 + (category.id) * 45 + 'px';
     }
   };
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      if (window.location.pathname === '/detail') {
+        setFix(false);
+      } else {
+        if (scrollY > 90) {
+          setFix(true);
+        } else {
+          setFix(false);
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <NavBox>
       <TopBox>
-        <img onClick={() => { navigate('/') }} className="logo" src={process.env.PUBLIC_URL + '/logo2.png'} alt="logo" />
+        <img onClick={() => { navigate('/'); window.scrollTo({top: 0, behavior: 'auto'}); }} className="logo" src={process.env.PUBLIC_URL + '/logo2.png'} alt="logo" />
         <SearchBox>
           <input type="text" placeholder="Search entire store here ..." />
           <div className="button">
@@ -348,15 +377,15 @@ const Nav = () => {
           </div>
         </CartBox>
       </TopBox>
-      <CategoryBox>
+      <CategoryBox className={fix ? 'a' : 'b'}>
         <div className="inner">
           <CategoryButton onClick={() => { setDropdown(!dropdown); }}>
             <MdDehaze className="icon" />
             <span className="text">전체상품 카테고리</span>
             <MdOutlineKeyboardArrowDown className={'d ' + `${dropdown ? 'a' : 'b'}`} />
           </CategoryButton>
-          <NavMenu onClick={() => { navigate('/company') }}>회사소개</NavMenu>
-          <NavMenu onClick={() => { navigate('/product') }}>제품소개</NavMenu>
+          <NavMenu onClick={() => { navigate('/company'); window.scrollTo({top: 0, behavior: 'auto'}); }}>회사소개</NavMenu>
+          <NavMenu onClick={() => { navigate('/product'); window.scrollTo({top: 0, behavior: 'auto'}); }}>제품소개</NavMenu>
           <NavMenu>뉴스센터</NavMenu>
           <NavMenu>고객센터</NavMenu>
           <NavMenu>상품후기</NavMenu>
@@ -378,6 +407,7 @@ const Nav = () => {
                       navigate('/category/' + item.category);
                       setSubMenu(false);
                       setDropdown(false);
+                      window.scrollTo({top: 0, behavior: 'auto'});
                     }}
                   >
                     <span className="itemtext">{item.category}</span>
@@ -400,6 +430,7 @@ const Nav = () => {
                           navigate('/category/' + item.category + '/' + item2.subname);
                           setSubMenu(false);
                           setDropdown(false);
+                          window.scrollTo({top: 0, behavior: 'auto'});
                         }}
                       >
                         <span className="subname">{item2.subname}</span>
