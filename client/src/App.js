@@ -31,6 +31,7 @@ function App() {
         <Route path="/detail" element={<><GlobalStyle/><DetailHome/><Top/></>}/>
         <Route path="/community" element={<><GlobalStyle/><CommunityHome/><Top/></>}/>
         <Route path="/community/:path" element={<><GlobalStyle/><CommunityHome/><Top/></>}/>
+        <Route path="/community/notice/1" element={<><GlobalStyle/><div>1</div><Top/></>}/>
       </Routes>
     </div>
   );
