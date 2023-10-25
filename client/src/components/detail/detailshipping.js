@@ -3,7 +3,7 @@ import styled from "styled-components";
 const DetailShippingBox = styled.div`
   border-top: 2px solid #ddd;
   padding-top: 50px;
-  width: 1350px;
+  width: 1100px;
   height: fit-content;
   display: flex;
   flex-direction: column;

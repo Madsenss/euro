@@ -9,6 +9,7 @@ import CompanyHome from "./components/company/companyhome";
 import CategoryHome from "./components/category/categoryhome";
 import DetailHome from "./components/detail/detailhome";
 import CommunityHome from "./components/community/communityhome";
+import MemberHome from "./components/member/memberhome";
 
 function App() {
   const setScreenSize = () => {
@@ -32,9 +33,65 @@ function App() {
         <Route path="/community" element={<><GlobalStyle/><CommunityHome/><Top/></>}/>
         <Route path="/community/:path" element={<><GlobalStyle/><CommunityHome/><Top/></>}/>
         <Route path="/community/notice/1" element={<><GlobalStyle/><div>1</div><Top/></>}/>
+        <Route path="/member/:path" element={<><GlobalStyle/><MemberHome/><Top/></>}/>
       </Routes>
     </div>
   );
 }
 
 export default App;
+
+
+
+// 메인
+// - 상단 회원가입, 로그인
+// - 사이드바 및 1100px 조절
+// - 푸터 배치 조절해야함
+
+// 검색페이지
+
+
+// 회사소개
+// - 회사소개
+// - 찾아오시는길
+
+// 제품소개
+
+// 커뮤니티
+// - 커뮤니티 메인
+// - 공지사항
+// - 자주하는 질문
+// - 1:1 문의
+
+// 카테고리
+// - 대분류 메인
+// - 소분류 메인
+
+// 디테일
+// - 상품 상단 
+// - 상세 중단
+// - 후기 하단1
+// - 문의 하단2
+
+// 장바구니페이지
+
+// 로그인
+// - 회원 로그인 페이지
+
+// 회원가입
+// - 가입페이지, 네이버 or 카카오 필?
+
+// 어드민 로그인
+// - 어드민 로그인 페이지
+
+// 어드민 메인
+// - 배송 결제 등 정보화면
+
+// 어드민 상품관리
+// 어드민 커뮤니티관리
+// 어드민 회원관리
+// 어드민 메인페이지 설정
+// 어드민 문의내역 관리
+
+
+

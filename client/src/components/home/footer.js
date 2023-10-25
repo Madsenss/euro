@@ -3,7 +3,7 @@ import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import styled from "styled-components";
 
 const FooterBox = styled.div`
-  width: 1350px;
+  width: 1100px;
   height: fit-content;
   display: flex;
   flex-direction: column;
@@ -16,9 +16,9 @@ const FooterInner = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 0px 20px 0px;
+  padding: 10px 0px 10px 0px;
   .logo {
-    width: 230px;
+    width: 150px;
   }
 `
 const InfoBox = styled.div`
@@ -34,7 +34,7 @@ const InfoBox = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin-right: 10px;
+    margin-right: 5px;
   }
   .item {
     display: flex;
@@ -42,12 +42,12 @@ const InfoBox = styled.div`
     align-items: center;
     margin: 3px 0px 3px 0px;
     .icon {
-      font-size: 16px;
+      font-size: 14px;
       margin-right: 5px;
     }
     span {
       color: #666;
-      font-size: 14px;
+      font-size: 12px;
     }
   }
 `
@@ -60,8 +60,8 @@ const SNSBox = styled.div`
   align-items: center;
   .icon {
     cursor: pointer;
-    margin-left: 15px;
-    font-size: 24px;
+    margin-left: 10px;
+    font-size: 20px;
     border-radius: 50%;
     padding: 8px;
     background-color: #aaa;
@@ -81,31 +81,27 @@ const ImgBox = styled.div`
   justify-content: end;
   align-items: center;
   .es {
-    width: 40px;
-  }
-  .es2 {
-    width: 45px;
-    margin-left: 15px;
+    width: 33px;
   }
 `
 
 const Edge = styled.div`
   width: 100%;
   height: fit-content;
-  border-top: 1.5px solid #ddd;
-  border-bottom: 1.5px solid #ddd;
+  border-top: 1.5px solid #eee;
+  border-bottom: 1.5px solid #eee;
   display: flex;
   align-items: center;
   justify-content: center;
   .inner {
-    width: 1350px;
+    width: 1100px;
     height: fit-content;
     display: flex;
     align-items: center;
     justify-content: start;
     .item {
       cursor: pointer;
-      font-size: 14px;
+      font-size: 12px;
       padding: 10px 0px 10px 0px;
       margin-right: 30px;
       &:hover {
@@ -122,7 +118,7 @@ const Copyright = styled.div`
   color: #eee;
   text-align: center;
   font-weight: bold;
-  font-size: 13px;
+  font-size: 12px;
   border-radius: 2px;
   padding: 4px 0px 4px 0px;
 `

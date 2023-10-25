@@ -16,8 +16,8 @@ const BannerBox = styled.div`
     background-color: rgb(0, 0, 0, 0.35);
   }
   .inner {
-    padding: 180px 0px 0px 0px;
-    width: 1350px;
+    padding: 160px 0px 0px 0px;
+    width: 1100px;
     height: 100%;
     display: flex;
     flex-direction: column;

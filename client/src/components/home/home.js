@@ -21,7 +21,6 @@ const Home = () => {
       <Banner/>
       <MiddleEdge/>
       <HomeProduct/>
-      <BottomMenu/>
       <Footer/>
     </HomeBox>
   )

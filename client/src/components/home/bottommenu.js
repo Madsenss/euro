@@ -10,7 +10,7 @@ const MenuBox = styled.div`
   align-items: center;
   .inner {
     padding: 20px 0px 20px 0px;
-    width: 1350px;
+    width: 1100px;
     height: 180px;
     display: flex;
     flex-direction: row;

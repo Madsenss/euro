@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const ContainerBox = styled.div`
-  width: 1050px;
+  width: 850px;
   height: fit-content;
 `
 const Card = styled.div`
@@ -98,7 +98,7 @@ const BottomCard = styled(Card)`
 `
 
 const PartsBox = styled.div`
-  width: 1050px;
+  width: 100%;
   height: fit-content;
   display: flex;
   flex-direction: column;

@@ -239,7 +239,7 @@ const HomeProduct = () => {
                   <div className="img">
                     <img src={process.env.PUBLIC_URL + '/inititem.png'} alt="item"/>
                   </div>
-                  <div className="title">쎄니타리 레듀샤2페럴(MK)</div>
+                  <div className="title">임시박스 수정필</div>
                   <span className="price">12,345원</span>
                   <div className="star">
                     <MdStar className="star-icon"/>

@@ -10,9 +10,9 @@ const CCBox = styled.div`
   justify-content: center;
   .inner {
     position: relative;
-    padding-top: 50px;
+    padding-top: 90px;
     margin-bottom: 30px;
-    width: 1350px;
+    width: 1100px;
     height: fit-content;
     display: flex;
     flex-direction: row;
@@ -41,7 +41,7 @@ const RootBox = styled.div`
 `
 
 const SideNav = styled.div`
-  width: 260px;
+  width: 250px;
   height: fit-content;
   display: flex;
   flex-direction: column;
@@ -79,7 +79,7 @@ const SideNavItem = styled.div`
 `
 
 const ProductBox = styled.div`
-  width: 1050px;
+  width: 800px;
   height: fit-content;
   display: flex;
   flex-direction: column;

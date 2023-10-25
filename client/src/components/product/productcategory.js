@@ -11,7 +11,7 @@ const PCBox = styled.div`
   align-items: center;
   margin-bottom: 30px;
   .inner {
-    width: 1350px;
+    width: 1100px;
     height: fit-content;
     display: grid;
     grid-template-columns: repeat(1, 1fr);
@@ -125,8 +125,8 @@ const ContactBox = styled.div`
   .inner {
     position: relative;
     padding: 50px 0px 50px 0px;
-    width: 1350px;
-    height: 350px;
+    width: 1100px;
+    height: 300px;
     display: flex;
     flex-direction: row;
     .textbox {
@@ -136,12 +136,12 @@ const ContactBox = styled.div`
       width: fit-content;
       height: fit-content;
       .title {
-        font-size: 36px;
+        font-size: 32px;
         font-weight: bold;
         margin-bottom: 50px;
       }
       .subtitle {
-        font-size: 20px;
+        font-size: 18px;
         color: #eee;
         margin-bottom: 5px;
       }
@@ -155,7 +155,7 @@ const ContactBox = styled.div`
       align-items: center;
       .brandtitle {
         color: #ddd;
-        font-size: 36px;
+        font-size: 32px;
         font-weight: bold;
         margin-bottom: 50px;
       }
@@ -164,9 +164,9 @@ const ContactBox = styled.div`
         height: fit-content;
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 30px;
+        gap: 15px;
         img {
-          height: 40px;
+          height: 35px;
           margin-bottom: 15px;
           filter: brightness(1.4);
         }

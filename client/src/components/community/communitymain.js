@@ -5,7 +5,7 @@ import styled from "styled-components";
 import Container from "./container";
 
 const RootBox = styled.div`
-  padding: 15px 0px 15px 0px;
+  padding: 15px 0px 50px 0px;
   width: 100%;
   height: fit-content;
   display: flex;
@@ -24,7 +24,7 @@ const RootBox = styled.div`
 `
 
 const MainBox = styled.div`
-  width: 1350px;
+  width: 1100px;
   height: fit-content;
   display: flex;
   flex-direction: column;
@@ -40,7 +40,7 @@ const MainBox = styled.div`
 `
 
 const SideNav = styled.div`
-  width: 260px;
+  width: 200px;
   height: fit-content;
   display: flex;
   flex-direction: column;

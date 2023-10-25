@@ -4,17 +4,16 @@ import styled from "styled-components";
 const MiddleBox = styled.div`
   margin: 40px 0px 40px 0px;
   padding: 15px 0px 15px 0px;
-  width: 1350px;
+  width: 1100px;
   height: fit-content;
-  /* border: 1.5px solid #eee; */
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   box-shadow: 0px 0px 4px 0.5px rgb(0, 0, 0, 0.1);
 `
-const Item = styled.div`
-  width: 340px;
+const Item = styled.div`  
+  width: 25%;
   height: fit-content;
   padding: 15px 0px 15px 0px;
   display: flex;
@@ -22,7 +21,7 @@ const Item = styled.div`
   justify-content: center;
   align-items: center;
   .icon {
-    font-size: 50px;
+    font-size: 44px;
     color: var(--color);
     margin-right: 10px;
   }

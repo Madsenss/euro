@@ -6,7 +6,7 @@ const AboutBox = styled.div`
   display: flex;
   justify-content: center;
   .inner {
-    width: 1350px;
+    width: 1100px;
     border: 1px solid black;
   }
 `

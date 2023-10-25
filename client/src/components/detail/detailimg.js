@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const DetailImgBox = styled.div`
-  width: 1350px;
+  width: 1100px;
   height: fit-content;
   display: flex;
   flex-direction: column;

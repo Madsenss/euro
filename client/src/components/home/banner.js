@@ -179,7 +179,7 @@ const SliderItem = styled.div`
   }
   .textbox {
     overflow: hidden;
-    width: 1360px;
+    width: 1110px;
     padding-left: 5px;
     position: absolute;
     top: 0;

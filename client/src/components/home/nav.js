@@ -14,9 +14,32 @@ const NavBox = styled.div`
   flex-direction: column;
   align-items: center;
 `
+
+const LoginBox = styled.div`
+  padding-top: 10px;
+  width: 1100px;
+  height: fit-content;
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  align-items: center;
+  .item { 
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .edge {
+    color: var(--color);
+    font-weight: bold;
+  }
+  .dash {
+    color: #ddd;
+    margin: 0px 8px 0px 8px;
+  }
+`
+
 const TopBox = styled.div`
-  width: 1350px;
-  height: 90px;
+  width: 1100px;
+  height: 70px;
   .logo {
     width: 220px;
     cursor: pointer;
@@ -115,7 +138,7 @@ const CategoryBox = styled.div`
   justify-content: center;
   align-items: center;
   .inner {
-    width: 1350px;
+    width: 1100px;
     display: flex;
     flex-direction: row;
     justify-content: start;
@@ -229,7 +252,7 @@ const MenuItem = styled.div`
     font-weight: bold;
   }
   .itemtext {
-    font-size: 13px;
+    font-size: 14px;
   }
   .right {
     font-size: 16px;
@@ -394,6 +417,11 @@ const Nav = () => {
 
   return (
     <NavBox>
+      <LoginBox>
+        <div className="item edge" onClick={()=>{ navigate('/member/signup'); window.scrollTo({top: 0, behavior: 'auto'}); }}>회원가입</div>
+        <span className="dash">|</span>
+        <div className="item" onClick={()=>{ navigate('/member/login'); window.scrollTo({top: 0, behavior: 'auto'}); }}>로그인</div>
+      </LoginBox>
       <TopBox>
         <img onClick={() => { navigate('/'); window.scrollTo({top: 0, behavior: 'auto'}); }} className="logo" src={process.env.PUBLIC_URL + '/logo2.png'} alt="logo" />
         <SearchBox>

@@ -31,7 +31,7 @@ const CompanyBanner = styled.div`
   }
   .inner {
     position: relative;
-    width: 1350px;
+    width: 1100px;
     height: 450px;
     display: flex;
     flex-direction: column;

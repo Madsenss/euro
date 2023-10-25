@@ -8,7 +8,7 @@ const LocationBox = styled.div`
   display: flex;
   justify-content: center;
   .inner {
-    width: 1350px;
+    width: 1100px;
     height: fit-content;
     display: flex;
     flex-direction: column;
@@ -64,7 +64,7 @@ const Dash = styled.div`
 `
 
 const StyledMap = styled(Map)`
-  width: 1000px;
+  width: 900px;
   height: 600px;
   border: 2px solid #ddd;
   margin-bottom: 30px;

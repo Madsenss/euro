@@ -6,14 +6,14 @@ const DetailReviewBox = styled.div`
   border-top: 2px solid #ddd;
   padding-top: 50px;
   margin-bottom: 50px;
-  width: 1350px;
+  width: 1100px;
   height: fit-content;
   display: flex;
   flex-direction: column;
 `
 
 const Table = styled.table`
-  width: 1350px;
+  width: 1100px;
   border-collapse: collapse;
   font-size: 14px;
   border: 1px solid #ddd;

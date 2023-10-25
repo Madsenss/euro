@@ -2,7 +2,7 @@ import { MdHome, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import styled from "styled-components";
 
 const DetailTopBox = styled.div`
-  width: 1350px;
+  width: 1100px;
   height: fit-content;
   display: flex;
   flex-direction: column;
@@ -33,13 +33,14 @@ const ImgBox = styled.div`
   height: fit-content;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   border-top: 2px solid #eee;
   border-bottom: 2px solid #eee;
   .product-img {
     width: 450px;
   }
   .itembox {
-    width: 900px;
+    width: 600px;
     height: fit-content;
     .item {
       padding: 15px 0px 15px 0px;
@@ -48,7 +49,7 @@ const ImgBox = styled.div`
       display: flex;
       flex-direction: row;
       align-items: center;
-      border-bottom: 2px solid #eee;
+      border-bottom: 1px solid #eee;
       &.v {
         align-items: start;
       }
