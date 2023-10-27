@@ -13,7 +13,6 @@ const MemberHomeBox = styled.div`
   align-items: center;
 `
 const Container = styled.div`
-  padding: 170px 0px 170px 0px;
   width: 1100px;
   height: fit-content;
   display: flex;

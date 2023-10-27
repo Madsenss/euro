@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const MemberLoginBox = styled.div`
+  padding: 200px 0px 200px 0px;
   width: 350px;
   height: fit-content;
   display: flex;
@@ -28,6 +29,10 @@ const MemberLoginBox = styled.div`
     .find-item {
       cursor: pointer;
       font-size: 13px;
+      transition: all 0.3s;
+      &:hover {
+        color: var(--color);
+      }
     }
   }
 `
@@ -37,12 +42,17 @@ const Input = styled.input`
   height: 45px;
   margin-bottom: 20px;
   padding-left: 10px;
+  padding-top: 3px;
   border: 1px solid transparent;
   border-radius: 3px;
   box-shadow: 0px 0px 1px 0.5px rgb(0, 0, 0, 0.2);
+  font-size: 14px;
   &:focus {
     outline: none;
     border: 1px solid var(--color);
+  }
+  &::placeholder {
+    font-size: 14px;
   }
 `
 
