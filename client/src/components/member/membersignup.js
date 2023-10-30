@@ -175,38 +175,42 @@ const MemberSignup = () => {
     { title: '무료배송, 할인쿠폰 등 혜택/정보 수신 동의', compulsory: false, agree: false }
   ]);
   const [checkData, setCheckData] = useState([]);
-  const [allCheck, setAllCheck] = useState(false);
+  const [allAgree, setAllAgree] = useState(false);
 
   const handleCheck = (i) => {
-    var copyCheck = [...check];
-    copyCheck[i].agree = !check[i].agree;
-    setCheck(copyCheck);
-
-    var copyCheckData = checkData.slice();
-
-    if (copyCheck[i].agree) {
-      copyCheckData.push({ title: check[i].title, agree: true });
-    } else {
-      copyCheckData = copyCheckData.filter((item) => item.title !== check[i].title);
-    }
-    setCheckData(copyCheckData);
+    const updatedCheck = check.map((item, index) => {
+      if (index === i) {
+        return { ...item, agree: !item.agree };
+      }
+      return item;
+    });
+  
+    setCheck(updatedCheck);
+  
+    const updatedCheckData = updatedCheck.filter(item => item.agree).map(item => ({
+      title: item.title,
+      agree: true
+    }));
+    setCheckData(updatedCheckData);
+  
+    const isAllChecked = updatedCheck.every(item => item.agree);
+    setAllAgree(isAllChecked);
   };
 
   const handleAllCheck = () => {
+    const updatedAllAgree = !allAgree;
 
-    const updateCheckData = (newCheck) => {
-      const newCheckData = newCheck
-        .filter((item) => item.agree)
-        .map((item) => ({ title: item.title, agree: true }));
-      setCheckData(newCheckData);
-    };
-
-    const allCheck = check.every((item) => item.agree);
-    const copyAllCheck = check.map((item) => ({ ...item, agree: !allCheck }));
-    setCheck(copyAllCheck);
-    updateCheckData(copyAllCheck);
-    
+    const updatedCheck = check.map(item => ({ ...item, agree: updatedAllAgree }));
+    setCheck(updatedCheck);
+  
+    const updatedCheckData = updatedAllAgree
+      ? check.map(item => ({ title: item.title, agree: true }))
+      : [];
+    setCheckData(updatedCheckData);
+  
+    setAllAgree(updatedAllAgree);
   };
+
 
   return (
     <MemberSignupBox>
@@ -214,30 +218,30 @@ const MemberSignup = () => {
       <div className="signup-box">
         <div className="item">
           <div className="input-title">아이디</div>
-          <Input type="text" placeholder="아이디를 입력해주세요" />
+          <Input type="text" placeholder="아이디를 입력해 주세요" />
           <Button>중복확인</Button>
         </div>
         <div className="item">
           <div className="input-title">비밀번호</div>
-          <Input type="password" placeholder="비밀번호를 입력해주세요" />
+          <Input type="password" placeholder="비밀번호를 입력해 주세요" />
         </div>
         <div className="item">
           <div className="input-title">비밀번호확인</div>
-          <Input type="password" placeholder="비밀번호를 한번 더 입력해주세요" />
+          <Input type="password" placeholder="비밀번호를 한번 더 입력해 주세요" />
         </div>
         <div className="item">
           <div className="input-title">이름</div>
-          <Input type="text" placeholder="이름을 입력해주세요" />
+          <Input type="text" placeholder="이름을 입력해 주세요" />
           <Button>중복확인</Button>
         </div>
         <div className="item">
           <div className="input-title">이메일</div>
-          <Input type="email" placeholder="이메일을 입력해주세요" />
+          <Input type="email" placeholder="이메일을 입력해 주세요" />
           <Button>중복확인</Button>
         </div>
         <div className="item">
           <div className="input-title">휴대폰</div>
-          <Input type="number" placeholder="숫자만 입력해주세요" />
+          <Input type="number" placeholder="숫자만 입력해 주세요" />
           <Button>인증번호 받기</Button>
           {/* 
             얘를 누르면 밑에 타이틀 뺀 긴 인풋하나에 우측에 인증번호 확인 버튼 만들어야함
@@ -266,7 +270,7 @@ const MemberSignup = () => {
         <span className="agree-title">이용약관 동의</span>
         <div className="button-box">
           <div className="item">
-            <CheckButton className={allCheck ? 'on' : null} onClick={()=>{setAllCheck(!allCheck); handleAllCheck(); }}>
+            <CheckButton className={allAgree ? 'on' : null} onClick={()=>{ handleAllCheck(); }}>
               <MdCheck />
             </CheckButton>
             <span className="check-title">전체 동의합니다.</span>

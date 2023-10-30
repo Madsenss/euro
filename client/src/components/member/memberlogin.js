@@ -85,9 +85,9 @@ const MemberLogin = () => {
       <Input type="text" placeholder="아이디를 입력해주세요"/>
       <Input type="password" placeholder="비밀번호를 입력해주세요"/>
       <div className="find">
-        <span className="find-item">아이디 찾기</span>
+        <span className="find-item" onClick={()=>{navigate('/member/find/id');}}>아이디 찾기</span>
         <span className="dash">|</span>
-        <span className="find-item">비밀번호 찾기</span>
+        <span className="find-item" onClick={()=>{navigate('/member/find/password');}}>비밀번호 찾기</span>
       </div>
       <Button>로그인</Button>
       <SignupButton onClick={()=>{navigate('/member/signup'); window.scrollTo({top: 0, behavior: 'auto'}); }}>회원가입</SignupButton>

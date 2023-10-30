@@ -4,6 +4,7 @@ import Footer from "../home/footer";
 import { useParams } from "react-router-dom";
 import MemberSignup from "./membersignup";
 import MemberLogin from "./memberlogin";
+import MemberFind from "./memberfind";
 
 const MemberHomeBox = styled.div`
   width: 100%;
@@ -27,6 +28,8 @@ const MemberHome = () => {
       return <MemberSignup/>;
     } else if(path === 'login') {
       return <MemberLogin/>;
+    } else if(path === 'find'){
+      return <MemberFind/>;
     }
   }
 

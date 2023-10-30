@@ -34,6 +34,7 @@ function App() {
         <Route path="/community/:path" element={<><GlobalStyle/><CommunityHome/><Top/></>}/>
         <Route path="/community/notice/1" element={<><GlobalStyle/><div>1</div><Top/></>}/>
         <Route path="/member/:path" element={<><GlobalStyle/><MemberHome/><Top/></>}/>
+        <Route path="/member/:path/:whatfind" element={<><GlobalStyle/><MemberHome/><Top/></>}/>
       </Routes>
     </div>
   );
