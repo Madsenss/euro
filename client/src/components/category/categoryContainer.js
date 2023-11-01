@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { MdFavoriteBorder, MdHome, MdKeyboardArrowDown, MdOutlineAddShoppingCart, MdOutlineKeyboardArrowRight, MdViewList, MdViewModule } from "react-icons/md";
+import { MdFavoriteBorder, MdHome, MdKeyboardArrowDown, MdOutlineAddShoppingCart, MdOutlineKeyboardArrowRight, MdStarRate, MdViewList, MdViewModule } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -394,6 +394,94 @@ const ListItem = styled.div`
   }
 `
 
+const Item = styled.div`
+  cursor: pointer;
+  width: 100%;
+  height: 380px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  &:hover .cart-box {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  .edge {
+    width: fit-content;
+    height: fit-content;
+    background-color: var(--color);
+    color: #fff;
+    font-size: 12px;
+    padding: 4px 7px 4px 7px;
+    border-radius: 2px;
+    margin: 5px 0px 5px 0px;
+  }
+  .title {
+    font-size: 14px;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  .price {
+    font-weight: bold;
+    margin: 10px 0px 10px 2px;
+  }
+  .star {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 11px;
+    .text {
+      padding-top: 2px;
+    }
+    .icon {
+      font-size: 14px;
+      color: rgb(255, 165, 0);
+    }
+  }
+`
+const ImgBox = styled.div`
+  width: 100%;
+  height: fit-content;
+  position: relative;
+  overflow: hidden;
+  img {
+    width: 100%;
+    height: auto;
+  }
+  .cart-box {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: rgb(255, 255, 255, 0.6);
+    transform: translateY(100%);
+    transition: all 0.2s;
+    opacity: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    .icon {
+      cursor: pointer;
+      padding: 8px;
+      font-size: 22px;
+      border-radius: 50%;
+      background-color: #fff;
+      margin: 0px 10px 0px 10px;
+      transition: all 0.2s;
+      &:hover {
+        background-color: var(--color);
+        color: #fff;
+      }
+    }
+  }
+`
 const CategoryContainer = ({ category, subCategory }) => {
 
   const navigate = useNavigate();
@@ -520,49 +608,65 @@ const CategoryContainer = ({ category, subCategory }) => {
               grid === 'grid'
                 ? initCount.map((item, i) => {
                     return (
-                      <GridItem key={i} onClick={(e)=>{e.stopPropagation(); navigate('/detail'); window.scrollTo({top: 0, behavior: 'auto'}); }}>
-                        <img src={process.env.PUBLIC_URL + '/air.png'} alt="item" />
+                      // <GridItem key={i} onClick={(e)=>{e.stopPropagation(); navigate('/detail'); window.scrollTo({top: 0, behavior: 'auto'}); }}>
+                      //   <img src={process.env.PUBLIC_URL + '/air.png'} alt="item" />
+                      //   <span className="title">[Norgen]Excelon Plus box set (FRL) for extreme applications, G1/2, automatic drain, with shut-off valve</span>
+                      //   <span className="price">49,000원</span>
+                      //   <div className="iconbox">
+                      //     <MdFavoriteBorder className="icon" />
+                      //     <MdOutlineAddShoppingCart className="icon" />
+                      //   </div>
+                      //   <InfoButton
+                      //     onClick={(e) => {
+                      //       e.stopPropagation();
+                      //       var copyinfo = [...info];
+                      //       copyinfo[i] = !info[i];
+                      //       setInfo(copyinfo);
+                      //     }}>
+                      //     {
+                      //       info[i] ? 'CLOSE'
+                      //         : 'INFO'
+                      //     }
+                      //   </InfoButton>
+                      //   <InfoBox className={info[i] ? 'show' : 'hide'}>
+                      //     <div className="info-inner">
+                      //       <span className="info-title">Port Size&nbsp;:&nbsp;</span>
+                      //       <span className="info-text">G1/2</span>
+                      //     </div>
+                      //     <div className="info-inner">
+                      //       <span className="info-title">Drain type&nbsp;:&nbsp;</span>
+                      //       <span className="info-text">Auto drain</span>
+                      //     </div>
+                      //     <div className="info-inner">
+                      //       <span className="info-title">Filter element&nbsp;:&nbsp;</span>
+                      //       <span className="info-text">40.00 µm</span>
+                      //     </div>
+                      //     <div className="info-inner">
+                      //       <span className="info-title">Outlet pressure adjustment&nbsp;:&nbsp;</span>
+                      //       <span className="info-text">0.3 ... 10 bar</span>
+                      //     </div>
+                      //     <div className="info-inner">
+                      //       <span className="info-title">Gauge&nbsp;:&nbsp;</span>
+                      //       <span className="info-text">Integrated gauge</span>
+                      //     </div>
+                      //   </InfoBox>
+                      // </GridItem>
+                      <Item key={i} onClick={(e)=>{e.stopPropagation(); navigate('/detail'); window.scrollTo({top: 0, behavior: 'auto'}); }}>
+                        <ImgBox>
+                          <img src={process.env.PUBLIC_URL + '/itemimg.png'} alt="item"/>
+                          <div className="cart-box">
+                            <MdFavoriteBorder className="icon" />
+                            <MdOutlineAddShoppingCart className="icon" />
+                          </div>
+                        </ImgBox>
+                        <div className="edge">무료배송</div>
                         <span className="title">[Norgen]Excelon Plus box set (FRL) for extreme applications, G1/2, automatic drain, with shut-off valve</span>
                         <span className="price">49,000원</span>
-                        <div className="iconbox">
-                          <MdFavoriteBorder className="icon" />
-                          <MdOutlineAddShoppingCart className="icon" />
+                        <div className="star">
+                          <MdStarRate className="icon"/>
+                          <span className="text">4.9&nbsp;(1,266)</span>
                         </div>
-                        <InfoButton
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            var copyinfo = [...info];
-                            copyinfo[i] = !info[i];
-                            setInfo(copyinfo);
-                          }}>
-                          {
-                            info[i] ? 'CLOSE'
-                              : 'INFO'
-                          }
-                        </InfoButton>
-                        <InfoBox className={info[i] ? 'show' : 'hide'}>
-                          <div className="info-inner">
-                            <span className="info-title">Port Size&nbsp;:&nbsp;</span>
-                            <span className="info-text">G1/2</span>
-                          </div>
-                          <div className="info-inner">
-                            <span className="info-title">Drain type&nbsp;:&nbsp;</span>
-                            <span className="info-text">Auto drain</span>
-                          </div>
-                          <div className="info-inner">
-                            <span className="info-title">Filter element&nbsp;:&nbsp;</span>
-                            <span className="info-text">40.00 µm</span>
-                          </div>
-                          <div className="info-inner">
-                            <span className="info-title">Outlet pressure adjustment&nbsp;:&nbsp;</span>
-                            <span className="info-text">0.3 ... 10 bar</span>
-                          </div>
-                          <div className="info-inner">
-                            <span className="info-title">Gauge&nbsp;:&nbsp;</span>
-                            <span className="info-text">Integrated gauge</span>
-                          </div>
-                        </InfoBox>
-                      </GridItem>
+                      </Item>
                     )
                   })
 

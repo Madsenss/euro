@@ -10,6 +10,7 @@ import CategoryHome from "./components/category/categoryhome";
 import DetailHome from "./components/detail/detailhome";
 import CommunityHome from "./components/community/communityhome";
 import MemberHome from "./components/member/memberhome";
+import MyPageHome from "./components/mypage/mypagehome";
 
 function App() {
   const setScreenSize = () => {
@@ -35,6 +36,7 @@ function App() {
         <Route path="/community/notice/1" element={<><GlobalStyle/><div>1</div><Top/></>}/>
         <Route path="/member/:path" element={<><GlobalStyle/><MemberHome/><Top/></>}/>
         <Route path="/member/:path/:whatfind" element={<><GlobalStyle/><MemberHome/><Top/></>}/>
+        <Route path="/mypage" element={<><GlobalStyle/><MyPageHome/><Top/></>}/>
       </Routes>
     </div>
   );

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MdCheck, MdSearch } from "react-icons/md";
 import styled from "styled-components";
 
