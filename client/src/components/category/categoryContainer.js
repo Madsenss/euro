@@ -196,7 +196,7 @@ const GridBox = styled.div`
   width: 100%;
   height: fit-content;
   display: grid;
-  gap: 15px;
+  gap: 20px;
   &.grid {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -397,13 +397,16 @@ const ListItem = styled.div`
 const Item = styled.div`
   cursor: pointer;
   width: 100%;
-  height: 380px;
+  height: 355px;
   display: flex;
   flex-direction: column;
-  margin-bottom: 10px;
+  border: 1px solid transparent;
   &:hover .cart-box {
     transform: translateY(0%);
     opacity: 1;
+  }
+  &:hover img {
+    transform: scale(1.02);
   }
   .edge {
     width: fit-content;
@@ -416,6 +419,7 @@ const Item = styled.div`
     margin: 5px 0px 5px 0px;
   }
   .title {
+    margin-bottom: 10px;
     font-size: 14px;
     word-wrap: break-word;
     overflow: hidden;
@@ -424,23 +428,34 @@ const Item = styled.div`
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
   }
-  .price {
-    font-weight: bold;
-    margin: 10px 0px 10px 2px;
-  }
-  .star {
+  .price-box {
     width: 100%;
     height: fit-content;
     display: flex;
     flex-direction: row;
     align-items: center;
-    font-size: 11px;
-    .text {
-      padding-top: 2px;
+    justify-content: space-between;
+    .price {
+      font-weight: bold;
     }
-    .icon {
-      font-size: 14px;
-      color: rgb(255, 165, 0);
+    .grey {
+      margin-left: 2px;
+      color: #666;
+    }
+    .star {
+      width: fit-content;
+      height: fit-content;
+      display: flex;
+      flex-direction: row;
+      align-items: end;
+      font-size: 12px;
+      .text {
+        padding-top: 2px;
+      }
+      .icon {
+        font-size: 14px;
+        color: rgb(255, 165, 0);
+      }
     }
   }
 `
@@ -452,6 +467,7 @@ const ImgBox = styled.div`
   img {
     width: 100%;
     height: auto;
+    transition: all 0.2s;
   }
   .cart-box {
     position: absolute;
@@ -661,11 +677,15 @@ const CategoryContainer = ({ category, subCategory }) => {
                         </ImgBox>
                         <div className="edge">무료배송</div>
                         <span className="title">[Norgen]Excelon Plus box set (FRL) for extreme applications, G1/2, automatic drain, with shut-off valve</span>
-                        <span className="price">49,000원</span>
-                        <div className="star">
-                          <MdStarRate className="icon"/>
-                          <span className="text">4.9&nbsp;(1,266)</span>
+                        <div className="price-box">
+                          <span className="price">49,000<span className="grey">원</span></span>
+                          <div className="star">
+                            <MdStarRate className="icon"/>
+                            <span className="text">4.9&nbsp;(1,266)</span>
+                          </div>
                         </div>
+
+
                       </Item>
                     )
                   })

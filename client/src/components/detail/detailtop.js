@@ -1,4 +1,5 @@
-import { MdHome, MdOutlineKeyboardArrowRight } from "react-icons/md";
+import { useState } from "react";
+import { MdAdd, MdHome, MdOutlineKeyboardArrowRight, MdRemove } from "react-icons/md";
 import styled from "styled-components";
 
 const DetailTopBox = styled.div`
@@ -6,6 +7,7 @@ const DetailTopBox = styled.div`
   height: fit-content;
   display: flex;
   flex-direction: column;
+  border: 1px solid red;
 `
 const RootBox = styled.div`
   padding: 15px 0px 15px 0px;
@@ -34,16 +36,15 @@ const ImgBox = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  border-top: 2px solid #eee;
-  border-bottom: 2px solid #eee;
   .product-img {
     width: 450px;
   }
   .itembox {
+    border: 1px solid red;
     width: 600px;
     height: fit-content;
     .item {
-      padding: 15px 0px 15px 0px;
+      padding: 20px 0px 20px 0px;
       width: 100%;
       height: fit-content;
       display: flex;
@@ -57,10 +58,16 @@ const ImgBox = styled.div`
         border-bottom: none;
       }
       .item-title {
+        font-size: 14px;
         width: 120px;
+        color: #777;
+      }
+      .title {
+        font-size: 24px;
         font-weight: bold;
       }
       .item-text {
+        font-size: 14px;
       }
       .pd-name {
         font-weight: bold;
@@ -91,45 +98,54 @@ const ImgBox = styled.div`
         }
       }
     }
-    .button-box {
-      margin-top: 20px;
-      width: 100%;
-      height: fit-content;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: end;
-      .btn {
-        cursor: pointer;
-        margin-left: 20px;
-        width: 140px;
-        height: 38px;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        background-color: var(--color);
-        border: 1.5px solid var(--color);
-        border-radius: 3px;
-        color: #fff;
-        font-weight: bold;
-        box-shadow: 0px 0px 4px 0.5px rgb(0, 0, 0, 0.1);
-        transition: all 0.2s;
-        &:hover {
-          opacity: 0.7;
-        }
-      }
-      .line {
-        background-color: #fff;
-        border: 1.5px solid var(--color);
-        color: var(--color);
+  }
+`
+const CountBox = styled.div`
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 0px 2px 0.5px rgb(0, 0, 0, 0.2);
+  .box {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    .icon {
+      font-size: 18px;
+      color: #666;
+      &:hover {
+        color: black;
       }
     }
+    .count {
+      font-size: 14px;
+    }
+  }
+  .cp {
+    cursor: pointer;
   }
 `
 
-
 const DetailTop = () => {
+
+  const [count, setCount] = useState(1);
+
+  const handleAdd = () => {
+    setCount(count + 1);
+  };
+  
+  const handleRemove = () => {
+    if (count === 1) {
+      return null;
+    } else {
+      setCount(count - 1);
+    }
+  };
+
   return (
     <DetailTopBox>
       <RootBox>
@@ -143,15 +159,18 @@ const DetailTop = () => {
         <span className="roottext">Air Preparation</span>
       </RootBox>
       <ImgBox>
-        <img className="product-img" src={process.env.PUBLIC_URL + '/air.png'} alt="img" />
+        <img className="product-img" src={process.env.PUBLIC_URL + '/itemimg.png'} alt="img" />
         <div className="itembox">
           <div className="item">
-            <span className="item-title">상품명</span>
-            <span className="item-text pd-name">Air Preparation</span>
+            <span className="title">[Norgren]&nbsp;Air Preparation</span>
           </div>
           <div className="item">
             <span className="item-title">판매가</span>
-            <span className="price">99,999원</span>
+            <span className="price">99,999</span>
+          </div>
+          <div className="item">
+            <span className="item-title">배송비</span>
+            <span className="item-text">무료배송</span>
           </div>
           <div className="item">
             <span className="item-title">브랜드</span>
@@ -183,16 +202,18 @@ const DetailTop = () => {
             </div>
           </div>
           <div className="item">
-            <span className="item-title">상품옵션</span>
-          </div>
-          <div className="item bn">
-            <span className="item-title">총 판매가</span>
-            <span className="total">99,999원</span>
-          </div>
-          <div className="button-box">
-            <div className="btn line">위시리스트</div>
-            <div className="btn line">장바구니 담기</div>
-            <div className="btn">구매하기</div>
+            <span className="item-title">상품수량</span>
+            <CountBox>
+              <div className="box cp" onClick={()=>{handleRemove();}}>
+                <MdRemove className="icon"/>
+              </div>
+              <div className="box">
+                <span className="count">{count}</span>
+              </div>
+              <div className="box cp" onClick={()=>{handleAdd();}}>
+                <MdAdd className="icon"/>
+              </div>
+            </CountBox>
           </div>
         </div>
       </ImgBox>

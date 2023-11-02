@@ -21,7 +21,6 @@ const DetailBox = styled.div`
 const DetailNavBox = styled.div`
   z-index: 1000;
   margin: 30px 0px 30px 0px;
-  border-top: 2px solid var(--color);
   width: fit-content;
   height: fit-content;
   display: flex;
@@ -31,13 +30,13 @@ const DetailNavBox = styled.div`
   .menu {
     cursor: pointer;
     width: 200px;
-    height: 40px;
+    height: 50px;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     border: 1px solid #ddd;
-    background-color: rgb(245, 245, 245);
+    background-color: rgb(245, 245, 245, 0.8);
     font-weight: bold;
     color: #555;
     &.active {
@@ -124,7 +123,7 @@ const DetailHome = () => {
       <div className="a" ref={navRef}>
         <DetailNavBox className={fix ? 'a' : 'b'}>
           <div onClick={()=>{setMenuActive('a'); scrollToImg();}} className={'menu ' + `${menuActive === 'a' ? 'active' : ''}`}>상세정보</div>
-          <div onClick={()=>{setMenuActive('b'); scrollToReview(); }} className={'menu ' + `${menuActive === 'b' ? 'active' : ''}`}>상품평(123)</div>
+          <div onClick={()=>{setMenuActive('b'); scrollToReview(); }} className={'menu ' + `${menuActive === 'b' ? 'active' : ''}`}>상품후기(1,213)</div>
           <div onClick={()=>{setMenuActive('c'); scrollToQNA(); }} className={'menu ' + `${menuActive === 'c' ? 'active' : ''}`}>상품문의</div>
           <div onClick={()=>{setMenuActive('d'); scrollToShipping();}} className={'menu ' + `${menuActive === 'd' ? 'active' : ''}`}>배송/교환/반품 안내</div>
         </DetailNavBox>
