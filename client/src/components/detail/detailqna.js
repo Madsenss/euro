@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { MdKeyboardArrowDown, MdStarRate } from "react-icons/md";
+import { useEffect, useState } from "react";
+import { MdKeyboardArrowDown, MdKeyboardArrowLeft, MdKeyboardArrowRight, MdMessage, MdStarRate } from "react-icons/md";
 import styled from "styled-components";
 
-const DetailReviewBox = styled.div`
+const DetailQNABox = styled.div`
   border-top: 2px solid #ddd;
   padding-top: 50px;
   margin-bottom: 50px;
@@ -11,61 +11,7 @@ const DetailReviewBox = styled.div`
   display: flex;
   flex-direction: column;
 `
-const Table = styled.table`
-  width: 1100px;
-  border-collapse: collapse;
-  font-size: 14px;
-  border: 1px solid #ddd;
-  .n {
-    max-width: 10px;
-  }
-  .s {
-    max-width: 25px;
-  }
-  .w {
-    max-width: 25px;
-  }
-`;
 
-const TableHeader = styled.thead`
-  background-color: rgb(255, 200, 0);
-`;
-
-const TableRow = styled.tr`
-  &:nth-child(even) {
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-  }
-`;
-const TableRowHover = styled(TableRow)`
-  cursor: pointer;
-  &:hover {
-    background-color: #eee;
-  }
-`;
-const TableCell = styled.td`
-  padding: 15px 0px 15px 0px;
-  text-align: center;
-`;
-
-const TableHeaderCell = styled.th`
-  padding: 12px 0px 12px 0px;
-  text-align: center;
-  color: #fff;
-`;
-
-const Writer = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  justify-content: center;
-  span {
-    margin-bottom: 3px;
-    margin-left: 10px;
-  }
-`
 const SortBox = styled.div`
   margin-bottom: 30px;
   position: relative;
@@ -131,7 +77,7 @@ const SortDropdownBox = styled.div`
   }
 `
 const SortMenu = styled.div`
-  z-index: 999;
+  z-index: 1000;
   background-color: #fff;
   position: absolute;
   right: 0;
@@ -169,31 +115,221 @@ const SortMenu = styled.div`
     }
   }
 `
+const QNABox = styled.div`
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+`
 
-const WriteButton = styled.div`
+const QNAHeader = styled.div`
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 2px solid #eee;
+  border-bottom: 1.5px solid #eee;
+  background-color: rgb(250, 250, 250);
+  padding: 15px 0px 15px 0px;
+  div {
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    font-size: 13px;
+  }
+  .category {
+    width: 10%;
+  }
+  .status {
+    width: 10%;
+  }
+  .title {
+    width: 50%;
+  }
+  .writer {
+    width: 10%;
+  }
+  .date {
+    width: 10%;
+  }
+`
+const QNAOuter = styled.div`
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+`
+
+const QNAItem = styled(QNAHeader)`
   cursor: pointer;
-  margin-top: 30px;
-  margin-left: auto;
-  width: 100px;
-  height: 35px;
+  z-index: 999;
+  background-color: #fff;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  .star {
+    .icon {
+      font-size: 15px;
+      color: var(--color);
+    }
+  }
+  .title{
+    justify-content: start;
+  }
+  &:hover {
+    background-color: #eee;
+  }
+`
+const QNAHide = styled.div`
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  .icon {
+    position: absolute;
+    left: 30px;
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .m {
+      color: var(--color);
+      font-size: 20px;
+      margin-right: 2px;
+    }
+    .r {
+      color: #aaa;
+      font-size: 16px;
+      margin-bottom: 3px;
+    }
+  }
+  .answer {
+    width: 100%;
+    font-size: 13px;
+    p {
+      margin-bottom: 5px;
+    }
+  }
+  &.show {
+    padding: 30px 80px 30px 80px;
+    height: fit-content;
+    border-bottom: 1px solid #ddd;
+  }
+  &.hide {
+    height: 0px;
+  }
+`
+const NoneQNA = styled.div`
+  width: 100%;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  color: #666;
+`
+
+const PageBox = styled.div`
+  width: 100%;
+  height: fit-content;
+  margin-top: 20px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background-color: rgb(255, 200, 0);
-  color: #fff;
+`
+const PageButton = styled.div`
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 0px 2px 1px rgb(0, 0, 0, 0.1);
+  font-size: 24px;
+  border-radius: 4px;
+  margin: 0px 5px 0px 5px;
+  &.active {
+    color: var(--color);
+  }
+  &.none-active {
+    color: #ddd;
+  }
+`
+const PageNumber = styled(PageButton)`
+  font-size: 14px;
   font-weight: bold;
-  border-radius: 3px;
+  color: #888;
+  &.active {
+    box-shadow: 0px 0px 3px 0.5px var(--color);
+  }
 `
 
 const DetailQNA = () => {
 
-  const initReview = [1, 2, 3, 4, 5];
   const [sort, setSort] = useState('문의유형');
   const [sortActive, setSortActive] = useState(false);
+  const initCount = [
+    { id: 0, name: 'a0' },
+    { id: 1, name: 'a1' },
+    { id: 2, name: 'a2' },
+    { id: 3, name: 'a3' },
+    { id: 4, name: 'a4' },
+    { id: 5, name: 'a5' },
+    { id: 6, name: 'a6' },
+    { id: 7, name: 'a7' },
+    { id: 8, name: 'a8' },
+    { id: 9, name: 'a9' },
+    { id: 10, name: 'a10' },
+    { id: 11, name: 'a11' },
+  ];
+  const [qnaShow, setQNAShow] = useState([]);
+  const itemsPerPage = 5;
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPageCount = Math.ceil(initCount.length / itemsPerPage);
+  const maxPageNumbersToShow = 5;
+  const minPage = Math.max(1, currentPage - Math.floor(maxPageNumbersToShow / 2));
+  const maxPage = Math.min(totalPageCount, minPage + maxPageNumbersToShow - 1);
+  const pageNumberArray = Array.from({ length: maxPage - minPage + 1 }, (_, index) => minPage + index);
+
+  useEffect(() => {
+    const copyQNAShow = Array(itemsPerPage).fill(false);
+    setQNAShow(copyQNAShow);
+  }, [itemsPerPage]);
+
+  const handleShow = (i) => {
+    const copyQNAShow = [...qnaShow];
+    copyQNAShow[i] = !copyQNAShow[i];
+    setQNAShow(copyQNAShow);
+  };
+
+  const handlePageChange = (newPage) => {
+    if (newPage < 1) {
+      newPage = 1;
+    }
+    if (newPage > Math.ceil(initCount.length / itemsPerPage)) {
+      newPage = Math.ceil(initCount.length / itemsPerPage);
+    }
+    const newQNAShow = Array(initCount.length).fill(false);
+    setQNAShow(newQNAShow);
+  
+    setCurrentPage(newPage);
+  };
+
+  const getReviewsForCurrentPage = () => {
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    return initCount.slice(start, end);
+  };
 
   return (
-    <DetailReviewBox>
+    <DetailQNABox>
       <SortBox>
         <div className="title">상품문의 내역</div>
         <SortDropdownBox onClick={() => { setSortActive(!sortActive) }}>
@@ -207,38 +343,68 @@ const DetailQNA = () => {
           <div className="item" onClick={() => { setSort('기타문의'); setSortActive(false) }}>기타문의</div>
         </SortMenu>
       </SortBox>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHeaderCell className="n">번호</TableHeaderCell>
-            <TableHeaderCell className="s">상태</TableHeaderCell>
-            <TableHeaderCell>문의</TableHeaderCell>
-            <TableHeaderCell className="w">작성자</TableHeaderCell>
-          </TableRow>
-        </TableHeader>
-        <tbody>
+      <QNABox>
+        <QNAHeader>
+          <div className="category">문의유형</div>
+          <div className="status">답변상태</div>
+          <div className="title">제목</div>
+          <div className="writer">문의자</div>
+          <div className="date">등록일</div>
+        </QNAHeader>
+        {
+          getReviewsForCurrentPage().map((item, i) => (
+            <QNAOuter key={item.id}>
+              <QNAItem onClick={() => { handleShow(i); }}>
+                <div className="category">상품/배송</div>
+                <div className="status">[답변완료]</div>
+                <div className="title">상품에 문제가 있어요{item.name}</div>
+                <div className="writer">Madsens***</div>
+                <div className="date">2023-11-09</div>
+              </QNAItem>
+              <QNAHide className={qnaShow[i] ? 'show' : 'hide'}>
+                <div className="icon">
+                  <MdMessage className="m"/>
+                  <MdKeyboardArrowRight className="r"/>
+                </div>
+                <div className="answer">
+                  <p>안녕하세요 고객님. EUROSYSYEM입니다. {item.id}</p>
+                  <p>문의하신 내용을 확인하였습니다. 예정대로 새 상품으로 교환 예정이오니 너그러이 양해 부탁드리겠습니다.</p>
+                  <p>빠른 시일 내에 처리 완료하겠습니다. 감사합니다.</p>
+                </div>
+              </QNAHide>
+            </QNAOuter>
+          ))
+        }
+        <PageBox>
+          <PageButton
+            className={currentPage === 1 ? "none-active" : "active"}
+            onClick={() => handlePageChange(currentPage - 1)}
+          >
+            <MdKeyboardArrowLeft />
+          </PageButton>
           {
-            initReview.map((item, i) => {
-              return (
-                <TableRowHover key={i}>
-                  <TableCell className="n">{i}</TableCell>
-                  <TableCell className="s">답변완료</TableCell>
-                  <TableCell>재고 여유분이 있나요?</TableCell>
-                  <TableCell className="w">
-                    <Writer>
-                      <span className="">IDIDIDID***</span>
-                      <span className="">2023-12-12 12:12</span>
-                      <span className="">조회수&nbsp;:&nbsp;5</span>
-                    </Writer>
-                  </TableCell>
-                </TableRowHover>
-              )
-            })
+            pageNumberArray.map((pageNumber) => (
+              <PageNumber
+                key={pageNumber}
+                className={currentPage === pageNumber ? "active" : ""}
+                onClick={() => handlePageChange(pageNumber)}
+              >
+                {pageNumber}
+              </PageNumber>
+            ))
           }
-        </tbody>
-      </Table>
-      <WriteButton>문의하기</WriteButton>
-    </DetailReviewBox>
+          <PageButton
+            className={currentPage === Math.ceil(initCount.length / itemsPerPage) ? "none-active" : "active"}
+            onClick={() => handlePageChange(currentPage + 1)}
+          >
+            <MdKeyboardArrowRight />
+          </PageButton>
+        </PageBox>
+        <NoneQNA>
+          작성된 상품 문의가 존재하지 않습니다.(없을시 랜더링)
+        </NoneQNA>
+      </QNABox>
+    </DetailQNABox>
   )
 };
 

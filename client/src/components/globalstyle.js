@@ -13,6 +13,7 @@ const GlobalStyle = createGlobalStyle`
   font-family: 'NanumBarunGothic';
   color: #444;
   }
+
   div {
     box-sizing: border-box;
   }
@@ -20,6 +21,10 @@ const GlobalStyle = createGlobalStyle`
   h1, h2, h3, h4, h5, p, span {
     padding: 0;
     margin: 0;
+  }
+  
+  input, textarea {
+    font-family: 'NanumBarunGothic';
   }
 `
 

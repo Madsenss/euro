@@ -85,9 +85,10 @@ const ImgBox = styled.div`
         align-items: center;
         margin-bottom: 3px;
         .info-title {
+          font-size: 14px;
         }
         .info-text {
-
+          font-size: 14px;
         }
       }
     }
