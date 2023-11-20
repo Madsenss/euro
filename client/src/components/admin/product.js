@@ -6,6 +6,7 @@ const ProductNav = styled.div`
   height: fit-content;
   margin-bottom: 20px;
   display: flex;
+  border: 1px solid black;
 `
 const NavItem = styled.div`
   cursor: pointer;
@@ -167,7 +168,6 @@ const BlueButton = styled.button`
   height: fit-content;
   background-color: #fff;
   border-radius: 3px;
-  border: none;
   padding: 5px;
   border: 1.5px solid var(--color);
   cursor: pointer;
@@ -408,7 +408,6 @@ const SubCategoryModal = styled(CategoryModal)`
 const SubInner = styled(ModalInner)`
   width: 300px;
   height: fit-content;
-  border: 1px solid black;
   .sub {
     width: 152px;
   }
@@ -431,6 +430,7 @@ const CategoryFilter = styled(FilterBox)`
   font-weight: bold;
 `
 const CategoryFilterList = styled(FilterList)`
+  z-index: 999;
   left: auto;
   top: 40px;
   right: 0px;
@@ -442,15 +442,26 @@ const CategoryFilterList = styled(FilterList)`
 
 const SubCardBox = styled.div`
   width: 100%;
-  height: 200px;
+  height: 350px;
   display: flex;
   flex-direction: column;
   border: 1px solid black;
 `
 const SubCardHeader = styled.div`
+  position: relative;
   width: 100%;
-  height: 40px;
+  height: fit-content;
+  border: 1px solid red;
+  margin-bottom: 10px;
+`
 
+const HeaderFilterButton = styled(CategoryFilter)`
+`
+const HeaderFilterList = styled(CategoryFilterList)`
+`
+const SubCategoryItem = styled.div`
+  width: 100%;
+  height: 30px;
   border: 1px solid black;
 `
 
@@ -458,10 +469,8 @@ const Product = () => {
   const [openFilter, setOpenFilter] = useState(false);
   const [filter, setFilter] = useState('');
   const [categoryFileName, setCategoryFileName] = useState('');
-
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [subCategoryOpen, setSubCategoryOpen] = useState(false);
-
   const tableDataInit = [
     { 카테고리: '라면1', 제조사: '오뚜기1', 제품명: '진라면1', 가격: '3000원1', 수량: '1개' },
     { 카테고리: '라면2', 제조사: '오뚜기2', 제품명: '진라면2', 가격: '3000원2', 수량: '2개' },
@@ -472,9 +481,15 @@ const Product = () => {
     { 카테고리: '라면3', 제조사: '오뚜기3', 제품명: '진라면', 가격: '3000원3', 수량: '3개' },
   ];
   const filterInit = ['CategoryA', 'CategoryB', 'CategoryC', 'CategoryD', 'CategoryE', 'CategoryF'];
+  const subFilterInit = ['전체', 'CategoryA', 'CategoryB', 'CategoryC'];
   const theadInit = ['카테고리', '제조사', '제품명', '가격', '수량', '상세정보', '수정 및 삭제'];
   const a = [0, 0, 0, 0, 0];
-
+  const [openCategoryFilter, setOpenCategoryFilter] = useState(false);
+  const [categoryFilterItem, setCategoryFilterItem] = useState('대분류 선택');
+  const [openSubCategoryFilter, setOpenSubCategoryFilter] = useState(false);
+  const [subCategoryFilterItem, setSubCategoryFilterItem] = useState('전체');
+  const [openItemFilter, setOpenItemFilter] = useState(false);
+  const [listItem, setListItem] = useState('');
   const handleCategoryFile = (event) => {
     const uploadedFile = event.target.files[0];
     if (uploadedFile) {
@@ -484,7 +499,7 @@ const Product = () => {
 
   return (
     <>
-      <Overley className={categoryOpen ? 'show' : 'hide'} />
+      {/* <Overley className={categoryOpen ? 'show' : 'hide'} />
       <CategoryModal className={categoryOpen ? 'show' : 'hide'}>
         <ModalInner>
           <MdClose className="close" onClick={() => { setCategoryOpen(false) }} />
@@ -518,11 +533,11 @@ const Product = () => {
                     <div className="write-box">
                       <InputBox>
                         <span className="input-title">대분류명</span>
-                        <Input type="text" value={'Category' + i} />
+                        <Input type="text" spellCheck="false" defaultValue={'Category' + i} />
                       </InputBox>
                       <InputBox>
                         <span className="input-title">카테고리 설명</span>
-                        <Textarea spellCheck="false" value={'Text' + i} />
+                        <Textarea spellCheck="false" defaultValue={'Text' + i} />
                       </InputBox>
                       <InputBox>
                         <span className="input-title">이미지명</span>
@@ -553,14 +568,14 @@ const Product = () => {
               <InputBox>
                 <span className="input-title">대분류 선택</span>
                 <SubFilterBox>
-                  <CategoryFilter onClick={() => { setOpenFilter(!openFilter) }}>
-                    {filter}
+                  <CategoryFilter onClick={() => { setOpenCategoryFilter(!openCategoryFilter); }}>
+                    {categoryFilterItem}
                   </CategoryFilter>
-                  <CategoryFilterList open={openFilter}>
+                  <CategoryFilterList open={openCategoryFilter}>
                     {
                       filterInit.map((item, i) => {
                         return (
-                          <div key={i} className="item" onClick={() => { setFilter(item); setOpenFilter(false); }}>{item}</div>
+                          <div key={i} className="item" onClick={() => { setCategoryFilterItem(item); setOpenCategoryFilter(false); }}>{item}</div>
                         )
                       })
                     }
@@ -577,10 +592,38 @@ const Product = () => {
             </div>
           </SubHeader>
           <SubCardBox>
-            <SubCardHeader></SubCardHeader>
+            <SubCardHeader>
+              <HeaderFilterButton onClick={() => { setOpenSubCategoryFilter(!openSubCategoryFilter); }}>
+                정렬 : {subCategoryFilterItem}
+              </HeaderFilterButton>
+              <HeaderFilterList open={openSubCategoryFilter}>
+                {
+                  subFilterInit.map((item, i) => {
+                    return (
+                      <div key={i} className="item" onClick={() => { setSubCategoryFilterItem(item); setOpenSubCategoryFilter(false); }}>{item}</div>
+                    )
+                  })
+                }
+              </HeaderFilterList>
+              <div className="header">
+                <span>대분류명</span>
+                <span>소분류명</span>
+              </div>
+            </SubCardHeader>
+            {
+              a.map((item, i) => {
+                return (
+                  <SubCategoryItem>
+
+                  </SubCategoryItem>
+                )
+              })
+            }
           </SubCardBox>
         </SubInner>
-      </SubCategoryModal>
+      </SubCategoryModal> */}
+
+
       <ProductBox>
         <ProductNav>
           <NavItem onClick={() => { setCategoryOpen(true); }}>대분류 관리</NavItem>

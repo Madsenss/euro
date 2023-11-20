@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import { MdOutlinePowerSettingsNew , MdArrowRight, MdRestartAlt, MdOutlineFormatListBulleted, MdLocalShipping, MdPerson, MdLightbulbOutline, MdOutlineStickyNote2, MdSettings, MdHome } from "react-icons/md";
+import { MdOutlinePowerSettingsNew , MdArrowRight, MdRestartAlt, MdOutlineFormatListBulleted, MdLocalShipping, MdPerson, MdLightbulbOutline, MdOutlineStickyNote2, MdSettings, MdHome, MdSell } from "react-icons/md";
 import { useState } from "react";
 import Main from "./main";
 import Product from "./product";
+import Category from "./category";
 const AdminBox = styled.div`
   width: 100%;
   height: fit-content;
@@ -86,7 +87,7 @@ const ContentNavBox = styled.div`
 
 const ContentBox = styled.div`
   width: 100%;
-  min-height: 100vh;
+  min-height: calc(var(--vh, 1vh) * 100);
   margin-left: 250px;
   background-color: #eee;
   display: flex;
@@ -97,7 +98,8 @@ const Admin = () => {
   const [tab, setTab] = useState('홈');
   const menuItems = [
     { icon: <MdHome className="icon" />, title: "홈" },
-    { icon: <MdOutlineFormatListBulleted className="icon" />, title: "상품관리" },
+    { icon: <MdOutlineFormatListBulleted className="icon" />, title: "카테고리 관리" },
+    { icon: <MdSell className="icon" />, title: "상품관리" },
     { icon: <MdLocalShipping className="icon" />, title: "주문/배송관리" },
     { icon: <MdPerson className="icon" />, title: "회원관리" },
     { icon: <MdOutlineStickyNote2 className="icon" />, title: "문의내역" },
@@ -142,6 +144,7 @@ const Container = ({ tab }) => {
 
   const tabMapping = {
     '홈': <Main />,
+    '카테고리 관리': <Category />,
     '상품관리': <Product/>,
     '주문/배송관리': <span>3</span>,
     '회원관리': <span>4</span>,
@@ -150,7 +153,6 @@ const Container = ({ tab }) => {
     '설정': <span>7</span>,
   };
   const componentToRender = tabMapping[tab] || null;
-  console.log(tabMapping);
   return <div>{componentToRender}</div>
 }
 
