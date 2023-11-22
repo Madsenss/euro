@@ -373,7 +373,61 @@ const FilterList = styled.div`
   }
 `
 
+const SubHeader = styled(Header)`
+  .num {
+    width: 5%;
+  }
+  .category {
+    width: 15%;
+  }
+  .name {
+    width: 15%;
+  }
+  .count {
+    width: 10%;
+  }
+  .button {
+    width: 10%;
+  }
+  .sort {
+    width: 10%;
+  }
+`
+const SubCategoryItemBox = styled(SubHeader)`
+  cursor: initial;
+  padding: 0;
+  height: 40px;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  color: initial;
+  div {
+    font-size: 13px;
+    font-weight: initial;
+  }
+`
 
+const DeleteModal = styled(CategoryModal)`
+  .danger {
+    color: #dc3545;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  .edge {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .re {
+    width: 200px;
+  }
+`
+const DeleteButton = styled(ModifyButton)`
+  border: 1.5px solid #dc3545;
+  color: #dc3545;
+  &:hover {
+    background-color: #dc3545;
+    color: #fff;
+  }
+`
 const Category = () => {
   const [tab, setTab] = useState('대분류');
   const [accordion, setAccordion] = useState([]);
@@ -384,27 +438,33 @@ const Category = () => {
   const [choiceCategory, setChoiceCategory] = useState('대분류 선택');
   const [openModifyCategory, setOpenModifyCategory] = useState([]);
   const [openModifySubCategory, setOpenModifySubCategory] = useState([]);
+  const [openDeleteCategory, setOpenDeleteCategory] = useState(false);
+  const [openDeleteSubCategory, setOpenDeleteSubCategory] = useState(false);
   const initCategory = [
     { id: 0, name: '명품', text: '명품들을 모아뒀습니다.', src: 'A.PNG' },
     { id: 1, name: '라면', text: '라면들을 모아뒀습니다.', src: 'B.PNG' },
     { id: 2, name: '담배', text: '담배들을 모아뒀습니다.', src: 'C.PNG' },
   ]
   const initSubCategory = [
-    { id: 0, category: '명품', name: '프라다' },
-    { id: 1, category: '명품', name: '구찌' },
-    { id: 2, category: '라면', name: '농심' },
-    { id: 3, category: '라면', name: '오뚜기' },
-    { id: 4, category: '담배', name: '말보로' },
-    { id: 5, category: '담배', name: '에쎄' }
+    { id: 0, category: '명품', name: '프라다', productcount: 1 },
+    { id: 1, category: '명품', name: '구찌', productcount: 2 },
+    { id: 2, category: '라면', name: '농심', productcount: 3 },
+    { id: 3, category: '라면', name: '오뚜기', productcount: 4 },
+    { id: 4, category: '담배', name: '말보로', productcount: 5 },
+    { id: 5, category: '담배', name: '에쎄', productcount: 6 }
   ];
 
   useEffect(() => {
     const copyAccordion = Array(initCategory.length).fill(false);
     const copyOpenModifyCategory = Array(initCategory.length).fill(false);
     const copyOpenModifySubCategory = Array(initSubCategory.length).fill(false);
+    const copyOpenDeleteCategory = Array(initCategory.length).fill(false);
+    const copyOpenDeleteSubCategory = Array(initCategory.length).fill(false);
     setAccordion(copyAccordion);
     setOpenModifyCategory(copyOpenModifyCategory);
     setOpenModifySubCategory(copyOpenModifySubCategory);
+    setOpenDeleteCategory(copyOpenDeleteCategory);
+    setOpenDeleteSubCategory(copyOpenDeleteSubCategory);
   }, []);
 
   const handleCategoryFile = (e) => {
@@ -467,98 +527,187 @@ const Category = () => {
           </div>
         </SubCategoryModal>
       </Overley>
+      <Overley>
+        <DeleteModal>
+          <MdClose className="close" onClick={() => {}} />
+          <span className="danger">[ 카테고리 내 상품이 전부 삭제됩니다 ]</span>
+          <div className="row">
+            <span className="input-title">삭제대상</span>
+            <Input className="re edge" type="text" readOnly defaultValue="대분류 : 명품"/>
+          </div>
+          <div className="row">
+            <span className="input-title">비밀번호</span>
+            <Input className="re" type="password" spellCheck="false" />
+          </div>
+          <div className="row button">
+            <DeleteButton>삭제</DeleteButton>
+          </div>
+        </DeleteModal>
+      </Overley>
       <CategoryBox>
         <CategoryNav>
           <NavItem onClick={() => { setCreateCategory(true); }}>대분류 생성</NavItem>
           <NavItem onClick={() => { setCreateSubCategory(true); }}>소분류 생성</NavItem>
         </CategoryNav>
         <TabBox>
-          <TabItem className={tab === '대분류' ? 'active' : ''} onClick={()=>{setTab('대분류')}}>대분류</TabItem>
-          <TabItem className={tab === '소분류' ? 'active' : ''} onClick={()=>{setTab('소분류')}}>소분류</TabItem>
+          <TabItem className={tab === '대분류' ? 'active' : ''} onClick={() => { setTab('대분류') }}>대분류</TabItem>
+          <TabItem className={tab === '소분류' ? 'active' : ''} onClick={() => { setTab('소분류') }}>소분류</TabItem>
         </TabBox>
         <WhiteBox>
-          <Header>
-            <div className="num">번호</div>
-            <div className="category">대분류명</div>
-            <div className="text">설명</div>
-            <div className="img">이미지명</div>
-            <div className="button">수정 및 삭제</div>
-          </Header>
           {
-            initCategory.map((item, i) => {
-              const filter = initSubCategory.filter((subCategoryItem) => subCategoryItem.category === item.name);
-              return (
-                <ItemOuter key={i} open={accordion[i]}>
-                  <CategoryItem onClick={() => {
-                    var copyAccordion = [...accordion];
-                    copyAccordion[i] = !copyAccordion[i];
-                    setAccordion(copyAccordion);
-                  }}>
-                    <div className="num">{item.id}</div>
-                    <div className="category">{item.name}</div>
-                    <div className="text">{item.text}</div>
-                    <div className="img">{item.src}</div>
-                    <div className="button">
-                      <GreenButton onClick={(e) => {
-                        e.stopPropagation();
-                        var copyOpenModifyCategory = [...openModifyCategory];
-                        copyOpenModifyCategory[i] = !copyOpenModifyCategory[i];
-                        setOpenModifyCategory(copyOpenModifyCategory);
-                      }}>수정</GreenButton>
-                      <RedButton>삭제</RedButton>
-                    </div>
-                  </CategoryItem>
-                  <Overley className={openModifyCategory[i] ? 'show' : 'hide'}>
-                    <CategoryModal>
-                      <MdClose className="close" onClick={(e) => {
-                        e.stopPropagation();
-                        var copyOpenModifyCategory = [...openModifyCategory];
-                        copyOpenModifyCategory[i] = !copyOpenModifyCategory[i];
-                        setOpenModifyCategory(copyOpenModifyCategory);
-                      }} />
-                      <span className="title">대분류 수정</span>
-                      <div className="row">
-                        <span className="input-title">대분류명</span>
-                        <Input type="text" spellCheck="false" defaultValue={item.name} />
-                      </div>
-                      <div className="row">
-                        <span className="input-title">설명</span>
-                        <Textarea spellCheck="false" defaultValue={item.text} />
-                      </div>
-                      <div className="row">
-                        <span className="input-title">이미지명</span>
-                        <Input readOnly defaultValue={item.src} />
-                      </div>
-                      <div className="row button">
-                        <label for="file">이미지 변경</label>
-                        <ModifyButton>수정</ModifyButton>
-                        <input id="file" type="file" onChange={handleCategoryFile} />
-                      </div>
-                    </CategoryModal>
-                  </Overley>
-                  {
-                    filter.map((item2, j) => {
-                      return (
-                        <SubCategoryItem key={item2.id}>
-                          <div className="row-box">
-                            <MdOutlineSubdirectoryArrowRight className="icon" />
+            tab === '대분류'
+              ?
+              <>
+                <Header>
+                  <div className="num">번호</div>
+                  <div className="category">대분류명</div>
+                  <div className="text">설명</div>
+                  <div className="img">이미지명</div>
+                  <div className="button">수정 및 삭제</div>
+                </Header>
+                {
+                  initCategory.map((item, i) => {
+                    const filter = initSubCategory.filter((subCategoryItem) => subCategoryItem.category === item.name);
+                    return (
+                      <ItemOuter key={i} open={accordion[i]}>
+                        <CategoryItem onClick={() => {
+                          var copyAccordion = [...accordion];
+                          copyAccordion[i] = !copyAccordion[i];
+                          setAccordion(copyAccordion);
+                        }}>
+                          <div className="num">{item.id}</div>
+                          <div className="category">{item.name}</div>
+                          <div className="text">{item.text}</div>
+                          <div className="img">{item.src}</div>
+                          <div className="button">
+                            <GreenButton onClick={(e) => {
+                              e.stopPropagation();
+                              var copyOpenModifyCategory = [...openModifyCategory];
+                              copyOpenModifyCategory[i] = !copyOpenModifyCategory[i];
+                              setOpenModifyCategory(copyOpenModifyCategory);
+                            }}>수정</GreenButton>
+                            <RedButton>삭제</RedButton>
                           </div>
-                          <div className="row-box">
-                            <span className="row-title">대분류</span>
-                            <span className="row-text">{item2.category}</span>
-                          </div>
-                          <div className="row-box">
-                            <span className="row-title">소분류명</span>
-                            <span className="row-text">{item2.name}</span>
-                          </div>
-                        </SubCategoryItem>
+                        </CategoryItem>
+                        <Overley className={openModifyCategory[i] ? 'show' : 'hide'}>
+                          <CategoryModal>
+                            <MdClose className="close" onClick={(e) => {
+                              e.stopPropagation();
+                              var copyOpenModifyCategory = [...openModifyCategory];
+                              copyOpenModifyCategory[i] = !copyOpenModifyCategory[i];
+                              setOpenModifyCategory(copyOpenModifyCategory);
+                            }} />
+                            <span className="title">대분류 수정</span>
+                            <div className="row">
+                              <span className="input-title">대분류명</span>
+                              <Input type="text" spellCheck="false" defaultValue={item.name} />
+                            </div>
+                            <div className="row">
+                              <span className="input-title">설명</span>
+                              <Textarea spellCheck="false" defaultValue={item.text} />
+                            </div>
+                            <div className="row">
+                              <span className="input-title">이미지명</span>
+                              <Input readOnly defaultValue={item.src} />
+                            </div>
+                            <div className="row button">
+                              <label for="file">이미지 변경</label>
+                              <ModifyButton>수정</ModifyButton>
+                              <input id="file" type="file" onChange={handleCategoryFile} />
+                            </div>
+                          </CategoryModal>
+                        </Overley>
+                        {
+                          filter.map((item2, j) => {
+                            return (
+                              <SubCategoryItem key={item2.id}>
+                                <div className="row-box">
+                                  <MdOutlineSubdirectoryArrowRight className="icon" />
+                                </div>
+                                <div className="row-box">
+                                  <span className="row-title">대분류</span>
+                                  <span className="row-text">{item2.category}</span>
+                                </div>
+                                <div className="row-box">
+                                  <span className="row-title">소분류명</span>
+                                  <span className="row-text">{item2.name}</span>
+                                </div>
+                              </SubCategoryItem>
 
-                      )
-                    })
-                  }
-                </ItemOuter>
-              )
-            })
+                            )
+                          })
+                        }
+                      </ItemOuter>
+                    )
+                  })
+                }
+              </>
+              :
+              <>
+                <SubHeader>
+                  <div className="num">번호</div>
+                  <div className="category">대분류</div>
+                  <div className="name">소분류명</div>
+                  <div className="count">보유 상품 개수</div>
+                  <div className="button">수정 및 삭제</div>
+                  <div className="sort">정렬</div>
+                </SubHeader>
+                {
+                  initSubCategory.map((item, i) => {
+                    return (
+                      <>
+                        <SubCategoryItemBox>
+                          <div className="num">{i + 1}</div>
+                          <div className="category">{item.category}</div>
+                          <div className="name">{item.name}</div>
+                          <div className="count">{item.productcount}</div>
+                          <div className="button">
+                            <GreenButton onClick={() => {
+                              var copyOpenModifySubCategory = [...openModifySubCategory];
+                              copyOpenModifySubCategory[i] = !copyOpenModifySubCategory[i];
+                              setOpenModifySubCategory(copyOpenModifySubCategory);
+                            }}>수정</GreenButton>
+                            <RedButton>삭제</RedButton>
+                          </div>
+                          <div className="sort">-</div>
+                        </SubCategoryItemBox>
+                        <Overley className={openModifySubCategory[i] ? 'show' : 'hide'}>
+                          <SubCategoryModal>
+                            <MdClose className="close" onClick={() => {
+                              var copyOpenModifySubCategory = [...openModifySubCategory];
+                              copyOpenModifySubCategory[i] = !copyOpenModifySubCategory[i];
+                              setOpenModifySubCategory(copyOpenModifySubCategory);
+                            }} />
+                            <span className="title">소분류 수정</span>
+                            <div className="row re">
+                              <span className="input-title">대분류</span>
+                              <FilterBox onClick={() => { setOpenCategoryFilter(!openCategoryFilter) }}>
+                                {item.category}
+                              </FilterBox>
+                              <FilterList open={openCategoryFilter}>
+                                {
+                                  initCategory.map((item2, j) => {
+                                    return (
+                                      <div key={j} className="item" onClick={() => { setChoiceCategory(item2.name); setOpenCategoryFilter(false); }}>{item2.name}</div>
+                                    )
+                                  })
+                                }
+                              </FilterList>
+                            </div>
+                            <div className="row">
+                              <span className="input-title">소분류명</span>
+                              <Input type="text" spellCheck="false" defaultValue={item.name} />
+                            </div>
+                            <div className="row button">
+                              <ModifyButton>수정</ModifyButton>
+                            </div>
+                          </SubCategoryModal>
+                        </Overley>
+                      </>
+                    )
+                  })
+                }
+              </>
           }
         </WhiteBox>
       </CategoryBox>
