@@ -298,9 +298,10 @@ const Input = styled.input`
 const Textarea = styled.textarea`
   width: 230px;
   height: 60px;
-  padding-left: 5px;
+  padding: 5px 0px 5px 5px;
   font-size: 12px;
   border: 1.5px solid #ddd;
+  border-radius: 3px;
   resize: none;
   &:focus {
     outline: none;
@@ -323,8 +324,6 @@ const ModifyButton = styled(GreenButton)`
   margin-left: 10px;
   padding: 5px 8px 5px 8px;
 `
-
-
 const SubCategoryModal = styled(CategoryModal)`
   .re {
     position: relative;
@@ -367,12 +366,11 @@ const FilterList = styled.div`
     font-size: 14px;
     font-weight: bold;
     &:hover {
-      color: #fff;
       background-color: var(--color);
+      color: #fff;
     }
   }
 `
-
 const SubHeader = styled(Header)`
   .num {
     width: 5%;
@@ -438,8 +436,8 @@ const Category = () => {
   const [choiceCategory, setChoiceCategory] = useState('대분류 선택');
   const [openModifyCategory, setOpenModifyCategory] = useState([]);
   const [openModifySubCategory, setOpenModifySubCategory] = useState([]);
-  const [openDeleteCategory, setOpenDeleteCategory] = useState(false);
-  const [openDeleteSubCategory, setOpenDeleteSubCategory] = useState(false);
+  const [openDeleteCategory, setOpenDeleteCategory] = useState([]);
+  const [openDeleteSubCategory, setOpenDeleteSubCategory] = useState([]);
   const initCategory = [
     { id: 0, name: '명품', text: '명품들을 모아뒀습니다.', src: 'A.PNG' },
     { id: 1, name: '라면', text: '라면들을 모아뒀습니다.', src: 'B.PNG' },
@@ -459,7 +457,7 @@ const Category = () => {
     const copyOpenModifyCategory = Array(initCategory.length).fill(false);
     const copyOpenModifySubCategory = Array(initSubCategory.length).fill(false);
     const copyOpenDeleteCategory = Array(initCategory.length).fill(false);
-    const copyOpenDeleteSubCategory = Array(initCategory.length).fill(false);
+    const copyOpenDeleteSubCategory = Array(initSubCategory.length).fill(false);
     setAccordion(copyAccordion);
     setOpenModifyCategory(copyOpenModifyCategory);
     setOpenModifySubCategory(copyOpenModifySubCategory);
@@ -527,23 +525,6 @@ const Category = () => {
           </div>
         </SubCategoryModal>
       </Overley>
-      <Overley>
-        <DeleteModal>
-          <MdClose className="close" onClick={() => {}} />
-          <span className="danger">[ 카테고리 내 상품이 전부 삭제됩니다 ]</span>
-          <div className="row">
-            <span className="input-title">삭제대상</span>
-            <Input className="re edge" type="text" readOnly defaultValue="대분류 : 명품"/>
-          </div>
-          <div className="row">
-            <span className="input-title">비밀번호</span>
-            <Input className="re" type="password" spellCheck="false" />
-          </div>
-          <div className="row button">
-            <DeleteButton>삭제</DeleteButton>
-          </div>
-        </DeleteModal>
-      </Overley>
       <CategoryBox>
         <CategoryNav>
           <NavItem onClick={() => { setCreateCategory(true); }}>대분류 생성</NavItem>
@@ -586,7 +567,12 @@ const Category = () => {
                               copyOpenModifyCategory[i] = !copyOpenModifyCategory[i];
                               setOpenModifyCategory(copyOpenModifyCategory);
                             }}>수정</GreenButton>
-                            <RedButton>삭제</RedButton>
+                            <RedButton onClick={(e) => {
+                              e.stopPropagation();
+                              var copyOpenDeleteCategory = [...openDeleteCategory];
+                              copyOpenDeleteCategory[i] = !copyOpenDeleteCategory[i];
+                              setOpenDeleteCategory(copyOpenDeleteCategory);
+                            }}>삭제</RedButton>
                           </div>
                         </CategoryItem>
                         <Overley className={openModifyCategory[i] ? 'show' : 'hide'}>
@@ -616,6 +602,27 @@ const Category = () => {
                               <input id="file" type="file" onChange={handleCategoryFile} />
                             </div>
                           </CategoryModal>
+                        </Overley>
+                        <Overley className={openDeleteCategory[i] ? 'show' : 'hide'}>
+                          <DeleteModal>
+                            <MdClose className="close" onClick={() => {
+                              var copyOpenDeleteCategory = [...openDeleteCategory];
+                              copyOpenDeleteCategory[i] = !copyOpenDeleteCategory[i];
+                              setOpenDeleteCategory(copyOpenDeleteCategory);
+                            }} />
+                            <span className="danger">[ 카테고리 내 상품이 전부 삭제됩니다 ]</span>
+                            <div className="row">
+                              <span className="input-title">삭제대상</span>
+                              <Input className="re edge" type="text" readOnly defaultValue={item.name} />
+                            </div>
+                            <div className="row">
+                              <span className="input-title">비밀번호</span>
+                              <Input className="re" type="password" spellCheck="false" />
+                            </div>
+                            <div className="row button">
+                              <DeleteButton>삭제</DeleteButton>
+                            </div>
+                          </DeleteModal>
                         </Overley>
                         {
                           filter.map((item2, j) => {
@@ -667,7 +674,11 @@ const Category = () => {
                               copyOpenModifySubCategory[i] = !copyOpenModifySubCategory[i];
                               setOpenModifySubCategory(copyOpenModifySubCategory);
                             }}>수정</GreenButton>
-                            <RedButton>삭제</RedButton>
+                            <RedButton onClick={() => {
+                              var copyOpenDeleteSubCategory = [...openDeleteSubCategory];
+                              copyOpenDeleteSubCategory[i] = !copyOpenDeleteSubCategory[i];
+                              setOpenDeleteSubCategory(copyOpenDeleteSubCategory);
+                            }}>삭제</RedButton>
                           </div>
                           <div className="sort">-</div>
                         </SubCategoryItemBox>
@@ -702,6 +713,27 @@ const Category = () => {
                               <ModifyButton>수정</ModifyButton>
                             </div>
                           </SubCategoryModal>
+                        </Overley>
+                        <Overley className={openDeleteSubCategory[i] ? 'show' : 'hide'}>
+                          <DeleteModal>
+                            <MdClose className="close" onClick={() => {
+                              var copyOpenDeleteSubCategory = [...openDeleteSubCategory];
+                              copyOpenDeleteSubCategory[i] = !copyOpenDeleteSubCategory[i];
+                              setOpenDeleteSubCategory(copyOpenDeleteSubCategory);
+                            }} />
+                            <span className="danger">[ 카테고리 내 상품이 전부 삭제됩니다 ]</span>
+                            <div className="row">
+                              <span className="input-title">삭제대상</span>
+                              <Input className="re edge" type="text" readOnly defaultValue={item.name} />
+                            </div>
+                            <div className="row">
+                              <span className="input-title">비밀번호</span>
+                              <Input className="re" type="password" spellCheck="false" />
+                            </div>
+                            <div className="row button">
+                              <DeleteButton>삭제</DeleteButton>
+                            </div>
+                          </DeleteModal>
                         </Overley>
                       </>
                     )

@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { MdClose, MdFilterAlt, MdSearch } from "react-icons/md";
 import styled from "styled-components";
+
+const ProductBox = styled.div`
+  width: 100%;
+  height: fit-content;
+  padding: 20px;
+`
+
 const ProductNav = styled.div`
   width: 100%;
   height: fit-content;
@@ -8,6 +15,7 @@ const ProductNav = styled.div`
   display: flex;
   border: 1px solid black;
 `
+
 const NavItem = styled.div`
   cursor: pointer;
   width: 110px;
@@ -28,59 +36,137 @@ const NavItem = styled.div`
   }
 `
 
-const ProductBox = styled.div`
+const Overley = styled.div`
+  z-index: 999;
   width: 100%;
-  height: fit-content;
-  padding: 20px;
+  height: calc(var(--vh, 1vh) * 100);
+  background-color: rgb(0, 0, 0, 0.3);
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s;
+  &.show {
+    visibility: visible;
+    opacity: 1;
+  }
+  &.hide {
+    visibility: hidden;
+    opacity: 0;
+  }
 `
-const TableBox = styled.div`
-  width: 100%;
-  height: fit-content;
-  border-radius: 8px;
-  background-color: #fff;
-  box-shadow: 0px 0px 3px 0.5px rgb(0, 0, 0, 0.1);
-  padding: 30px;
-`
-const ToolBox = styled.div`
+const ProductModal = styled.div`
   position: relative;
+  z-index: 1000;
+  width: 1100px;
+  height: calc(var(--vh, 1vh) * 95);
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(245, 245, 245);
+  border-radius: 8px;
+  box-shadow: 0px 0px 4px 1px rgb(255, 255, 255, 0.5);
+  padding: 20px 15px 20px 15px;
+  .close {
+    cursor: pointer;
+    position: absolute;
+    right: 8px;
+    top: 13px;
+    font-size: 24px;
+    &:hover {
+      color: var(--color);
+    }
+  }
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 30px;
+  }
+`
+
+const ProductItem = styled.div`
+  background-color: #fff;
   width: 100%;
   height: fit-content;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  box-shadow: 0px 0px 8px 1px rgb(0, 0, 0, 0.1);
+  border-radius: 6px;
+  padding: 20px;
+  margin-bottom: 30px;
+  .pi-title {
+    font-weight: bold;
+    font-size: 20px;
+    border-bottom: 1.5px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+  .category-box {
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .cb-title {
+      font-weight: bold;
+      margin-right: 10px;
+    }
+    .ml {
+      margin-left: 30px;
+    }
+  }
+  .price-box {
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .won {
+      font-size: 14px;
+      font-weight: bold;
+      margin-left: 5px;
+    }
+  }
 `
+
+const FilterOuter = styled.div`
+  z-index: 1001;
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+`
+
 const FilterBox = styled.div`
   cursor: pointer;
-  width: fit-content;
-  height: 35px;
+  width: 200px;
+  height: 32px;
   padding: 0px 10px 0px 5px;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   border-radius: 4px;
-  box-shadow: 0px 0px 1px 0.5px rgb(0, 0, 0, 0.3);
-  border: 1px solid #ddd;
-  .filter {
-    font-size: 20px;
-    margin-right: 3px;
-  }
-  span {
-    font-weight: bold;
-  }
+  border: 1.5px solid #ddd;
+  font-size: 14px;
+  font-weight: bold;
   &:hover {
-    border: 1px solid #aaa;
+    border: 1.5px solid #aaa;
   }
 `
+
 const FilterList = styled.div`
   position: absolute;
-  width: fit-content;
+  width: 200px;
   height: fit-content;
   background-color: #fff;
   box-shadow: 0px 0px 1px 0.5px rgb(0, 0, 0, 0.3);
-  top: 50px;
-  left: 0;
+  top: 35px;
+  right: 0;
   transition: all 0.25s;
   visibility: ${props => (props.open ? 'visible' : 'hidden')};
   opacity: ${props => (props.open ? 1 : 0)};
@@ -89,601 +175,166 @@ const FilterList = styled.div`
     width: 100%;
     height: fit-content;
     padding: 7px 8px 7px 8px;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     &:hover {
-      color: #fff;
       background-color: var(--color);
+      color: #fff;
     }
   }
 `
-const SearchBox = styled.div`
-  width: 240px;
-  height: 35px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  .search {
-    font-size: 24px;
-    position: absolute;
-    right: 10px;
-    color: #666;
-  }
-  input {
-    background-color: transparent;
-    border-radius: 20px;
-    box-shadow: 0px 0px 1px 0.5px rgb(0, 0, 0, 0.1);
-    border: 1.5px solid #ddd;
-    width: 100%;
-    height: 100%;
-    padding-left: 13px;
-    font-size: 14px;
-    &:hover {
-      border: 1.5px solid var(--color);
-    }
-  }
-  input:focus {
-    outline: none;
-    border: 1.5px solid var(--color);
-  }
-`
-const Table = styled.table`
-  margin-top: 30px;
-  width: 100%;
-  border-collapse: collapse;
-  border: 1px solid #ddd;
-`;
-
-const TableHeader = styled.thead`
-  background-color: var(--color);
-`;
-
-const TableRow = styled.tr`
-  &:nth-child(even) {
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-  }
-`;
-const TableRowHover = styled(TableRow)`
-  &:hover {
-    background-color: #eee;
-  }
-`;
-const TableCell = styled.td`
-  padding: 8px 0px 8px 0px;
-  text-align: center;
-`;
-
-const TableHeaderCell = styled.th`
-  padding: 14px 0px 14px 0px;
-  text-align: center;
-  color: #fff;
-  border-bottom: 2px solid #aaa;
-  
-`;
-
-const BlueButton = styled.button`
-  width: fit-content;
-  height: fit-content;
-  background-color: #fff;
-  border-radius: 3px;
-  padding: 5px;
-  border: 1.5px solid var(--color);
-  cursor: pointer;
-  color: var(--color);
-  font-size: 14px;
-  font-weight: bold;
-  &:hover {
-    background-color: var(--color);
-    color: #fff;
-  }
-`
-const GreenButton = styled(BlueButton)`
-  border: 1.5px solid green;
-  color: green;
-  margin-right: 5px;
-  &:hover {
-    background-color: green;
-    color: #fff;
-  }
-`
-
-const RedButton = styled(BlueButton)`
-  border: 1.5px solid red;
-  color: red;
-  &:hover {
-    background-color: red;
-    color: #fff;
-  }
-`
-
-const Overley = styled.div`
-  z-index: 1000;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: calc(var(--vh, 1vh) * 100);
-  background-color: rgb(0, 0, 0, 0.5);
-  &.show {
-    opacity: 1;
-    visibility: visible;
-  }
-  &.hide {
-    visibility: hidden;
-    opacity: 0;
-  }
-`
-const SubOverley = styled(Overley)`
-
-`
-
-const CategoryModal = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1001;
-  width: 100%;
-  height: calc(var(--vh, 1vh) * 100);
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  &.show {
-    opacity: 1;
-    visibility: visible;
-  }
-  &.hide {
-    visibility: hidden;
-    opacity: 0;
-  }
-`
-const ModalInner = styled.div`
-  position: relative;
-  width: 400px;
-  height: fit-content;
-  display: flex;
-  flex-direction: column;
-  background-color: #fff;
-  border-radius: 8px;
-  padding: 15px;
-  box-shadow: 0px 0px 4px 0.5px rgb(255, 255, 255);
-  .close {
-    position: absolute;
-    right: 5px;
-    top: 13px;
-    cursor: pointer;
-    font-size: 24px;
-    &:hover {
-      color: var(--color);
-    }
-  }
-`
-const ModalHeader = styled.div`
-  width: 100%;
-  height: fit-content;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
-  .write-box {
-    width: 100%;
-    height: fit-content;
-    display: flex;
-    flex-direction: column;
-  }
-  .title {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 15px;
-  }
-`
-
-const InputBox = styled.div`
-  width: 100%;
-  height: fit-content;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-  .input-title {
-    font-size: 14px;
-    font-weight: bold;
-    color: #666;
-  }
-`
-
 const Input = styled.input`
   width: 250px;
   height: 28px;
-  font-size: 12px;
+  font-size: 14px;
   border: 1.5px solid #ddd;
   border-radius: 3px;
   padding-left: 5px;
   &:focus {
     outline: none;
   }
-`
-const Textarea = styled.textarea`
-  width: 250px;
-  height: 60px;
-  padding-left: 5px;
-  font-size: 12px;
-  border: 1.5px solid #ddd;
-  resize: none;
-  &:focus {
-    outline: none;
-  }
-`
-
-const FileBox = styled(InputBox)`
-  justify-content: end;
-  input[type=file] {
-    display: none;
-  }
-  label {
-    cursor: pointer;
-    width: 100px;
-    height: 29px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    border: 1.5px solid #aaa;
-    border-radius: 3px;
-    font-size: 14px;
-    font-weight: bold;
-    color: #777;
-    &:hover {
-      background-color: #aaa;
-      color: #fff;
+  &[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
   }
-`
-const ButtonBlue = styled(RedButton)`
-  width: 100px;
-  margin-left: 10px;
-  color: var(--color);
-  border: 1.5px solid var(--color);
-  &:hover {
-    background-color: var(--color);
-    color: #fff;
+  &.price-input {
+    width: 124px;
+    text-align: end;
+    padding-left: 0;
+    padding-right: 5px;
   }
-`
-const ButtonGreen = styled(ButtonBlue)`
-  border: 1.5px solid green;
-  color: green;
-  &:hover {
-    background-color: green;
-    color: #fff;
-  }
-`
-const ButtonRed = styled(ButtonBlue)`
-  border: 1.5px solid red;
-  color: red;
-  &:hover {
-    background-color: red;
-    color: #fff;
-  }
-`
-
-const CardOuter = styled.div`
-  width: 100%;
-  height: 350px;
-  display: flex;
-  flex-direction: column;
-  overflow-y: scroll;
-`
-const Card = styled(ModalHeader)`
-  margin-bottom: 20px;
-  padding: 15px;
-  border: 1.5px solid #ddd;
-  border-radius: 4px;
-  &:hover {
-    border: 1.5px solid #aaa;
-  }
-  input, textarea {
-    width: 200px;
-  }
-  .mn {
-    margin-bottom: 0;
-  }
-  .write-box {
-    .title {
-      font-size: 13px;
-    }
-    .resize {
-      font-size: 12px;
-      width: 80px;
-    }
-  }
-`
-
-const SubCategoryModal = styled(CategoryModal)`
-`
-
-const SubInner = styled(ModalInner)`
-  width: 300px;
-  height: fit-content;
-  .sub {
-    width: 152px;
-  }
-`
-const SubHeader = styled(ModalHeader)`
-  .mn {
-    margin-bottom: 0;
-  }
-`
-const SubFilterBox = styled.div`
-  width: fit-content;
-  height: fit-content;
-  position: relative;
-`
-const CategoryFilter = styled(FilterBox)`
-  padding: 0;
-  width: 160px;
-  height: 30px;
-  font-size: 14px;
-  font-weight: bold;
-`
-const CategoryFilterList = styled(FilterList)`
-  z-index: 999;
-  left: auto;
-  top: 40px;
-  right: 0px;
-  width: 160px;
-  .item {
-    font-size: 14px;
-  }
-`
-
-const SubCardBox = styled.div`
-  width: 100%;
-  height: 350px;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid black;
-`
-const SubCardHeader = styled.div`
-  position: relative;
-  width: 100%;
-  height: fit-content;
-  border: 1px solid red;
-  margin-bottom: 10px;
-`
-
-const HeaderFilterButton = styled(CategoryFilter)`
-`
-const HeaderFilterList = styled(CategoryFilterList)`
-`
-const SubCategoryItem = styled.div`
-  width: 100%;
-  height: 30px;
-  border: 1px solid black;
 `
 
 const Product = () => {
-  const [openFilter, setOpenFilter] = useState(false);
-  const [filter, setFilter] = useState('');
-  const [categoryFileName, setCategoryFileName] = useState('');
-  const [categoryOpen, setCategoryOpen] = useState(false);
-  const [subCategoryOpen, setSubCategoryOpen] = useState(false);
-  const tableDataInit = [
-    { 카테고리: '라면1', 제조사: '오뚜기1', 제품명: '진라면1', 가격: '3000원1', 수량: '1개' },
-    { 카테고리: '라면2', 제조사: '오뚜기2', 제품명: '진라면2', 가격: '3000원2', 수량: '2개' },
-    { 카테고리: '라면3', 제조사: '오뚜기3', 제품명: '진라면', 가격: '3000원3', 수량: '3개' },
-    { 카테고리: '라면3', 제조사: '오뚜기3', 제품명: '진라면', 가격: '3000원3', 수량: '3개' },
-    { 카테고리: '라면3', 제조사: '오뚜기3', 제품명: '진라면', 가격: '3000원3', 수량: '3개' },
-    { 카테고리: '라면3', 제조사: '오뚜기3', 제품명: '진라면', 가격: '3000원3', 수량: '3개' },
-    { 카테고리: '라면3', 제조사: '오뚜기3', 제품명: '진라면', 가격: '3000원3', 수량: '3개' },
-  ];
-  const filterInit = ['CategoryA', 'CategoryB', 'CategoryC', 'CategoryD', 'CategoryE', 'CategoryF'];
-  const subFilterInit = ['전체', 'CategoryA', 'CategoryB', 'CategoryC'];
-  const theadInit = ['카테고리', '제조사', '제품명', '가격', '수량', '상세정보', '수정 및 삭제'];
-  const a = [0, 0, 0, 0, 0];
+
+  const [createProduct, setCreateProduct] = useState(true);
+  const [choiceCategory, setChoiceCategory] = useState('대분류 선택');
   const [openCategoryFilter, setOpenCategoryFilter] = useState(false);
-  const [categoryFilterItem, setCategoryFilterItem] = useState('대분류 선택');
   const [openSubCategoryFilter, setOpenSubCategoryFilter] = useState(false);
-  const [subCategoryFilterItem, setSubCategoryFilterItem] = useState('전체');
-  const [openItemFilter, setOpenItemFilter] = useState(false);
-  const [listItem, setListItem] = useState('');
-  const handleCategoryFile = (event) => {
-    const uploadedFile = event.target.files[0];
-    if (uploadedFile) {
-      setCategoryFileName(uploadedFile.name);
-    }
+  const [choiceSubCategory, setChoiceSubCategory] = useState('소분류 선택');
+  const [price, setPrice] = useState(0);
+  const initCategory = [
+    { id: 0, name: '명품', text: '명품들을 모아뒀습니다.', src: 'A.PNG' },
+    { id: 1, name: '라면', text: '라면들을 모아뒀습니다.', src: 'B.PNG' },
+    { id: 2, name: '담배', text: '담배들을 모아뒀습니다.', src: 'C.PNG' },
+  ]
+  const initSubCategory = [
+    { id: 0, category: '명품', name: '프라다', productcount: 1 },
+    { id: 1, category: '명품', name: '구찌', productcount: 2 },
+    { id: 2, category: '라면', name: '농심', productcount: 3 },
+    { id: 3, category: '라면', name: '오뚜기', productcount: 4 },
+    { id: 4, category: '담배', name: '말보로', productcount: 5 },
+    { id: 5, category: '담배', name: '에쎄', productcount: 6 }
+  ];
+
+  const showSub = initSubCategory.filter((v) => v.category === choiceCategory);
+  const handlePriceChange = (e) => {
+    const value = parseInt(e.target.value);
+    setPrice(value);
   };
+
+  const formattedPrice = price.toLocaleString("ko-KR");
 
   return (
     <>
-      {/* <Overley className={categoryOpen ? 'show' : 'hide'} />
-      <CategoryModal className={categoryOpen ? 'show' : 'hide'}>
-        <ModalInner>
-          <MdClose className="close" onClick={() => { setCategoryOpen(false) }} />
-          <ModalHeader>
-            <span className="title">대분류 관리</span>
-            <div className="write-box">
-              <InputBox>
-                <span className="input-title">대분류명</span>
-                <Input type="text" />
-              </InputBox>
-              <InputBox>
-                <span className="input-title">카테고리 설명</span>
-                <Textarea spellCheck="false" />
-              </InputBox>
-              <InputBox>
-                <span className="input-title">이미지명</span>
-                <Input type="text" readOnly value={categoryFileName} />
-              </InputBox>
-              <FileBox>
-                <label for="file">이미지 찾기</label>
-                <input type="file" id="file" onChange={handleCategoryFile} />
-                <ButtonBlue>생성</ButtonBlue>
-              </FileBox>
+      <Overley className={createProduct ? 'show' : 'hide'}>
+        <ProductModal>
+          <MdClose className="close" onClick={() => { setCreateProduct(false); }} />
+          <span className="title">상품등록</span>
+          <ProductItem>
+            <span className="pi-title">카테고리</span>
+            <div className="category-box">
+              <span className="cb-title">대분류</span>
+              <FilterOuter>
+                <FilterBox onClick={()=>{setOpenCategoryFilter(!openCategoryFilter);}}>
+                  {choiceCategory}
+                </FilterBox>
+                <FilterList open={openCategoryFilter}>
+                  {
+                    initCategory.map((item, i)=>{
+                      return (
+                        <div className="item" onClick={()=>{
+                          setChoiceCategory(item.name);
+                          setOpenCategoryFilter(false);
+                          setChoiceSubCategory('소분류 선택');
+                        }}>{item.name}</div>
+                      )
+                    })
+                  }
+                </FilterList>
+              </FilterOuter>
+              <span className="cb-title ml">소분류</span>
+              <FilterOuter>
+                <FilterBox onClick={()=>{
+                  showSub.length > 0
+                  ? setOpenSubCategoryFilter(!openSubCategoryFilter)
+                  : setOpenSubCategoryFilter(false);
+                }}>
+                  {choiceSubCategory}
+                </FilterBox>
+                <FilterList open={openSubCategoryFilter}>
+                  {                    
+                    showSub?.map((item, i)=>{
+                      return (
+                        <div className="item" onClick={()=>{setChoiceSubCategory(item.name); setOpenSubCategoryFilter(false);}}>{item.name}</div>
+                      )
+                    })
+                  }
+                </FilterList>
+              </FilterOuter>
             </div>
-          </ModalHeader>
-          <CardOuter>
-            {
-              a.map((item, i) => {
-                return (
-                  <Card key={i}>
-                    <div className="write-box">
-                      <InputBox>
-                        <span className="input-title">대분류명</span>
-                        <Input type="text" spellCheck="false" defaultValue={'Category' + i} />
-                      </InputBox>
-                      <InputBox>
-                        <span className="input-title">카테고리 설명</span>
-                        <Textarea spellCheck="false" defaultValue={'Text' + i} />
-                      </InputBox>
-                      <InputBox>
-                        <span className="input-title">이미지명</span>
-                        <Input type="text" readOnly value={i + '.png'} />
-                      </InputBox>
-                      <FileBox className="mn">
-                        <label className="resize" for="file">이미지 변경</label>
-                        <input type="file" id="file" onChange={handleCategoryFile} />
-                        <ButtonGreen className="resize">수정</ButtonGreen>
-                        <ButtonRed className="resize">삭제</ButtonRed>
-                      </FileBox>
-                    </div>
-                  </Card>
-                )
-              })
-            }
-          </CardOuter>
-        </ModalInner>
-      </CategoryModal>
-
-      <SubOverley className={subCategoryOpen ? 'show' : 'hide'} />
-      <SubCategoryModal className={subCategoryOpen ? 'show' : 'hide'}>
-        <SubInner>
-          <MdClose className="close" onClick={() => { setSubCategoryOpen(false) }} />
-          <SubHeader>
-            <span className="title">소분류 관리</span>
-            <div className="write-box">
-              <InputBox>
-                <span className="input-title">대분류 선택</span>
-                <SubFilterBox>
-                  <CategoryFilter onClick={() => { setOpenCategoryFilter(!openCategoryFilter); }}>
-                    {categoryFilterItem}
-                  </CategoryFilter>
-                  <CategoryFilterList open={openCategoryFilter}>
-                    {
-                      filterInit.map((item, i) => {
-                        return (
-                          <div key={i} className="item" onClick={() => { setCategoryFilterItem(item); setOpenCategoryFilter(false); }}>{item}</div>
-                        )
-                      })
-                    }
-                  </CategoryFilterList>
-                </SubFilterBox>
-              </InputBox>
-              <InputBox>
-                <span className="input-title">소분류명</span>
-                <Input className="sub" type="text" />
-              </InputBox>
-              <FileBox className="mn">
-                <ButtonBlue>생성</ButtonBlue>
-              </FileBox>
+          </ProductItem>
+          <ProductItem>
+            <span className="pi-title">상품명</span>
+            <Input type="text" placeholder="상품명을 입력해 주세요"/>
+          </ProductItem>
+          <ProductItem>
+            <span className="pi-title">브랜드[제조사]</span>
+            <Input type="text" placeholder="브랜드를 입력해주세요"/>
+          </ProductItem>
+          <ProductItem>
+            <span className="pi-title">상품설명</span>
+            <input />
+            <input />
+          </ProductItem>
+          <ProductItem>
+            <span className="pi-title">가격</span>
+            <div className="price-box">
+              <Input
+                className="price-input"
+                type="number"
+                onChange={handlePriceChange}
+                placeholder="가격을 입력해 주세요"
+              />
+              <span className="won">{formattedPrice}원</span>
             </div>
-          </SubHeader>
-          <SubCardBox>
-            <SubCardHeader>
-              <HeaderFilterButton onClick={() => { setOpenSubCategoryFilter(!openSubCategoryFilter); }}>
-                정렬 : {subCategoryFilterItem}
-              </HeaderFilterButton>
-              <HeaderFilterList open={openSubCategoryFilter}>
-                {
-                  subFilterInit.map((item, i) => {
-                    return (
-                      <div key={i} className="item" onClick={() => { setSubCategoryFilterItem(item); setOpenSubCategoryFilter(false); }}>{item}</div>
-                    )
-                  })
-                }
-              </HeaderFilterList>
-              <div className="header">
-                <span>대분류명</span>
-                <span>소분류명</span>
+            <div className="dis-box">
+              <span className="dis-title">할인설정</span>
+              <div className="dis-item">
+                <span className="dis-title"></span>
               </div>
-            </SubCardHeader>
-            {
-              a.map((item, i) => {
-                return (
-                  <SubCategoryItem>
-
-                  </SubCategoryItem>
-                )
-              })
-            }
-          </SubCardBox>
-        </SubInner>
-      </SubCategoryModal> */}
-
-
+            </div>
+          </ProductItem>
+          <ProductItem>
+            <span className="pi-title">배송비</span>
+          </ProductItem>
+          <ProductItem>
+            <span className="pi-title">상품옵션</span>
+          </ProductItem>
+          <ProductItem>
+            <span className="pi-title">이미지 등록</span>
+          </ProductItem>
+        </ProductModal>
+      </Overley>
       <ProductBox>
         <ProductNav>
-          <NavItem onClick={() => { setCategoryOpen(true); }}>대분류 관리</NavItem>
-          <NavItem onClick={() => { setSubCategoryOpen(true); }}>소분류 관리</NavItem>
-          <NavItem>카테고리 삭제</NavItem>
-          <NavItem>상품 등록</NavItem>
+          <NavItem onClick={() => { setCreateProduct(true); }}>상품 등록</NavItem>
         </ProductNav>
-        <TableBox>
-          <ToolBox>
-            <FilterBox onClick={() => { setOpenFilter(!openFilter) }}>
-              <MdFilterAlt className="filter" />
-              <span>필터&nbsp;:&nbsp;</span>
-              <span>{filter}</span>
-            </FilterBox>
-            <FilterList open={openFilter}>
-              {
-                filterInit.map((item, i) => {
-                  return (
-                    <div key={i} className="item" onClick={() => { setFilter(item); setOpenFilter(false); }}>{item}</div>
-                  )
-                })
-              }
-            </FilterList>
-            <SearchBox>
-              <input type="text" placeholder="제품명" />
-              <MdSearch className="search" />
-            </SearchBox>
-          </ToolBox>
-
-          <Table>
-            <TableHeader>
-              <TableRow>
-                {
-                  theadInit.map((item, i) => {
-                    return (
-                      <TableHeaderCell key={i}>{item}</TableHeaderCell>
-                    )
-                  })
-                }
-              </TableRow>
-            </TableHeader>
-            <tbody>
-              {
-                tableDataInit.map((item, i) => {
-                  return (
-                    <TableRowHover key={i}>
-                      <TableCell>{item.카테고리}</TableCell>
-                      <TableCell>{item.제조사}</TableCell>
-                      <TableCell>{item.제품명}</TableCell>
-                      <TableCell>{item.가격}</TableCell>
-                      <TableCell>{item.수량}</TableCell>
-                      <TableCell><BlueButton>자세히 보기</BlueButton></TableCell>
-                      <TableCell><GreenButton>수정</GreenButton><RedButton>삭제</RedButton></TableCell>
-                    </TableRowHover>
-                  )
-                })
-              }
-            </tbody>
-          </Table>
-        </TableBox>
       </ProductBox>
     </>
 
