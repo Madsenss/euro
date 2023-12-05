@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MdClose, MdFilterAlt, MdSearch } from "react-icons/md";
+import { MdCheck, MdClose, MdFilterAlt, MdSearch } from "react-icons/md";
 import styled from "styled-components";
 
 const ProductBox = styled.div`
@@ -132,7 +132,109 @@ const ProductItem = styled.div`
       margin-left: 5px;
     }
   }
+  .dis-title {
+    font-weight: bold;
+    font-size: 16px;
+    margin: 20px 0px 15px 0px;
+  }
 `
+
+const CheckBox = styled.div`
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: row;
+`
+
+const CheckItem = styled.div`
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  .item-title {
+    font-weight: bold;
+    margin-right: 5px;
+  }
+  .radio {
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    height: fit-content;
+    border-radius: 50%;
+    background-color: #eee;
+    border: 1px solid #ddd;
+    &.active {
+      background-color: var(--color);
+    }
+    .check {
+      color: #ddd;
+      padding: 2px;
+      font-size: 16px;
+      &.icon-active {
+        color: blue;
+        color: #fff;
+      }
+    }
+  }
+`
+
+const DiscountBox = styled.div`
+  margin-top: 20px;
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  visibility: ${props => props.show ? 'visible' : 'hidden'};
+
+  .input-box {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: fit-content;
+    height: fit-content;
+    margin-bottom: 15px;
+    .input-title {
+      font-weight: bold;
+      font-size: 16px;
+      margin-right: 10px;
+    }
+    .percent {
+      position: absolute;
+      right: 5px;
+      font-size: 14px;
+    }
+  }
+  .total-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: fit-content;
+    height: fit-content;
+    margin-bottom: 15px;
+    .total-title {
+      font-weight: bold;
+      font-size: 16px;
+      margin-right: 10px;
+      color: var(--color);
+    }
+    .total-price {
+      font-weight: bold;
+      font-size: 16px;
+    }
+  }
+  .alert {
+    color: red;
+    margin-bottom: 5px;
+  }
+`
+
 
 const FilterOuter = styled.div`
   z-index: 1001;
@@ -208,6 +310,12 @@ const Input = styled.input`
     padding-left: 0;
     padding-right: 5px;
   }
+  &.discount-input {
+    width: 30px;
+    text-align: end;
+    padding-left: 0;
+    padding-right: 18px;
+  }
 `
 
 const Product = () => {
@@ -218,6 +326,9 @@ const Product = () => {
   const [openSubCategoryFilter, setOpenSubCategoryFilter] = useState(false);
   const [choiceSubCategory, setChoiceSubCategory] = useState('소분류 선택');
   const [price, setPrice] = useState(0);
+  const [discount, setDiscount] = useState(false);
+  const [discountValue, setDiscountValue] = useState(0);
+  const [shippingCharge, setShippingCharge] = useState(false);
   const initCategory = [
     { id: 0, name: '명품', text: '명품들을 모아뒀습니다.', src: 'A.PNG' },
     { id: 1, name: '라면', text: '라면들을 모아뒀습니다.', src: 'B.PNG' },
@@ -235,11 +346,23 @@ const Product = () => {
   const showSub = initSubCategory.filter((v) => v.category === choiceCategory);
   const handlePriceChange = (e) => {
     const value = parseInt(e.target.value);
-    setPrice(value);
+    const deleteNaN = value !== '' && !isNaN(value) ? parseInt(value) : 0;
+    setPrice(deleteNaN);
   };
-
+  const handleDiscount = (e) => {
+    const value = parseInt(e.target.value);
+    if(value > 100 || value < 0) {
+      alert('할인율은 0 ~ 100 % 사이로만 설정 가능합니다');
+      e.target.value = '';
+    } else {
+      setDiscountValue(value);
+    }
+  }
+  const handleDiscountPrice = () => {
+    const totalPrice = price - ((parseFloat(price) / 100) * discountValue);
+    return Math.trunc(totalPrice);
+  }
   const formattedPrice = price.toLocaleString("ko-KR");
-
   return (
     <>
       <Overley className={createProduct ? 'show' : 'hide'}>
@@ -251,14 +374,14 @@ const Product = () => {
             <div className="category-box">
               <span className="cb-title">대분류</span>
               <FilterOuter>
-                <FilterBox onClick={()=>{setOpenCategoryFilter(!openCategoryFilter);}}>
+                <FilterBox onClick={() => { setOpenCategoryFilter(!openCategoryFilter); }}>
                   {choiceCategory}
                 </FilterBox>
                 <FilterList open={openCategoryFilter}>
                   {
-                    initCategory.map((item, i)=>{
+                    initCategory.map((item, i) => {
                       return (
-                        <div className="item" onClick={()=>{
+                        <div className="item" onClick={() => {
                           setChoiceCategory(item.name);
                           setOpenCategoryFilter(false);
                           setChoiceSubCategory('소분류 선택');
@@ -270,18 +393,18 @@ const Product = () => {
               </FilterOuter>
               <span className="cb-title ml">소분류</span>
               <FilterOuter>
-                <FilterBox onClick={()=>{
+                <FilterBox onClick={() => {
                   showSub.length > 0
-                  ? setOpenSubCategoryFilter(!openSubCategoryFilter)
-                  : setOpenSubCategoryFilter(false);
+                    ? setOpenSubCategoryFilter(!openSubCategoryFilter)
+                    : setOpenSubCategoryFilter(false);
                 }}>
                   {choiceSubCategory}
                 </FilterBox>
                 <FilterList open={openSubCategoryFilter}>
-                  {                    
-                    showSub?.map((item, i)=>{
+                  {
+                    showSub?.map((item, i) => {
                       return (
-                        <div className="item" onClick={()=>{setChoiceSubCategory(item.name); setOpenSubCategoryFilter(false);}}>{item.name}</div>
+                        <div className="item" onClick={() => { setChoiceSubCategory(item.name); setOpenSubCategoryFilter(false); }}>{item.name}</div>
                       )
                     })
                   }
@@ -291,11 +414,11 @@ const Product = () => {
           </ProductItem>
           <ProductItem>
             <span className="pi-title">상품명</span>
-            <Input type="text" placeholder="상품명을 입력해 주세요"/>
+            <Input type="text" placeholder="상품명을 입력해 주세요" />
           </ProductItem>
           <ProductItem>
             <span className="pi-title">브랜드[제조사]</span>
-            <Input type="text" placeholder="브랜드를 입력해주세요"/>
+            <Input type="text" placeholder="브랜드를 입력해주세요" />
           </ProductItem>
           <ProductItem>
             <span className="pi-title">상품설명</span>
@@ -309,19 +432,62 @@ const Product = () => {
                 className="price-input"
                 type="number"
                 onChange={handlePriceChange}
-                placeholder="가격을 입력해 주세요"
               />
               <span className="won">{formattedPrice}원</span>
             </div>
-            <div className="dis-box">
-              <span className="dis-title">할인설정</span>
-              <div className="dis-item">
-                <span className="dis-title"></span>
+
+            <span className="dis-title">할인설정</span>
+
+            <CheckBox>
+
+              <CheckItem>
+                <span className="item-title">적용</span>
+                <div className={'radio ' + `${discount ? 'active' : ''}`} onClick={() => { setDiscount(true); }}>
+                  <MdCheck className={'check ' + `${discount ? 'icon-active' : ''}`} />
+                </div>
+              </CheckItem>
+
+              <CheckItem>
+                <span className="item-title">미적용</span>
+                <div className={'radio ' + `${discount ? '' : 'active'}`} onClick={() => { setDiscount(false); }}>
+                  <MdCheck className={'check ' + `${discount ? '' : 'icon-active'}`} />
+                </div>
+              </CheckItem>
+
+            </CheckBox>
+            <DiscountBox show={discount}>
+              <div className="input-box">
+                <span className="input-title">할인율</span>
+                <Input className="discount-input" onChange={handleDiscount}/>
+                <span className="percent">%</span>
               </div>
-            </div>
+              <div className="total-box">
+                <span className="total-title">할인적용가</span>
+                <span className="total-price">{handleDiscountPrice()}원</span>
+              </div>
+              <span className="alert">옵션 선택시 옵션가격 포함 할인적용됩니다</span>
+              <span className="alert">[상품가격 + 옵션추가금액 - 할인율]</span>
+            </DiscountBox>
           </ProductItem>
           <ProductItem>
             <span className="pi-title">배송비</span>
+            <CheckBox>
+
+              <CheckItem>
+                <span className="item-title">유료배송</span>
+                <div className={'radio ' + `${shippingCharge ? 'active' : ''}`} onClick={() => { setShippingCharge(true); }}>
+                  <MdCheck className={'check ' + `${shippingCharge ? 'icon-active' : ''}`} />
+                </div>
+              </CheckItem>
+
+              <CheckItem>
+                <span className="item-title">무료배송</span>
+                <div className={'radio ' + `${shippingCharge ? '' : 'active'}`} onClick={() => { setShippingCharge(false); }}>
+                  <MdCheck className={'check ' + `${shippingCharge ? '' : 'icon-active'}`} />
+                </div>
+              </CheckItem>
+
+            </CheckBox>
           </ProductItem>
           <ProductItem>
             <span className="pi-title">상품옵션</span>
