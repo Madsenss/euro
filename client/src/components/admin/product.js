@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MdCheck, MdClose, MdFilterAlt, MdSearch } from "react-icons/md";
+import { MdAdd, MdCheck, MdClose, MdFilterAlt, MdRemove, MdSearch } from "react-icons/md";
 import styled from "styled-components";
 
 const ProductBox = styled.div`
@@ -127,7 +127,6 @@ const ProductItem = styled.div`
     flex-direction: row;
     align-items: center;
     .won {
-      font-size: 14px;
       font-weight: bold;
       margin-left: 5px;
     }
@@ -188,10 +187,8 @@ const DiscountBox = styled.div`
   margin-top: 20px;
   width: fit-content;
   height: fit-content;
-  display: flex;
+  display: ${props => props.show ? 'flex' : 'none'};
   flex-direction: column;
-  visibility: ${props => props.show ? 'visible' : 'hidden'};
-
   .input-box {
     position: relative;
     display: flex;
@@ -234,7 +231,91 @@ const DiscountBox = styled.div`
     margin-bottom: 5px;
   }
 `
+const ShippingChargeBox = styled.div`
+  margin-top: 20px;
+  width: fit-content;
+  height: fit-content;
+  display: ${props => props.show ? 'flex' : 'none'};
+  align-items: center;
+  .sc-title {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  .sc-price {
+    font-weight: bold;
+    margin-left: 10px;
+  }
+`
 
+const OptionBox = styled.div`
+  margin-top: 20px;
+  width: fit-content;
+  height: fit-content;
+  display: ${props => props.show ? 'flex' : 'none'};
+  flex-direction: column;
+`
+const OptionItem = styled.div`
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 6px;
+  box-shadow: 0px 0px 4px 1px rgb(0, 0, 0, 0.1);
+  padding: 20px 20px 20px 50px;
+  margin-bottom: 20px;
+  .row {
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 20px;
+    .row-title {
+      width: 100px;
+      font-weight: bold;
+    }
+    &.mb {
+      margin-bottom: 0;
+    }
+    &.hide {
+      display: none;
+    }
+  }
+`
+
+const AddButton = styled.div`
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  .icon {
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 50%;
+    padding: 2px;
+    background-color: var(--color);
+    color: #fff;
+    box-shadow: 0px 0px 4px 1px rgb(0, 0, 0, 0.15);
+  }
+  .btn-title {
+    font-weight: bold;
+    font-size: 16px;
+    margin-right: 10px;
+  }
+`
+const RemoveButton = styled(AddButton)`
+  position: absolute;
+  left: 10px;
+  margin-bottom: 0;
+  .icon {
+    background-color: red;
+  }
+`
 
 const FilterOuter = styled.div`
   z-index: 1001;
@@ -316,6 +397,20 @@ const Input = styled.input`
     padding-left: 0;
     padding-right: 18px;
   }
+  &.shipping-input {
+    width: 55px;
+    text-align: end;
+    padding-left: 0;
+    padding-right: 5px;
+  }
+  &.option-input {
+  }
+  &.option-price-input {
+    width: 120px;
+    text-align: end;
+    padding-left: 0;
+    padding-right: 5px;
+  }
 `
 
 const Product = () => {
@@ -329,6 +424,9 @@ const Product = () => {
   const [discount, setDiscount] = useState(false);
   const [discountValue, setDiscountValue] = useState(0);
   const [shippingCharge, setShippingCharge] = useState(false);
+  const [shippingChargeValue, setShippingChargeValue] = useState(0);
+  const [option, setOption] = useState(false);
+  const [optionValue, setOptionValue] = useState([]);
   const initCategory = [
     { id: 0, name: '명품', text: '명품들을 모아뒀습니다.', src: 'A.PNG' },
     { id: 1, name: '라면', text: '라면들을 모아뒀습니다.', src: 'B.PNG' },
@@ -351,7 +449,7 @@ const Product = () => {
   };
   const handleDiscount = (e) => {
     const value = parseInt(e.target.value);
-    if(value > 100 || value < 0) {
+    if (value > 100 || value < 0) {
       alert('할인율은 0 ~ 100 % 사이로만 설정 가능합니다');
       e.target.value = '';
     } else {
@@ -360,9 +458,27 @@ const Product = () => {
   }
   const handleDiscountPrice = () => {
     const totalPrice = price - ((parseFloat(price) / 100) * discountValue);
-    return Math.trunc(totalPrice);
+    return isNaN(totalPrice) ? price : Math.trunc(totalPrice);
+  }
+  const handleShippingCharge = (e) => {
+    const value = parseInt(e.target.value);
+    const deleteNaN = value !== '' && !isNaN(value) ? parseInt(value) : 0;
+    setShippingChargeValue(deleteNaN);
   }
   const formattedPrice = price.toLocaleString("ko-KR");
+  const totalPrice = handleDiscountPrice();
+  const formattedTotalPrice = totalPrice.toLocaleString("ko-KR");
+  const formattedShippingCharge = shippingChargeValue.toLocaleString("ko-KR");
+  const addNewOption = () => {
+    const newId = optionValue.length > 0 ? optionValue[optionValue.length - 1].id + 1 : 1;
+    const newOption = { id: newId, optionName: '', optionPrice: 0 };
+    setOptionValue([...optionValue, newOption]);
+  };
+  const removeOption = (idToRemove) => {
+    const updatedOptions = optionValue.filter((item) => item.id !== idToRemove);
+    setOptionValue(updatedOptions.map((item, index) => ({ ...item, id: index + 1 })));
+  };
+
   return (
     <>
       <Overley className={createProduct ? 'show' : 'hide'}>
@@ -458,12 +574,12 @@ const Product = () => {
             <DiscountBox show={discount}>
               <div className="input-box">
                 <span className="input-title">할인율</span>
-                <Input className="discount-input" onChange={handleDiscount}/>
+                <Input type="number" className="discount-input" onChange={handleDiscount} />
                 <span className="percent">%</span>
               </div>
               <div className="total-box">
                 <span className="total-title">할인적용가</span>
-                <span className="total-price">{handleDiscountPrice()}원</span>
+                <span className="total-price">{formattedTotalPrice}원</span>
               </div>
               <span className="alert">옵션 선택시 옵션가격 포함 할인적용됩니다</span>
               <span className="alert">[상품가격 + 옵션추가금액 - 할인율]</span>
@@ -488,9 +604,62 @@ const Product = () => {
               </CheckItem>
 
             </CheckBox>
+            <ShippingChargeBox show={shippingCharge} onChange={handleShippingCharge}>
+              <span className="sc-title">배송비</span>
+              <Input type="number" className="shipping-input" />
+              <span className="sc-price">{formattedShippingCharge}원</span>
+            </ShippingChargeBox>
           </ProductItem>
           <ProductItem>
             <span className="pi-title">상품옵션</span>
+            <CheckBox>
+              <CheckItem>
+                <span className="item-title">있음</span>
+                <div className={'radio ' + `${option ? 'active' : ''}`} onClick={() => { setOption(true); }}>
+                  <MdCheck className={'check ' + `${option ? 'icon-active' : ''}`} />
+                </div>
+              </CheckItem>
+              <CheckItem>
+                <span className="item-title">없음</span>
+                <div className={'radio ' + `${option ? '' : 'active'}`} onClick={() => { setOption(false); }}>
+                  <MdCheck className={'check ' + `${option ? '' : 'icon-active'}`} />
+                </div>
+              </CheckItem>
+            </CheckBox>
+            <OptionBox show={option}>
+              <AddButton onClick={addNewOption}>
+                <span className="btn-title">옵션 추가</span>
+                <MdAdd className="icon"/>
+              </AddButton>
+              {
+                optionValue.map((item, i)=>{
+                  return (
+                    <OptionItem>
+                      <div className="row">
+                        <span className="row-title">번호</span>
+                        <span className="option-number">{item.id}번 옵션</span>
+                      </div>
+                      <div className="row">
+                        <span className="row-title">옵션명</span>
+                        <Input className="option-input" type="text"/>
+                      </div>
+                      <div className={'row ' + `${discount ? '' : 'mb'}`}>
+                        <span className="row-title">옵션가격</span>
+                        <Input className="option-price-input" type="text"/>
+                        <span className="won">원</span>
+                      </div>
+                      <div className={'row ' + `${discount ? 'mb' : 'hide'}`}>
+                        <span className="row-title">할인적용가</span>
+                        <span className="won">원</span>
+                      </div>
+                      <RemoveButton onClick={()=>{removeOption(item.id)}}>
+                        <MdRemove className="icon"/>
+                      </RemoveButton>
+                    </OptionItem>
+                  )
+                })
+              }
+            </OptionBox>
           </ProductItem>
           <ProductItem>
             <span className="pi-title">이미지 등록</span>
