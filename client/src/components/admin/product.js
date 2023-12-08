@@ -13,7 +13,6 @@ const ProductNav = styled.div`
   height: fit-content;
   margin-bottom: 20px;
   display: flex;
-  border: 1px solid black;
 `
 
 const NavItem = styled.div`
@@ -385,6 +384,9 @@ const Input = styled.input`
       margin: 0;
     }
   }
+  &[type=file] {
+    display: none;
+  }
   &.price-input {
     width: 124px;
     text-align: end;
@@ -412,6 +414,77 @@ const Input = styled.input`
     padding-right: 5px;
   }
 `
+const ImgBox = styled.div`
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  .row {
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 20px;
+    .row-title {
+      font-weight: bold;
+      font-size: 16px;
+      margin-right: 10px;
+    }
+    .label {
+      cursor: pointer;
+      background-color: var(--color);
+      font-weight: bold;
+      color: #fff;
+      font-size: 14px;
+      border-radius: 6px;
+      padding: 10px 15px 10px 15px;
+    }
+  }
+  .grid {
+    width: fit-content;
+    height: fit-content;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+  }
+`
+
+const ImgPreview = styled.div`
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  .img {
+    width: 150px;
+    height: 150px;
+    border: 1px solid #ddd;
+  }
+  .img-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 5px 0px 5px 0px;
+    font-size: 13px;
+  }
+  .mr {
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+  }
+  .empty {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: #eee;
+    font-size: 12px;
+    font-weight: bold;
+  }
+  margin-bottom: 20px;
+`
 
 const Product = () => {
 
@@ -427,6 +500,45 @@ const Product = () => {
   const [shippingChargeValue, setShippingChargeValue] = useState(0);
   const [option, setOption] = useState(false);
   const [optionValue, setOptionValue] = useState([]);
+  const [mainFile, setMainFile] = useState(null);
+  const [mainPreview, setMainPreview] = useState('');
+  const [mainImageName, setMainImageName] = useState('');
+  const [subFile, setSubFile] = useState([]);
+  const [subPreview, setSubPreview] = useState([]);
+  const handleMainChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setMainFile(file);
+      setMainImageName(file.name);
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setMainPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+  const handleSubChange = (e) => {
+    const file = e.target.files;
+    const fileArray = Array.from(file);
+
+    setSubFile(fileArray);
+
+    const previewArray = [];
+    fileArray.forEach((file) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        previewArray.push({
+          name: file.name,
+          image: reader.result
+        });
+        if (previewArray.length === fileArray.length) {
+          setSubPreview([...previewArray]);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  }
   const initCategory = [
     { id: 0, name: '명품', text: '명품들을 모아뒀습니다.', src: 'A.PNG' },
     { id: 1, name: '라면', text: '라면들을 모아뒀습니다.', src: 'B.PNG' },
@@ -476,9 +588,36 @@ const Product = () => {
   };
   const removeOption = (idToRemove) => {
     const updatedOptions = optionValue.filter((item) => item.id !== idToRemove);
-    setOptionValue(updatedOptions.map((item, index) => ({ ...item, id: index + 1 })));
+    setOptionValue(updatedOptions.map((item, i) => ({ ...item, id: i + 1 })));
   };
 
+  const handleOptionNameChange = (e, id) => {
+    const updatedOptions = optionValue.map(item => {
+      if (item.id === id) {
+        return { ...item, optionName: e.target.value };
+      }
+      return item;
+    });
+    setOptionValue(updatedOptions);
+  };
+
+  const handleOptionPriceChange = (e, id) => {
+    const value = parseInt(e.target.value);
+    const updatedOptions = optionValue.map(item => {
+      if (item.id === id) {
+        return { ...item, optionPrice: value };
+      }
+      return item;
+    });
+    setOptionValue(updatedOptions);
+  };
+  const formattedOptionPrice = (price) => {
+    return isNaN(price) || price === '' ? 0 : price.toLocaleString("ko-KR");
+  }
+  const formattedOptionDiscountPrice = (price) => {
+    const totalPrice = price - ((parseFloat(price) / 100) * discountValue);
+    return isNaN(Math.trunc(totalPrice)) || price === '' ? 0 : Math.trunc(totalPrice);
+  }
   return (
     <>
       <Overley className={createProduct ? 'show' : 'hide'}>
@@ -629,31 +768,31 @@ const Product = () => {
             <OptionBox show={option}>
               <AddButton onClick={addNewOption}>
                 <span className="btn-title">옵션 추가</span>
-                <MdAdd className="icon"/>
+                <MdAdd className="icon" />
               </AddButton>
               {
-                optionValue.map((item, i)=>{
+                optionValue.map((item, i) => {
                   return (
-                    <OptionItem>
+                    <OptionItem key={i}>
                       <div className="row">
                         <span className="row-title">번호</span>
                         <span className="option-number">{item.id}번 옵션</span>
                       </div>
                       <div className="row">
                         <span className="row-title">옵션명</span>
-                        <Input className="option-input" type="text"/>
+                        <Input className="option-input" type="text" onChange={(e) => handleOptionNameChange(e, item.id)} />
                       </div>
                       <div className={'row ' + `${discount ? '' : 'mb'}`}>
                         <span className="row-title">옵션가격</span>
-                        <Input className="option-price-input" type="text"/>
-                        <span className="won">원</span>
+                        <Input className="option-price-input" type="number" onChange={(e) => handleOptionPriceChange(e, item.id)} />
+                        <span className="won">{formattedOptionPrice(item.optionPrice)}원</span>
                       </div>
                       <div className={'row ' + `${discount ? 'mb' : 'hide'}`}>
                         <span className="row-title">할인적용가</span>
-                        <span className="won">원</span>
+                        <span className="won">{formattedOptionDiscountPrice(item.optionPrice)}원</span>
                       </div>
-                      <RemoveButton onClick={()=>{removeOption(item.id)}}>
-                        <MdRemove className="icon"/>
+                      <RemoveButton onClick={() => { removeOption(item.id) }}>
+                        <MdRemove className="icon" />
                       </RemoveButton>
                     </OptionItem>
                   )
@@ -663,6 +802,44 @@ const Product = () => {
           </ProductItem>
           <ProductItem>
             <span className="pi-title">이미지 등록</span>
+            <ImgBox>
+              <div className="row">
+                <span className="row-title">대표 이미지</span>
+                <label className="label" for="main">이미지 등록</label>
+                <Input type="file" id="main" onChange={handleMainChange} />
+              </div>
+              <ImgPreview>
+                {
+                  mainPreview && mainPreview
+                    ? <img className="img" src={mainPreview} alt="mainPreview" />
+                    : <div className="empty">파일 없음</div>
+                }
+                {
+                  mainImageName && mainImageName
+                    ? <span className="img-title">{mainImageName}</span>
+                    : null
+                }
+              </ImgPreview>
+              <div className="row">
+                <span className="row-title">상세 이미지</span>
+                <label className="label" for="sub">이미지 등록</label>
+                <Input type="file" id="sub" multiple onChange={handleSubChange} />
+              </div>
+              <div className="grid">
+                {
+                  subPreview && subPreview.length > 0
+                    ? subPreview.map((item, i) => {
+                      return (
+                        <ImgPreview>
+                          <img className="img mr" key={i} src={item.image} alt={`subPreview ${i}`} />
+                          <span className="img-title">{item.name}</span>
+                        </ImgPreview>
+                      )
+                    })
+                    : <ImgPreview><div className="empty">파일 없음</div></ImgPreview>
+                }
+              </div>
+            </ImgBox>
           </ProductItem>
         </ProductModal>
       </Overley>
