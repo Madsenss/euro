@@ -2,19 +2,21 @@ import { useState } from "react";
 import { MdAdd, MdCheck, MdClose, MdFilterAlt, MdRemove, MdSearch } from "react-icons/md";
 import styled from "styled-components";
 
+// 최상위 Outer
 const ProductBox = styled.div`
   width: 100%;
   height: fit-content;
   padding: 20px;
 `
 
+
+// 상단버튼
 const ProductNav = styled.div`
   width: 100%;
   height: fit-content;
   margin-bottom: 20px;
   display: flex;
 `
-
 const NavItem = styled.div`
   cursor: pointer;
   width: 110px;
@@ -35,6 +37,8 @@ const NavItem = styled.div`
   }
 `
 
+
+// 모달
 const Overley = styled.div`
   z-index: 999;
   width: 100%;
@@ -86,7 +90,6 @@ const ProductModal = styled.div`
     margin-bottom: 30px;
   }
 `
-
 const ProductItem = styled.div`
   background-color: #fff;
   width: 100%;
@@ -137,51 +140,29 @@ const ProductItem = styled.div`
   }
 `
 
-const CheckBox = styled.div`
-  width: fit-content;
-  height: fit-content;
-  display: flex;
-  flex-direction: row;
-`
 
-const CheckItem = styled.div`
+// 아이템 - 설명부분
+const ContentBox = styled.div`
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+`
+const ContentItem = styled.div`
   width: fit-content;
   height: fit-content;
   display: flex;
   flex-direction: row;
-  justify-content: center;
   align-items: center;
-  margin-right: 10px;
-  .item-title {
+  margin-bottom: 15px;
+  .content-title {
     font-weight: bold;
-    margin-right: 5px;
-  }
-  .radio {
-    cursor: pointer;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    width: fit-content;
-    height: fit-content;
-    border-radius: 50%;
-    background-color: #eee;
-    border: 1px solid #ddd;
-    &.active {
-      background-color: var(--color);
-    }
-    .check {
-      color: #ddd;
-      padding: 2px;
-      font-size: 16px;
-      &.icon-active {
-        color: blue;
-        color: #fff;
-      }
-    }
+    margin-right: 10px;
   }
 `
 
+
+// 아이템 - 할인부분
 const DiscountBox = styled.div`
   margin-top: 20px;
   width: fit-content;
@@ -230,6 +211,7 @@ const DiscountBox = styled.div`
     margin-bottom: 5px;
   }
 `
+// 아이템 - 배송비부분
 const ShippingChargeBox = styled.div`
   margin-top: 20px;
   width: fit-content;
@@ -246,6 +228,8 @@ const ShippingChargeBox = styled.div`
   }
 `
 
+
+// 아이템 - 옵션부분
 const OptionBox = styled.div`
   margin-top: 20px;
   width: fit-content;
@@ -284,6 +268,127 @@ const OptionItem = styled.div`
   }
 `
 
+
+// 아이템 - 이미지부분
+const ImgBox = styled.div`
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  .row {
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 20px;
+    .row-title {
+      font-weight: bold;
+      font-size: 16px;
+      margin-right: 10px;
+    }
+    .label {
+      cursor: pointer;
+      background-color: var(--color);
+      font-weight: bold;
+      color: #fff;
+      font-size: 14px;
+      border-radius: 6px;
+      padding: 10px 15px 10px 15px;
+    }
+  }
+  .grid {
+    width: fit-content;
+    height: fit-content;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+  }
+`
+const ImgPreview = styled.div`
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  .img {
+    width: 150px;
+    height: 150px;
+    border: 1px solid #ddd;
+  }
+  .img-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 5px 0px 5px 0px;
+    font-size: 13px;
+  }
+  .mr {
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+  }
+  .empty {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: #eee;
+    font-size: 12px;
+    font-weight: bold;
+  }
+  margin-bottom: 20px;
+`
+
+
+// 툴 - 체크박스
+const CheckBox = styled.div`
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: row;
+`
+const CheckItem = styled.div`
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  .item-title {
+    font-weight: bold;
+    margin-right: 5px;
+  }
+  .radio {
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    height: fit-content;
+    border-radius: 50%;
+    background-color: #eee;
+    border: 1px solid #ddd;
+    &.active {
+      background-color: var(--color);
+    }
+    .check {
+      color: #ddd;
+      padding: 2px;
+      font-size: 16px;
+      &.icon-active {
+        color: blue;
+        color: #fff;
+      }
+    }
+  }
+`
+
+
+// 툴 - 추가, 삭제 버튼
 const AddButton = styled.div`
   width: fit-content;
   height: fit-content;
@@ -315,14 +420,19 @@ const RemoveButton = styled(AddButton)`
     background-color: red;
   }
 `
+const RemoveButtonInitial = styled(RemoveButton)`
+  position: initial;
+  margin-right: 10px;
+`
 
+
+// 툴 - 필터
 const FilterOuter = styled.div`
   z-index: 1001;
   position: relative;
   width: fit-content;
   height: fit-content;
 `
-
 const FilterBox = styled.div`
   cursor: pointer;
   width: 200px;
@@ -340,7 +450,6 @@ const FilterBox = styled.div`
     border: 1.5px solid #aaa;
   }
 `
-
 const FilterList = styled.div`
   position: absolute;
   width: 200px;
@@ -365,6 +474,9 @@ const FilterList = styled.div`
     }
   }
 `
+
+
+// 툴 - 인풋
 const Input = styled.input`
   width: 250px;
   height: 28px;
@@ -413,132 +525,69 @@ const Input = styled.input`
     padding-left: 0;
     padding-right: 5px;
   }
-`
-const ImgBox = styled.div`
-  width: fit-content;
-  height: fit-content;
-  display: flex;
-  flex-direction: column;
-  .row {
-    width: fit-content;
-    height: fit-content;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 20px;
-    .row-title {
-      font-weight: bold;
-      font-size: 16px;
-      margin-right: 10px;
-    }
-    .label {
-      cursor: pointer;
-      background-color: var(--color);
-      font-weight: bold;
-      color: #fff;
-      font-size: 14px;
-      border-radius: 6px;
-      padding: 10px 15px 10px 15px;
-    }
-  }
-  .grid {
-    width: fit-content;
-    height: fit-content;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
+  &.content-input {
+    width: 120px;
+    margin-right: 20px;
   }
 `
 
-const ImgPreview = styled.div`
+// 툴 - 등록버튼
+
+const SubmitButton = styled.div`
+  cursor: pointer;
   width: fit-content;
   height: fit-content;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
   justify-content: center;
-  .img {
-    width: 150px;
-    height: 150px;
-    border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: var(--color);
+  color: #fff;
+  box-shadow: 0px 0px 8px 1px rgb(0, 0, 0, 0.2);
+  font-size: 20px;
+  font-weight: bold;
+  padding: 8px 20px 8px 20px;
+  transition: all 0.2s;
+  &:hover {
+    opacity: 0.7;
   }
-  .img-title {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding: 5px 0px 5px 0px;
-    font-size: 13px;
-  }
-  .mr {
-    width: 100px;
-    height: 100px;
-    margin-right: 10px;
-  }
-  .empty {
-    width: 100px;
-    height: 100px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    background-color: #eee;
-    font-size: 12px;
-    font-weight: bold;
-  }
-  margin-bottom: 20px;
 `
 
 const Product = () => {
-
+  // 모달 오픈
   const [createProduct, setCreateProduct] = useState(true);
+
+  // 카테고리
   const [choiceCategory, setChoiceCategory] = useState('대분류 선택');
   const [openCategoryFilter, setOpenCategoryFilter] = useState(false);
   const [openSubCategoryFilter, setOpenSubCategoryFilter] = useState(false);
   const [choiceSubCategory, setChoiceSubCategory] = useState('소분류 선택');
+
+  // 설명
+  const [contentValue, setContentValue] = useState([]);
+
+  // 가격
   const [price, setPrice] = useState(0);
   const [discount, setDiscount] = useState(false);
   const [discountValue, setDiscountValue] = useState(0);
+
+  // 배송비
   const [shippingCharge, setShippingCharge] = useState(false);
   const [shippingChargeValue, setShippingChargeValue] = useState(0);
+
+  // 옵션
   const [option, setOption] = useState(false);
   const [optionValue, setOptionValue] = useState([]);
+
+  // 이미지
   const [mainFile, setMainFile] = useState(null);
   const [mainPreview, setMainPreview] = useState('');
   const [mainImageName, setMainImageName] = useState('');
   const [subFile, setSubFile] = useState([]);
   const [subPreview, setSubPreview] = useState([]);
-  const handleMainChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setMainFile(file);
-      setMainImageName(file.name);
 
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setMainPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-  const handleSubChange = (e) => {
-    const file = e.target.files;
-    const fileArray = Array.from(file);
-
-    setSubFile(fileArray);
-
-    const previewArray = [];
-    fileArray.forEach((file) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        previewArray.push({
-          name: file.name,
-          image: reader.result
-        });
-        if (previewArray.length === fileArray.length) {
-          setSubPreview([...previewArray]);
-        }
-      };
-      reader.readAsDataURL(file);
-    });
-  }
+  // 더미데이터
   const initCategory = [
     { id: 0, name: '명품', text: '명품들을 모아뒀습니다.', src: 'A.PNG' },
     { id: 1, name: '라면', text: '라면들을 모아뒀습니다.', src: 'B.PNG' },
@@ -553,7 +602,10 @@ const Product = () => {
     { id: 5, category: '담배', name: '에쎄', productcount: 6 }
   ];
 
+  // 대분류 소분류 교집합 찾기
   const showSub = initSubCategory.filter((v) => v.category === choiceCategory);
+
+  // 가격 부분 함수
   const handlePriceChange = (e) => {
     const value = parseInt(e.target.value);
     const deleteNaN = value !== '' && !isNaN(value) ? parseInt(value) : 0;
@@ -577,10 +629,44 @@ const Product = () => {
     const deleteNaN = value !== '' && !isNaN(value) ? parseInt(value) : 0;
     setShippingChargeValue(deleteNaN);
   }
+
+  // 한국 원단위 표기 변환 함수
   const formattedPrice = price.toLocaleString("ko-KR");
   const totalPrice = handleDiscountPrice();
   const formattedTotalPrice = totalPrice.toLocaleString("ko-KR");
   const formattedShippingCharge = shippingChargeValue.toLocaleString("ko-KR");
+
+  // 설명 부분 함수
+  const addNewContent = () => {
+    const newId = optionValue.length > 0 ? optionValue[optionValue.length - 1].id + 1 : 1;
+    const newContent = { id: newId, contentTitle: '', contentText: '' };
+    setContentValue([...contentValue, newContent]);
+  };
+  const removeContent = (idToRemove) => {
+    const updatedContents = contentValue.filter((item) => item.id !== idToRemove);
+    setContentValue(updatedContents.map((item, i) => ({ ...item, id: i + 1 })));
+  }
+  const handleContentTitleChange = (e, id) => {
+    const updatedOptions = contentValue.map(item => {
+      if (item.id === id) {
+        return { ...item, contentTitle: e.target.value };
+      }
+      return item;
+    });
+    setContentValue(updatedOptions);
+  };
+  const handleContentTextChange = (e, id) => {
+    const updatedOptions = contentValue.map(item => {
+      if (item.id === id) {
+        return { ...item, contentText: e.target.value };
+      }
+      return item;
+    });
+    setContentValue(updatedOptions);
+  };
+
+
+  // 옵션 부분 함수
   const addNewOption = () => {
     const newId = optionValue.length > 0 ? optionValue[optionValue.length - 1].id + 1 : 1;
     const newOption = { id: newId, optionName: '', optionPrice: 0 };
@@ -590,7 +676,6 @@ const Product = () => {
     const updatedOptions = optionValue.filter((item) => item.id !== idToRemove);
     setOptionValue(updatedOptions.map((item, i) => ({ ...item, id: i + 1 })));
   };
-
   const handleOptionNameChange = (e, id) => {
     const updatedOptions = optionValue.map(item => {
       if (item.id === id) {
@@ -600,7 +685,6 @@ const Product = () => {
     });
     setOptionValue(updatedOptions);
   };
-
   const handleOptionPriceChange = (e, id) => {
     const value = parseInt(e.target.value);
     const updatedOptions = optionValue.map(item => {
@@ -613,11 +697,50 @@ const Product = () => {
   };
   const formattedOptionPrice = (price) => {
     return isNaN(price) || price === '' ? 0 : price.toLocaleString("ko-KR");
-  }
+  };
   const formattedOptionDiscountPrice = (price) => {
     const totalPrice = price - ((parseFloat(price) / 100) * discountValue);
     return isNaN(Math.trunc(totalPrice)) || price === '' ? 0 : Math.trunc(totalPrice);
-  }
+  };
+
+
+  // 이미지 관련 함수
+  const handleMainChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setMainFile(file);
+      setMainImageName(file.name);
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setMainPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  const handleSubChange = (e) => {
+    const file = e.target.files;
+    const fileArray = Array.from(file);
+
+    setSubFile(fileArray);
+
+    const previewArray = [];
+    fileArray.forEach((file) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        previewArray.push({
+          name: file.name,
+          image: reader.result
+        });
+        if (previewArray.length === fileArray.length) {
+          setSubPreview([...previewArray]);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+
   return (
     <>
       <Overley className={createProduct ? 'show' : 'hide'}>
@@ -677,8 +800,38 @@ const Product = () => {
           </ProductItem>
           <ProductItem>
             <span className="pi-title">상품설명</span>
-            <input />
-            <input />
+            <AddButton onClick={addNewContent}>
+              <span className="btn-title">설명 추가</span>
+              <MdAdd className="icon" />
+            </AddButton>
+            <ContentBox>
+              {
+                contentValue.map((item, i) => {
+                  return (
+                    <ContentItem key={i}>
+                      <RemoveButtonInitial>
+                        <MdRemove className="icon" onClick={() => { removeContent(item.id) }} />
+                      </RemoveButtonInitial>
+                      <span className="content-title">제목</span>
+                      <Input
+                        className="content-input"
+                        type="text"
+                        onChange={(e) => { handleContentTitleChange(e, item.id) }}
+                        placeholder="ex) PortSize"
+                      />
+                      <span className="content-title">설명</span>
+                      <Input
+                        className="content-input"
+                        type="text"
+                        onChange={(e) => { handleContentTextChange(e, item.id) }}
+                        placeholder="ex) G1/2"
+                      />
+                      <span className="content-title">[ {item.contentTitle} : {item.contentText} ]</span>
+                    </ContentItem>
+                  )
+                })
+              }
+            </ContentBox>
           </ProductItem>
           <ProductItem>
             <span className="pi-title">가격</span>
@@ -841,6 +994,7 @@ const Product = () => {
               </div>
             </ImgBox>
           </ProductItem>
+          <SubmitButton>상품등록</SubmitButton>
         </ProductModal>
       </Overley>
       <ProductBox>
