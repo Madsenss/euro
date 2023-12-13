@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { MdOutlinePowerSettingsNew , MdArrowRight, MdRestartAlt, MdOutlineFormatListBulleted, MdLocalShipping, MdPerson, MdLightbulbOutline, MdOutlineStickyNote2, MdSettings, MdHome, MdSell } from "react-icons/md";
 import { useState } from "react";
 import Main from "./main";
-import Product from "./product";
+import Product from "./product/product";
 import Category from "./category";
 const AdminBox = styled.div`
   width: 100%;

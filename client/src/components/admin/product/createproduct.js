@@ -1,43 +1,6 @@
-import { useState } from "react";
+import { useState } from "react"
+import styled from "styled-components"
 import { MdAdd, MdCheck, MdClose, MdFilterAlt, MdRemove, MdSearch } from "react-icons/md";
-import styled from "styled-components";
-
-// 최상위 Outer
-const ProductBox = styled.div`
-  width: 100%;
-  height: fit-content;
-  padding: 20px;
-`
-
-
-// 상단버튼
-const ProductNav = styled.div`
-  width: 100%;
-  height: fit-content;
-  margin-bottom: 20px;
-  display: flex;
-`
-const NavItem = styled.div`
-  cursor: pointer;
-  width: 110px;
-  height: 40px;
-  background-color: var(--color);
-  color: #fff;
-  border-radius: 4px;
-  margin-right: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  font-weight: bold;
-  box-shadow: 0px 0px 4px 1px rgb(0, 0, 0, 0.2);
-  transition: all 0.25s;
-  &:hover {
-    opacity: 0.7;
-  }
-`
-
-
 // 모달
 const Overley = styled.div`
   z-index: 999;
@@ -90,6 +53,9 @@ const ProductModal = styled.div`
     margin-bottom: 30px;
   }
 `
+
+
+// 아이템 DIV
 const ProductItem = styled.div`
   background-color: #fff;
   width: 100%;
@@ -211,6 +177,8 @@ const DiscountBox = styled.div`
     margin-bottom: 5px;
   }
 `
+
+
 // 아이템 - 배송비부분
 const ShippingChargeBox = styled.div`
   margin-top: 20px;
@@ -258,6 +226,17 @@ const OptionItem = styled.div`
     .row-title {
       width: 100px;
       font-weight: bold;
+    }
+    .won {
+      font-weight: bold;
+      margin-left: 10px;
+      &.ml {
+        margin-left: 0;
+      }
+    }
+    .total {
+      font-weight: bold;
+      color: var(--color);
     }
     &.mb {
       margin-bottom: 0;
@@ -311,11 +290,12 @@ const ImgPreview = styled.div`
   flex-direction: column;
   justify-content: center;
   .img {
-    width: 150px;
-    height: 150px;
+    width: 100px;
+    height: 100px;
     border: 1px solid #ddd;
   }
   .img-title {
+    max-width: 100px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -554,18 +534,17 @@ const SubmitButton = styled.div`
   }
 `
 
-const Product = () => {
-  // 모달 오픈
-  const [createProduct, setCreateProduct] = useState(true);
+const CreateProduct = ({ open, initCategory, initSubCategory, onClose }) => {
 
-  // 카테고리
   const [choiceCategory, setChoiceCategory] = useState('대분류 선택');
   const [openCategoryFilter, setOpenCategoryFilter] = useState(false);
   const [openSubCategoryFilter, setOpenSubCategoryFilter] = useState(false);
   const [choiceSubCategory, setChoiceSubCategory] = useState('소분류 선택');
 
+
   // 설명
   const [contentValue, setContentValue] = useState([]);
+
 
   // 가격
   const [price, setPrice] = useState(0);
@@ -580,6 +559,7 @@ const Product = () => {
   const [option, setOption] = useState(false);
   const [optionValue, setOptionValue] = useState([]);
 
+
   // 이미지
   const [mainFile, setMainFile] = useState(null);
   const [mainPreview, setMainPreview] = useState('');
@@ -587,24 +567,15 @@ const Product = () => {
   const [subFile, setSubFile] = useState([]);
   const [subPreview, setSubPreview] = useState([]);
 
-  // 더미데이터
-  const initCategory = [
-    { id: 0, name: '명품', text: '명품들을 모아뒀습니다.', src: 'A.PNG' },
-    { id: 1, name: '라면', text: '라면들을 모아뒀습니다.', src: 'B.PNG' },
-    { id: 2, name: '담배', text: '담배들을 모아뒀습니다.', src: 'C.PNG' },
-  ]
-  const initSubCategory = [
-    { id: 0, category: '명품', name: '프라다', productcount: 1 },
-    { id: 1, category: '명품', name: '구찌', productcount: 2 },
-    { id: 2, category: '라면', name: '농심', productcount: 3 },
-    { id: 3, category: '라면', name: '오뚜기', productcount: 4 },
-    { id: 4, category: '담배', name: '말보로', productcount: 5 },
-    { id: 5, category: '담배', name: '에쎄', productcount: 6 }
-  ];
 
-  // 대분류 소분류 교집합 찾기
   const showSub = initSubCategory.filter((v) => v.category === choiceCategory);
 
+  // 모달창 닫기
+  const handleClose = () => {
+    onClose();
+  }
+
+  
   // 가격 부분 함수
   const handlePriceChange = (e) => {
     const value = parseInt(e.target.value);
@@ -630,7 +601,7 @@ const Product = () => {
     setShippingChargeValue(deleteNaN);
   }
 
-  // 한국 원단위 표기 변환 함수
+  // 한국 원단위 표기 변환 변수
   const formattedPrice = price.toLocaleString("ko-KR");
   const totalPrice = handleDiscountPrice();
   const formattedTotalPrice = totalPrice.toLocaleString("ko-KR");
@@ -740,271 +711,262 @@ const Product = () => {
     });
   };
 
-
   return (
-    <>
-      <Overley className={createProduct ? 'show' : 'hide'}>
-        <ProductModal>
-          <MdClose className="close" onClick={() => { setCreateProduct(false); }} />
-          <span className="title">상품등록</span>
-          <ProductItem>
-            <span className="pi-title">카테고리</span>
-            <div className="category-box">
-              <span className="cb-title">대분류</span>
-              <FilterOuter>
-                <FilterBox onClick={() => { setOpenCategoryFilter(!openCategoryFilter); }}>
-                  {choiceCategory}
-                </FilterBox>
-                <FilterList open={openCategoryFilter}>
-                  {
-                    initCategory.map((item, i) => {
-                      return (
-                        <div className="item" onClick={() => {
-                          setChoiceCategory(item.name);
-                          setOpenCategoryFilter(false);
-                          setChoiceSubCategory('소분류 선택');
-                        }}>{item.name}</div>
-                      )
-                    })
-                  }
-                </FilterList>
-              </FilterOuter>
-              <span className="cb-title ml">소분류</span>
-              <FilterOuter>
-                <FilterBox onClick={() => {
-                  showSub.length > 0
-                    ? setOpenSubCategoryFilter(!openSubCategoryFilter)
-                    : setOpenSubCategoryFilter(false);
-                }}>
-                  {choiceSubCategory}
-                </FilterBox>
-                <FilterList open={openSubCategoryFilter}>
-                  {
-                    showSub?.map((item, i) => {
-                      return (
-                        <div className="item" onClick={() => { setChoiceSubCategory(item.name); setOpenSubCategoryFilter(false); }}>{item.name}</div>
-                      )
-                    })
-                  }
-                </FilterList>
-              </FilterOuter>
+    <Overley className={open ? 'show' : 'hide'}>
+      <ProductModal>
+        <MdClose className="close" onClick={() => { handleClose(); }} />
+        <span className="title">상품등록</span>
+        <ProductItem>
+          <span className="pi-title">카테고리</span>
+          <div className="category-box">
+            <span className="cb-title">대분류</span>
+            <FilterOuter>
+              <FilterBox onClick={() => { setOpenCategoryFilter(!openCategoryFilter); }}>
+                {choiceCategory}
+              </FilterBox>
+              <FilterList open={openCategoryFilter}>
+                {
+                  initCategory.map((item, i) => {
+                    return (
+                      <div key={i} className="item" onClick={() => {
+                        setChoiceCategory(item.name);
+                        setOpenCategoryFilter(false);
+                        setChoiceSubCategory('소분류 선택');
+                      }}>{item.name}</div>
+                    )
+                  })
+                }
+              </FilterList>
+            </FilterOuter>
+            <span className="cb-title ml">소분류</span>
+            <FilterOuter>
+              <FilterBox onClick={() => {
+                showSub.length > 0
+                  ? setOpenSubCategoryFilter(!openSubCategoryFilter)
+                  : setOpenSubCategoryFilter(false);
+              }}>
+                {choiceSubCategory}
+              </FilterBox>
+              <FilterList open={openSubCategoryFilter}>
+                {
+                  showSub?.map((item, i) => {
+                    return (
+                      <div key={i} className="item" onClick={() => { setChoiceSubCategory(item.name); setOpenSubCategoryFilter(false); }}>{item.name}</div>
+                    )
+                  })
+                }
+              </FilterList>
+            </FilterOuter>
+          </div>
+        </ProductItem>
+        <ProductItem>
+          <span className="pi-title">상품명</span>
+          <Input type="text" placeholder="상품명을 입력해 주세요" />
+        </ProductItem>
+        <ProductItem>
+          <span className="pi-title">브랜드[제조사]</span>
+          <Input type="text" placeholder="브랜드를 입력해주세요" />
+        </ProductItem>
+        <ProductItem>
+          <span className="pi-title">상품설명</span>
+          <AddButton onClick={addNewContent}>
+            <span className="btn-title">설명 추가</span>
+            <MdAdd className="icon" />
+          </AddButton>
+          <ContentBox>
+            {
+              contentValue.map((item, i) => {
+                return (
+                  <ContentItem key={i}>
+                    <RemoveButtonInitial>
+                      <MdRemove className="icon" onClick={() => { removeContent(item.id) }} />
+                    </RemoveButtonInitial>
+                    <span className="content-title">제목</span>
+                    <Input
+                      className="content-input"
+                      type="text"
+                      onChange={(e) => { handleContentTitleChange(e, item.id) }}
+                      placeholder="ex) PortSize"
+                    />
+                    <span className="content-title">설명</span>
+                    <Input
+                      className="content-input"
+                      type="text"
+                      onChange={(e) => { handleContentTextChange(e, item.id) }}
+                      placeholder="ex) G1/2"
+                    />
+                    <span className="content-title">[ {item.contentTitle} : {item.contentText} ]</span>
+                  </ContentItem>
+                )
+              })
+            }
+          </ContentBox>
+        </ProductItem>
+        <ProductItem>
+          <span className="pi-title">가격</span>
+          <div className="price-box">
+            <Input
+              className="price-input"
+              type="number"
+              onChange={handlePriceChange}
+            />
+            <span className="won">{formattedPrice}원</span>
+          </div>
+
+          <span className="dis-title">할인설정</span>
+
+          <CheckBox>
+
+            <CheckItem>
+              <span className="item-title">적용</span>
+              <div className={'radio ' + `${discount ? 'active' : ''}`} onClick={() => { setDiscount(true); }}>
+                <MdCheck className={'check ' + `${discount ? 'icon-active' : ''}`} />
+              </div>
+            </CheckItem>
+
+            <CheckItem>
+              <span className="item-title">미적용</span>
+              <div className={'radio ' + `${discount ? '' : 'active'}`} onClick={() => { setDiscount(false); }}>
+                <MdCheck className={'check ' + `${discount ? '' : 'icon-active'}`} />
+              </div>
+            </CheckItem>
+
+          </CheckBox>
+          <DiscountBox show={discount}>
+            <div className="input-box">
+              <span className="input-title">할인율</span>
+              <Input type="number" className="discount-input" onChange={handleDiscount} />
+              <span className="percent">%</span>
             </div>
-          </ProductItem>
-          <ProductItem>
-            <span className="pi-title">상품명</span>
-            <Input type="text" placeholder="상품명을 입력해 주세요" />
-          </ProductItem>
-          <ProductItem>
-            <span className="pi-title">브랜드[제조사]</span>
-            <Input type="text" placeholder="브랜드를 입력해주세요" />
-          </ProductItem>
-          <ProductItem>
-            <span className="pi-title">상품설명</span>
-            <AddButton onClick={addNewContent}>
-              <span className="btn-title">설명 추가</span>
+            <div className="total-box">
+              <span className="total-title">할인적용가</span>
+              <span className="total-price">{formattedTotalPrice}원</span>
+            </div>
+            <span className="alert">옵션 선택시 옵션가격 포함 할인적용됩니다</span>
+            <span className="alert">[상품가격 + 옵션추가금액 - 할인율]</span>
+          </DiscountBox>
+        </ProductItem>
+        <ProductItem>
+          <span className="pi-title">배송비</span>
+          <CheckBox>
+
+            <CheckItem>
+              <span className="item-title">유료배송</span>
+              <div className={'radio ' + `${shippingCharge ? 'active' : ''}`} onClick={() => { setShippingCharge(true); }}>
+                <MdCheck className={'check ' + `${shippingCharge ? 'icon-active' : ''}`} />
+              </div>
+            </CheckItem>
+
+            <CheckItem>
+              <span className="item-title">무료배송</span>
+              <div className={'radio ' + `${shippingCharge ? '' : 'active'}`} onClick={() => { setShippingCharge(false); }}>
+                <MdCheck className={'check ' + `${shippingCharge ? '' : 'icon-active'}`} />
+              </div>
+            </CheckItem>
+
+          </CheckBox>
+          <ShippingChargeBox show={shippingCharge} onChange={handleShippingCharge}>
+            <span className="sc-title">배송비</span>
+            <Input type="number" className="shipping-input" />
+            <span className="sc-price">{formattedShippingCharge}원</span>
+          </ShippingChargeBox>
+        </ProductItem>
+        <ProductItem>
+          <span className="pi-title">상품옵션</span>
+          <CheckBox>
+            <CheckItem>
+              <span className="item-title">있음</span>
+              <div className={'radio ' + `${option ? 'active' : ''}`} onClick={() => { setOption(true); }}>
+                <MdCheck className={'check ' + `${option ? 'icon-active' : ''}`} />
+              </div>
+            </CheckItem>
+            <CheckItem>
+              <span className="item-title">없음</span>
+              <div className={'radio ' + `${option ? '' : 'active'}`} onClick={() => { setOption(false); }}>
+                <MdCheck className={'check ' + `${option ? '' : 'icon-active'}`} />
+              </div>
+            </CheckItem>
+          </CheckBox>
+          <OptionBox show={option}>
+            <AddButton onClick={addNewOption}>
+              <span className="btn-title">옵션 추가</span>
               <MdAdd className="icon" />
             </AddButton>
-            <ContentBox>
-              {
-                contentValue.map((item, i) => {
-                  return (
-                    <ContentItem key={i}>
-                      <RemoveButtonInitial>
-                        <MdRemove className="icon" onClick={() => { removeContent(item.id) }} />
-                      </RemoveButtonInitial>
-                      <span className="content-title">제목</span>
-                      <Input
-                        className="content-input"
-                        type="text"
-                        onChange={(e) => { handleContentTitleChange(e, item.id) }}
-                        placeholder="ex) PortSize"
-                      />
-                      <span className="content-title">설명</span>
-                      <Input
-                        className="content-input"
-                        type="text"
-                        onChange={(e) => { handleContentTextChange(e, item.id) }}
-                        placeholder="ex) G1/2"
-                      />
-                      <span className="content-title">[ {item.contentTitle} : {item.contentText} ]</span>
-                    </ContentItem>
-                  )
-                })
-              }
-            </ContentBox>
-          </ProductItem>
-          <ProductItem>
-            <span className="pi-title">가격</span>
-            <div className="price-box">
-              <Input
-                className="price-input"
-                type="number"
-                onChange={handlePriceChange}
-              />
-              <span className="won">{formattedPrice}원</span>
+            {
+              optionValue.map((item, i) => {
+                return (
+                  <OptionItem key={i}>
+                    <div className="row">
+                      <span className="row-title">번호</span>
+                      <span className="option-number">{item.id}번 옵션</span>
+                    </div>
+                    <div className="row">
+                      <span className="row-title">옵션명</span>
+                      <Input className="option-input" type="text" onChange={(e) => handleOptionNameChange(e, item.id)} />
+                    </div>
+                    <div className={'row ' + `${discount ? '' : 'mb'}`}>
+                      <span className="row-title">옵션가격</span>
+                      <Input className="option-price-input" type="number" onChange={(e) => handleOptionPriceChange(e, item.id)} />
+                      <span className="won">{formattedOptionPrice(item.optionPrice)}원</span>
+                    </div>
+                    <div className={'row ' + `${discount ? 'mb' : 'hide'}`}>
+                      <span className="row-title total">할인적용가</span>
+                      <span className="won ml">{formattedOptionDiscountPrice(item.optionPrice)}원</span>
+                    </div>
+                    <RemoveButton onClick={() => { removeOption(item.id) }}>
+                      <MdRemove className="icon" />
+                    </RemoveButton>
+                  </OptionItem>
+                )
+              })
+            }
+          </OptionBox>
+        </ProductItem>
+        <ProductItem>
+          <span className="pi-title">이미지 등록</span>
+          <ImgBox>
+            <div className="row">
+              <span className="row-title">대표 이미지</span>
+              <label className="label" for="main">이미지 등록</label>
+              <Input type="file" id="main" onChange={handleMainChange} />
             </div>
-
-            <span className="dis-title">할인설정</span>
-
-            <CheckBox>
-
-              <CheckItem>
-                <span className="item-title">적용</span>
-                <div className={'radio ' + `${discount ? 'active' : ''}`} onClick={() => { setDiscount(true); }}>
-                  <MdCheck className={'check ' + `${discount ? 'icon-active' : ''}`} />
-                </div>
-              </CheckItem>
-
-              <CheckItem>
-                <span className="item-title">미적용</span>
-                <div className={'radio ' + `${discount ? '' : 'active'}`} onClick={() => { setDiscount(false); }}>
-                  <MdCheck className={'check ' + `${discount ? '' : 'icon-active'}`} />
-                </div>
-              </CheckItem>
-
-            </CheckBox>
-            <DiscountBox show={discount}>
-              <div className="input-box">
-                <span className="input-title">할인율</span>
-                <Input type="number" className="discount-input" onChange={handleDiscount} />
-                <span className="percent">%</span>
-              </div>
-              <div className="total-box">
-                <span className="total-title">할인적용가</span>
-                <span className="total-price">{formattedTotalPrice}원</span>
-              </div>
-              <span className="alert">옵션 선택시 옵션가격 포함 할인적용됩니다</span>
-              <span className="alert">[상품가격 + 옵션추가금액 - 할인율]</span>
-            </DiscountBox>
-          </ProductItem>
-          <ProductItem>
-            <span className="pi-title">배송비</span>
-            <CheckBox>
-
-              <CheckItem>
-                <span className="item-title">유료배송</span>
-                <div className={'radio ' + `${shippingCharge ? 'active' : ''}`} onClick={() => { setShippingCharge(true); }}>
-                  <MdCheck className={'check ' + `${shippingCharge ? 'icon-active' : ''}`} />
-                </div>
-              </CheckItem>
-
-              <CheckItem>
-                <span className="item-title">무료배송</span>
-                <div className={'radio ' + `${shippingCharge ? '' : 'active'}`} onClick={() => { setShippingCharge(false); }}>
-                  <MdCheck className={'check ' + `${shippingCharge ? '' : 'icon-active'}`} />
-                </div>
-              </CheckItem>
-
-            </CheckBox>
-            <ShippingChargeBox show={shippingCharge} onChange={handleShippingCharge}>
-              <span className="sc-title">배송비</span>
-              <Input type="number" className="shipping-input" />
-              <span className="sc-price">{formattedShippingCharge}원</span>
-            </ShippingChargeBox>
-          </ProductItem>
-          <ProductItem>
-            <span className="pi-title">상품옵션</span>
-            <CheckBox>
-              <CheckItem>
-                <span className="item-title">있음</span>
-                <div className={'radio ' + `${option ? 'active' : ''}`} onClick={() => { setOption(true); }}>
-                  <MdCheck className={'check ' + `${option ? 'icon-active' : ''}`} />
-                </div>
-              </CheckItem>
-              <CheckItem>
-                <span className="item-title">없음</span>
-                <div className={'radio ' + `${option ? '' : 'active'}`} onClick={() => { setOption(false); }}>
-                  <MdCheck className={'check ' + `${option ? '' : 'icon-active'}`} />
-                </div>
-              </CheckItem>
-            </CheckBox>
-            <OptionBox show={option}>
-              <AddButton onClick={addNewOption}>
-                <span className="btn-title">옵션 추가</span>
-                <MdAdd className="icon" />
-              </AddButton>
+            <ImgPreview>
               {
-                optionValue.map((item, i) => {
-                  return (
-                    <OptionItem key={i}>
-                      <div className="row">
-                        <span className="row-title">번호</span>
-                        <span className="option-number">{item.id}번 옵션</span>
-                      </div>
-                      <div className="row">
-                        <span className="row-title">옵션명</span>
-                        <Input className="option-input" type="text" onChange={(e) => handleOptionNameChange(e, item.id)} />
-                      </div>
-                      <div className={'row ' + `${discount ? '' : 'mb'}`}>
-                        <span className="row-title">옵션가격</span>
-                        <Input className="option-price-input" type="number" onChange={(e) => handleOptionPriceChange(e, item.id)} />
-                        <span className="won">{formattedOptionPrice(item.optionPrice)}원</span>
-                      </div>
-                      <div className={'row ' + `${discount ? 'mb' : 'hide'}`}>
-                        <span className="row-title">할인적용가</span>
-                        <span className="won">{formattedOptionDiscountPrice(item.optionPrice)}원</span>
-                      </div>
-                      <RemoveButton onClick={() => { removeOption(item.id) }}>
-                        <MdRemove className="icon" />
-                      </RemoveButton>
-                    </OptionItem>
-                  )
-                })
+                mainPreview && mainPreview
+                  ? <img className="img" src={mainPreview} alt="mainPreview" />
+                  : <div className="empty">파일 없음</div>
               }
-            </OptionBox>
-          </ProductItem>
-          <ProductItem>
-            <span className="pi-title">이미지 등록</span>
-            <ImgBox>
-              <div className="row">
-                <span className="row-title">대표 이미지</span>
-                <label className="label" for="main">이미지 등록</label>
-                <Input type="file" id="main" onChange={handleMainChange} />
-              </div>
-              <ImgPreview>
-                {
-                  mainPreview && mainPreview
-                    ? <img className="img" src={mainPreview} alt="mainPreview" />
-                    : <div className="empty">파일 없음</div>
-                }
-                {
-                  mainImageName && mainImageName
-                    ? <span className="img-title">{mainImageName}</span>
-                    : null
-                }
-              </ImgPreview>
-              <div className="row">
-                <span className="row-title">상세 이미지</span>
-                <label className="label" for="sub">이미지 등록</label>
-                <Input type="file" id="sub" multiple onChange={handleSubChange} />
-              </div>
-              <div className="grid">
-                {
-                  subPreview && subPreview.length > 0
-                    ? subPreview.map((item, i) => {
-                      return (
-                        <ImgPreview>
-                          <img className="img mr" key={i} src={item.image} alt={`subPreview ${i}`} />
-                          <span className="img-title">{item.name}</span>
-                        </ImgPreview>
-                      )
-                    })
-                    : <ImgPreview><div className="empty">파일 없음</div></ImgPreview>
-                }
-              </div>
-            </ImgBox>
-          </ProductItem>
-          <SubmitButton>상품등록</SubmitButton>
-        </ProductModal>
-      </Overley>
-      <ProductBox>
-        <ProductNav>
-          <NavItem onClick={() => { setCreateProduct(true); }}>상품 등록</NavItem>
-        </ProductNav>
-      </ProductBox>
-    </>
-
+              {
+                mainImageName && mainImageName
+                  ? <span className="img-title">{mainImageName}</span>
+                  : null
+              }
+            </ImgPreview>
+            <div className="row">
+              <span className="row-title">상세 이미지</span>
+              <label className="label" for="sub">이미지 등록</label>
+              <Input type="file" id="sub" multiple onChange={handleSubChange} />
+            </div>
+            <div className="grid">
+              {
+                subPreview && subPreview.length > 0
+                  ? subPreview.map((item, i) => {
+                    return (
+                      <ImgPreview>
+                        <img className="img mr" key={i} src={item.image} alt={`subPreview ${i}`} />
+                        <span className="img-title">{item.name}</span>
+                      </ImgPreview>
+                    )
+                  })
+                  : <ImgPreview><div className="empty">파일 없음</div></ImgPreview>
+              }
+            </div>
+          </ImgBox>
+        </ProductItem>
+        <SubmitButton>상품등록</SubmitButton>
+      </ProductModal>
+    </Overley>
   )
 };
 
-export default Product;
+export default CreateProduct;
