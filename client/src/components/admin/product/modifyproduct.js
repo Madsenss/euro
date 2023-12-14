@@ -512,7 +512,8 @@ const Input = styled.input`
   }
 `
 
-// 툴 - 등록버튼
+
+// 툴 - 수정 삭제 버튼, DIV
 
 const SubmitButton = styled.div`
   cursor: pointer;
@@ -534,17 +535,40 @@ const SubmitButton = styled.div`
     opacity: 0.7;
   }
 `
+const ButtonBox = styled.div`
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: end;
+`
+const DeleteButton = styled(SubmitButton)`
+  background-color: red;
+  margin: 0px 10px 0px 10px;
+`
+const ModifyButton = styled(SubmitButton)`
+  background-color: green;
+  margin: 0px 10px 0px 10px;
+`
+
+
+// 상품데이터, 모달오픈상태, 닫기함수, 대분류데이터, 소분류데이터 
 const ModifyProduct = ({ productData, open, onClose, initCategory, initSubCategory }) => {
+  // 카테고리
   const [choiceCategory, setChoiceCategory] = useState('대분류 선택');
+  const [choiceSubCategory, setChoiceSubCategory] = useState('소분류 선택');
   const [openCategoryFilter, setOpenCategoryFilter] = useState(false);
   const [openSubCategoryFilter, setOpenSubCategoryFilter] = useState(false);
-  const [choiceSubCategory, setChoiceSubCategory] = useState('소분류 선택');
 
+  // 상품명
   const [productName, setProductName] = useState('');
+
+  // 브랜드
   const [brand, setBrand] = useState('');
+
   // 설명
   const [contentValue, setContentValue] = useState([]);
-
 
   // 가격
   const [price, setPrice] = useState(0);
@@ -559,35 +583,43 @@ const ModifyProduct = ({ productData, open, onClose, initCategory, initSubCatego
   const [option, setOption] = useState(false);
   const [optionValue, setOptionValue] = useState([]);
 
-
   // 이미지
-  const [mainFile, setMainFile] = useState(null);
-  const [mainPreview, setMainPreview] = useState('');
+  // 변경시 파일저장
+  const [modifyMainFile, setModifyMainFile] = useState(null);
+  const [modifySubFile, setModifySubFile] = useState([]);
+  // 기존 파일명
   const [mainImageName, setMainImageName] = useState('');
-  const [subFile, setSubFile] = useState([]);
+  const [subImageName, setSubImageName] = useState([]);
+  // 변경 파일명
+  const [modifyMainImageName, setModifyMainImageName] = useState('');
+  const [modifySubImageName, setModifySubImageName] = useState([]);
+  // 변경 프리뷰
+  const [mainPreview, setMainPreview] = useState('');
   const [subPreview, setSubPreview] = useState([]);
 
-
+  // 대분류 소분류 교집합 필터
   const showSub = initSubCategory.filter((v) => v.category === choiceCategory);
 
-  useEffect(() => {
-    setProductName(productData && productData.name);
-    setBrand(productData && productData.brand);
-    setContentValue(productData && productData.contentValue || []);
-    setPrice(productData && productData.price);
-    setDiscount(productData && productData.discount);
-    setDiscountValue(productData && productData.discountValue);
-    setShippingCharge(productData && productData.shippingCharge);
-    setShippingChargeValue(productData && productData.shippingChargeValue);
-    setOption(productData && productData.option);
-    setOptionValue(productData && productData.optionValue || []);
-  }, [productData && productData]);
+
   // 모달창 닫기
   const handleClose = () => {
     onClose();
   }
 
-  
+
+  // 상품명 부분 함수
+  const handleNameChange = (e) => {
+    const value = e.target.value;
+    setProductName(value);
+  };
+
+
+  // 브랜드 부분 함수
+  const handleBrandChange = (e) => {
+    const value = e.target.value;
+  };
+
+
   // 가격 부분 함수
   const handlePriceChange = (e) => {
     const value = parseInt(e.target.value);
@@ -597,8 +629,8 @@ const ModifyProduct = ({ productData, open, onClose, initCategory, initSubCatego
   const handleDiscount = (e) => {
     const value = parseInt(e.target.value);
     if (value > 100 || value < 0) {
-      alert('할인율은 0 ~ 100 % 사이로만 설정 가능합니다');
       e.target.value = '';
+      alert('할인율은 0 ~ 100 % 사이로만 설정 가능합니다');
     } else {
       setDiscountValue(value);
     }
@@ -612,12 +644,11 @@ const ModifyProduct = ({ productData, open, onClose, initCategory, initSubCatego
     const deleteNaN = value !== '' && !isNaN(value) ? parseInt(value) : 0;
     setShippingChargeValue(deleteNaN);
   }
-
   // 한국 원단위 표기 변환 변수
-  const formattedPrice = price?.toLocaleString("ko-KR");
+  const formattedPrice = price && price.toLocaleString("ko-KR");
   const totalPrice = handleDiscountPrice();
-  const formattedTotalPrice = totalPrice?.toLocaleString("ko-KR");
-  const formattedShippingCharge = shippingChargeValue?.toLocaleString("ko-KR");
+  const formattedTotalPrice = totalPrice && totalPrice.toLocaleString("ko-KR");
+  const formattedShippingCharge = shippingChargeValue && shippingChargeValue.toLocaleString("ko-KR");
 
   // 설명 부분 함수
   const addNewContent = () => {
@@ -688,12 +719,11 @@ const ModifyProduct = ({ productData, open, onClose, initCategory, initSubCatego
 
 
   // 이미지 관련 함수
-  const handleMainChange = (e) => {
+  const handleModifyMainImg = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setMainFile(file);
-      setMainImageName(file.name);
-
+      setModifyMainFile(file);
+      setModifyMainImageName(file.name);
       const reader = new FileReader();
       reader.onloadend = () => {
         setMainPreview(reader.result);
@@ -701,13 +731,16 @@ const ModifyProduct = ({ productData, open, onClose, initCategory, initSubCatego
       reader.readAsDataURL(file);
     }
   };
-  const handleSubChange = (e) => {
+  const handleModifySubImg = (e) => {
     const file = e.target.files;
     const fileArray = Array.from(file);
+    const nameArray = fileArray.map((item) => file.name);
 
-    setSubFile(fileArray);
+    setModifySubFile(fileArray);
+    setModifySubImageName(nameArray);
 
     const previewArray = [];
+
     fileArray.forEach((file) => {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -722,19 +755,39 @@ const ModifyProduct = ({ productData, open, onClose, initCategory, initSubCatego
       reader.readAsDataURL(file);
     });
   };
-  const [changeMode, setChangeMode] = useState(false);
+
+  // props 데이터 세팅
+  // form에 안바뀐건 그대로 전송 / 바뀐건 handle로 변경 후 전송
+  useEffect(() => {
+    setChoiceCategory(productData && productData.category);
+    setChoiceSubCategory(productData && productData.subCategory);
+    setProductName(productData && productData.name);
+    setBrand(productData && productData.brand);
+    setContentValue(productData && productData.contentValue || []);
+    setPrice(productData && productData.price);
+    setDiscount(productData && productData.discount);
+    setDiscountValue(productData && productData.discountValue);
+    setShippingCharge(productData && productData.shippingCharge);
+    setShippingChargeValue(productData && productData.shippingChargeValue);
+    setOption(productData && productData.option);
+    setOptionValue(productData && productData.optionValue || []);
+    setMainImageName(productData && productData.mainImg);
+    setSubImageName(productData && productData.subImg || []);
+  }, [productData && productData]);
+
   return (
     <Overley className={open ? 'show' : 'hide'}>
       <ProductModal>
         <MdClose className="close" onClick={() => { handleClose(); }} />
         <span className="title">상품등록</span>
+        {/* 카테고리 */}
         <ProductItem>
           <span className="pi-title">카테고리</span>
           <div className="category-box">
             <span className="cb-title">대분류</span>
             <FilterOuter>
               <FilterBox onClick={() => { setOpenCategoryFilter(!openCategoryFilter); }}>
-                {productData && productData.category}
+                {choiceCategory}
               </FilterBox>
               <FilterList open={openCategoryFilter}>
                 {
@@ -771,14 +824,17 @@ const ModifyProduct = ({ productData, open, onClose, initCategory, initSubCatego
             </FilterOuter>
           </div>
         </ProductItem>
+        {/* 상품명 */}
         <ProductItem>
-          <span className="pi-title">상품명</span>
-          <Input type="text" defaultValue={productName} placeholder="상품명을 입력해 주세요" />
+          <span className="pi-title" >상품명</span>
+          <Input type="text" defaultValue={productName} placeholder="상품명을 입력해 주세요" onChange={handleNameChange} />
         </ProductItem>
+        {/* 브랜드 */}
         <ProductItem>
           <span className="pi-title">브랜드[제조사]</span>
-          <Input type="text" defaultValue={brand} placeholder="브랜드를 입력해주세요" />
+          <Input type="text" defaultValue={brand} placeholder="브랜드를 입력해주세요" onChange={handleBrandChange} />
         </ProductItem>
+        {/* 제원 및 설명 */}
         <ProductItem>
           <span className="pi-title">상품설명</span>
           <AddButton onClick={addNewContent}>
@@ -797,6 +853,7 @@ const ModifyProduct = ({ productData, open, onClose, initCategory, initSubCatego
                     <Input
                       className="content-input"
                       type="text"
+                      defaultValue={item.contentTitle}
                       onChange={(e) => { handleContentTitleChange(e, item.id) }}
                       placeholder="ex) PortSize"
                     />
@@ -804,6 +861,7 @@ const ModifyProduct = ({ productData, open, onClose, initCategory, initSubCatego
                     <Input
                       className="content-input"
                       type="text"
+                      defaultValue={item.contentText}
                       onChange={(e) => { handleContentTextChange(e, item.id) }}
                       placeholder="ex) G1/2"
                     />
@@ -814,6 +872,7 @@ const ModifyProduct = ({ productData, open, onClose, initCategory, initSubCatego
             }
           </ContentBox>
         </ProductItem>
+        {/* 가격 */}
         <ProductItem>
           <span className="pi-title">가격</span>
           <div className="price-box">
@@ -859,6 +918,7 @@ const ModifyProduct = ({ productData, open, onClose, initCategory, initSubCatego
             <span className="alert">[상품가격 + 옵션추가금액 - 할인율]</span>
           </DiscountBox>
         </ProductItem>
+        {/* 배송비 */}
         <ProductItem>
           <span className="pi-title">배송비</span>
           <CheckBox>
@@ -880,10 +940,11 @@ const ModifyProduct = ({ productData, open, onClose, initCategory, initSubCatego
           </CheckBox>
           <ShippingChargeBox show={shippingCharge} onChange={handleShippingCharge}>
             <span className="sc-title">배송비</span>
-            <Input type="number" className="shipping-input" />
+            <Input type="number" value={shippingChargeValue} className="shipping-input" />
             <span className="sc-price">{formattedShippingCharge}원</span>
           </ShippingChargeBox>
         </ProductItem>
+        {/* 옵션 */}
         <ProductItem>
           <span className="pi-title">상품옵션</span>
           <CheckBox>
@@ -915,11 +976,11 @@ const ModifyProduct = ({ productData, open, onClose, initCategory, initSubCatego
                     </div>
                     <div className="row">
                       <span className="row-title">옵션명</span>
-                      <Input className="option-input" type="text" onChange={(e) => handleOptionNameChange(e, item.id)} />
+                      <Input className="option-input" type="text" defaultValue={item.optionName} onChange={(e) => handleOptionNameChange(e, item.id)} />
                     </div>
                     <div className={'row ' + `${discount ? '' : 'mb'}`}>
                       <span className="row-title">옵션가격</span>
-                      <Input className="option-price-input" type="number" onChange={(e) => handleOptionPriceChange(e, item.id)} />
+                      <Input className="option-price-input" type="number" value={item.optionPrice} onChange={(e) => handleOptionPriceChange(e, item.id)} />
                       <span className="won">{formattedOptionPrice(item.optionPrice)}원</span>
                     </div>
                     <div className={'row ' + `${discount ? 'mb' : 'hide'}`}>
@@ -935,48 +996,61 @@ const ModifyProduct = ({ productData, open, onClose, initCategory, initSubCatego
             }
           </OptionBox>
         </ProductItem>
+        {/* 이미지 */}
         <ProductItem>
           <span className="pi-title">이미지 등록</span>
           <ImgBox>
             <div className="row">
               <span className="row-title">대표 이미지</span>
-              <label className="label" for="main">이미지 등록</label>
-              <Input type="file" id="main" onChange={handleMainChange} />
+              <label className="label" for="mainModify">이미지 교체</label>
+              <Input type="file" id="mainModify" onChange={handleModifyMainImg} />
             </div>
             <ImgPreview>
               {
-                mainPreview && mainPreview
-                  ? <img className="img" src={mainPreview} alt="mainPreview" />
-                  : <div className="empty">파일 없음</div>
-              }
-              {
-                mainImageName && mainImageName
-                  ? <span className="img-title">{mainImageName}</span>
-                  : null
+                modifyMainImageName === '' 
+                ? <>
+                    <img className="img" src={mainImageName} alt={mainImageName} />
+                    <span className="img-title">{mainImageName}</span>
+                  </>
+                : <>
+                    <img className="img" src={mainPreview} alt={modifyMainImageName} />
+                    <span className="img-title">{modifyMainImageName}</span>
+                  </>
               }
             </ImgPreview>
             <div className="row">
               <span className="row-title">상세 이미지</span>
-              <label className="label" for="sub">이미지 등록</label>
-              <Input type="file" id="sub" multiple onChange={handleSubChange} />
+              <label className="label" for="subModify">이미지 교체</label>
+              <Input type="file" id="subModify" multiple onChange={handleModifySubImg} />
             </div>
             <div className="grid">
               {
-                subPreview && subPreview.length > 0
-                  ? subPreview.map((item, i) => {
+                modifySubFile.length > 0
+                ? subPreview.map((item, i) => {
                     return (
-                      <ImgPreview>
-                        <img className="img mr" key={i} src={item.image} alt={`subPreview ${i}`} />
+                      <ImgPreview key={i}>
+                        <img className="img mr" src={item.image} alt={'subPreview' + i}/>
                         <span className="img-title">{item.name}</span>
                       </ImgPreview>
                     )
                   })
-                  : <ImgPreview><div className="empty">파일 없음</div></ImgPreview>
+                : subImageName.map((item , i) => {
+                    return (
+                      <ImgPreview key={i}>
+                        <img className="img mr" src={item} alt={item}/>
+                        <span className="img-title">{item}</span>
+                      </ImgPreview>
+                    )
+                  })
               }
             </div>
           </ImgBox>
         </ProductItem>
-        <SubmitButton>상품등록</SubmitButton>
+        {/* 버튼 */}
+        <ButtonBox>
+          <ModifyButton>수정하기</ModifyButton>
+          <DeleteButton>상품삭제</DeleteButton>
+        </ButtonBox>
       </ProductModal>
     </Overley>
   )

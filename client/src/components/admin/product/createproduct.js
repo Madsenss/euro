@@ -1,6 +1,7 @@
 import { useState } from "react"
 import styled from "styled-components"
-import { MdAdd, MdCheck, MdClose, MdFilterAlt, MdRemove, MdSearch } from "react-icons/md";
+import { MdAdd, MdCheck, MdClose, MdRemove } from "react-icons/md";
+
 // 모달
 const Overley = styled.div`
   z-index: 999;
@@ -535,16 +536,20 @@ const SubmitButton = styled.div`
 `
 
 const CreateProduct = ({ open, initCategory, initSubCategory, onClose }) => {
-
+  // 카테고리
   const [choiceCategory, setChoiceCategory] = useState('대분류 선택');
   const [openCategoryFilter, setOpenCategoryFilter] = useState(false);
   const [openSubCategoryFilter, setOpenSubCategoryFilter] = useState(false);
   const [choiceSubCategory, setChoiceSubCategory] = useState('소분류 선택');
 
+  // 상품명
+  const [productName, setProductName] = useState('');
+
+  // 브랜드
+  const [brand, setBrand] = useState('');
 
   // 설명
   const [contentValue, setContentValue] = useState([]);
-
 
   // 가격
   const [price, setPrice] = useState(0);
@@ -559,7 +564,6 @@ const CreateProduct = ({ open, initCategory, initSubCategory, onClose }) => {
   const [option, setOption] = useState(false);
   const [optionValue, setOptionValue] = useState([]);
 
-
   // 이미지
   const [mainFile, setMainFile] = useState(null);
   const [mainPreview, setMainPreview] = useState('');
@@ -567,15 +571,27 @@ const CreateProduct = ({ open, initCategory, initSubCategory, onClose }) => {
   const [subFile, setSubFile] = useState([]);
   const [subPreview, setSubPreview] = useState([]);
 
-
+  // 대분류 소분류 교집합 필터
   const showSub = initSubCategory.filter((v) => v.category === choiceCategory);
 
+  
   // 모달창 닫기
   const handleClose = () => {
     onClose();
   }
 
-  
+  // 상품명 부분 함수
+  const handleNameChange = (e) => {
+    const value = e.target.value;
+    setProductName(value);
+  };
+
+
+  // 브랜드 부분 함수
+  const handleBrandChange = (e) => {
+    const value = e.target.value;
+  };
+
   // 가격 부분 함수
   const handlePriceChange = (e) => {
     const value = parseInt(e.target.value);
@@ -716,6 +732,7 @@ const CreateProduct = ({ open, initCategory, initSubCategory, onClose }) => {
       <ProductModal>
         <MdClose className="close" onClick={() => { handleClose(); }} />
         <span className="title">상품등록</span>
+        {/* 카테고리 */}
         <ProductItem>
           <span className="pi-title">카테고리</span>
           <div className="category-box">
@@ -759,14 +776,17 @@ const CreateProduct = ({ open, initCategory, initSubCategory, onClose }) => {
             </FilterOuter>
           </div>
         </ProductItem>
+        {/* 상품명 */}
         <ProductItem>
           <span className="pi-title">상품명</span>
-          <Input type="text" placeholder="상품명을 입력해 주세요" />
+          <Input type="text" placeholder="상품명을 입력해 주세요" onChange={handleNameChange} />
         </ProductItem>
+        {/* 브랜드 */}
         <ProductItem>
           <span className="pi-title">브랜드[제조사]</span>
-          <Input type="text" placeholder="브랜드를 입력해주세요" />
+          <Input type="text" placeholder="브랜드를 입력해주세요" onChange={handleBrandChange} />
         </ProductItem>
+        {/* 제원 및 설명 */}
         <ProductItem>
           <span className="pi-title">상품설명</span>
           <AddButton onClick={addNewContent}>
@@ -802,6 +822,7 @@ const CreateProduct = ({ open, initCategory, initSubCategory, onClose }) => {
             }
           </ContentBox>
         </ProductItem>
+        {/* 가격 */}
         <ProductItem>
           <span className="pi-title">가격</span>
           <div className="price-box">
@@ -846,6 +867,7 @@ const CreateProduct = ({ open, initCategory, initSubCategory, onClose }) => {
             <span className="alert">[상품가격 + 옵션추가금액 - 할인율]</span>
           </DiscountBox>
         </ProductItem>
+        {/* 배송비 */}
         <ProductItem>
           <span className="pi-title">배송비</span>
           <CheckBox>
@@ -871,6 +893,7 @@ const CreateProduct = ({ open, initCategory, initSubCategory, onClose }) => {
             <span className="sc-price">{formattedShippingCharge}원</span>
           </ShippingChargeBox>
         </ProductItem>
+        {/* 옵션 */}
         <ProductItem>
           <span className="pi-title">상품옵션</span>
           <CheckBox>
@@ -922,6 +945,7 @@ const CreateProduct = ({ open, initCategory, initSubCategory, onClose }) => {
             }
           </OptionBox>
         </ProductItem>
+        {/* 이미지 */}
         <ProductItem>
           <span className="pi-title">이미지 등록</span>
           <ImgBox>
@@ -963,6 +987,7 @@ const CreateProduct = ({ open, initCategory, initSubCategory, onClose }) => {
             </div>
           </ImgBox>
         </ProductItem>
+        {/* 버튼 */}
         <SubmitButton>상품등록</SubmitButton>
       </ProductModal>
     </Overley>
