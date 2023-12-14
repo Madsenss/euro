@@ -164,7 +164,7 @@ const Product = () => {
       brand: 'ABrand',
       price: 10000,
       discount: true,
-      discountValue: 0,
+      discountValue: 10,
       count: 240,
       contentValue: [
         { id: 1, contentTitle: 'PortSize', contentText: 'G1/2' },
@@ -190,7 +190,7 @@ const Product = () => {
       brand: 'BBrand',
       price: 10000,
       discount: true,
-      discountValue: 0,
+      discountValue: 10,
       count: 2360,
       contentValue: [
         { id: 1, contentTitle: 'PortSize', contentText: 'G1/2' },
@@ -215,7 +215,7 @@ const Product = () => {
   return (
     <ProductBox>
       <CreateProduct open={openCreateModal} initCategory={initCategory} initSubCategory={initSubCategory} onClose={() => setOpenCreateModal(false)} />
-      <ModifyProduct open={openModifyModal} productData={selectedProduct} onClose={() => setopenModifyModal(false)} />
+      <ModifyProduct open={openModifyModal} initCategory={initCategory} initSubCategory={initSubCategory} productData={selectedProduct} onClose={() => setopenModifyModal(false)} />
       <ProductNav>
         <NavItem onClick={() => { setOpenCreateModal(true); }}>상품 등록</NavItem>
       </ProductNav>

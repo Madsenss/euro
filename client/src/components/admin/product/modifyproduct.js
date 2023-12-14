@@ -540,7 +540,8 @@ const ModifyProduct = ({ productData, open, onClose, initCategory, initSubCatego
   const [openSubCategoryFilter, setOpenSubCategoryFilter] = useState(false);
   const [choiceSubCategory, setChoiceSubCategory] = useState('소분류 선택');
 
-
+  const [productName, setProductName] = useState('');
+  const [brand, setBrand] = useState('');
   // 설명
   const [contentValue, setContentValue] = useState([]);
 
@@ -567,8 +568,20 @@ const ModifyProduct = ({ productData, open, onClose, initCategory, initSubCatego
   const [subPreview, setSubPreview] = useState([]);
 
 
-  // const showSub = initSubCategory.filter((v) => v.category === choiceCategory);
+  const showSub = initSubCategory.filter((v) => v.category === choiceCategory);
 
+  useEffect(() => {
+    setProductName(productData && productData.name);
+    setBrand(productData && productData.brand);
+    setContentValue(productData && productData.contentValue || []);
+    setPrice(productData && productData.price);
+    setDiscount(productData && productData.discount);
+    setDiscountValue(productData && productData.discountValue);
+    setShippingCharge(productData && productData.shippingCharge);
+    setShippingChargeValue(productData && productData.shippingChargeValue);
+    setOption(productData && productData.option);
+    setOptionValue(productData && productData.optionValue || []);
+  }, [productData && productData]);
   // 모달창 닫기
   const handleClose = () => {
     onClose();
@@ -601,10 +614,10 @@ const ModifyProduct = ({ productData, open, onClose, initCategory, initSubCatego
   }
 
   // 한국 원단위 표기 변환 변수
-  const formattedPrice = price.toLocaleString("ko-KR");
+  const formattedPrice = price?.toLocaleString("ko-KR");
   const totalPrice = handleDiscountPrice();
-  const formattedTotalPrice = totalPrice.toLocaleString("ko-KR");
-  const formattedShippingCharge = shippingChargeValue.toLocaleString("ko-KR");
+  const formattedTotalPrice = totalPrice?.toLocaleString("ko-KR");
+  const formattedShippingCharge = shippingChargeValue?.toLocaleString("ko-KR");
 
   // 설명 부분 함수
   const addNewContent = () => {
@@ -709,43 +722,13 @@ const ModifyProduct = ({ productData, open, onClose, initCategory, initSubCatego
       reader.readAsDataURL(file);
     });
   };
-  
-  const td = {
-    // id: 0,안바뀜
-    // number: 'A_A-1_1_20231209',안바뀜
-    category: '라면',
-    subCategory: '농심',
-    name: 'AProduct',
-    brand: 'ABrand',
-    price: 10000,
-    discount: true,
-    discountValue: 0,
-    count: 240,
-    contentValue: [
-      { id: 1, contentTitle: 'PortSize', contentText: 'G1/2' },
-      { id: 2, contentTitle: 'PortSize2', contentText: 'G1/2/2' },
-    ],
-    option: true,
-    optionValue: [
-      { id: 1, optionName: 'L Size', optionPrice: 3000 },
-      { id: 2, optionName: 'XL Size', optionPrice: 6000 },
-    ],
-    shippingCharge: true,
-    shippingChargeValue: 3000,
-    mainImg: 'main.png',
-    subImg: ['a.png', 'b.png', 'c.png'],
-    // createDate: '2000-00-00'안바뀜
-  }
-
-  useEffect(() => {
-    
-  }, [productData])
+  const [changeMode, setChangeMode] = useState(false);
   return (
     <Overley className={open ? 'show' : 'hide'}>
       <ProductModal>
         <MdClose className="close" onClick={() => { handleClose(); }} />
         <span className="title">상품등록</span>
-        {/* <ProductItem>
+        <ProductItem>
           <span className="pi-title">카테고리</span>
           <div className="category-box">
             <span className="cb-title">대분류</span>
@@ -790,11 +773,11 @@ const ModifyProduct = ({ productData, open, onClose, initCategory, initSubCatego
         </ProductItem>
         <ProductItem>
           <span className="pi-title">상품명</span>
-          <Input type="text" placeholder="상품명을 입력해 주세요" />
+          <Input type="text" defaultValue={productName} placeholder="상품명을 입력해 주세요" />
         </ProductItem>
         <ProductItem>
           <span className="pi-title">브랜드[제조사]</span>
-          <Input type="text" placeholder="브랜드를 입력해주세요" />
+          <Input type="text" defaultValue={brand} placeholder="브랜드를 입력해주세요" />
         </ProductItem>
         <ProductItem>
           <span className="pi-title">상품설명</span>
@@ -837,6 +820,7 @@ const ModifyProduct = ({ productData, open, onClose, initCategory, initSubCatego
             <Input
               className="price-input"
               type="number"
+              value={price}
               onChange={handlePriceChange}
             />
             <span className="won">{formattedPrice}원</span>
@@ -864,7 +848,7 @@ const ModifyProduct = ({ productData, open, onClose, initCategory, initSubCatego
           <DiscountBox show={discount}>
             <div className="input-box">
               <span className="input-title">할인율</span>
-              <Input type="number" className="discount-input" onChange={handleDiscount} />
+              <Input type="number" className="discount-input" value={discountValue} onChange={handleDiscount} />
               <span className="percent">%</span>
             </div>
             <div className="total-box">
@@ -991,7 +975,7 @@ const ModifyProduct = ({ productData, open, onClose, initCategory, initSubCatego
               }
             </div>
           </ImgBox>
-        </ProductItem> */}
+        </ProductItem>
         <SubmitButton>상품등록</SubmitButton>
       </ProductModal>
     </Overley>
