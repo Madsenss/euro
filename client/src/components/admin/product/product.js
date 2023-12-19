@@ -117,22 +117,6 @@ const BlueButton = styled.div`
   }
 `
 
-const GreenButton = styled(BlueButton)`
-  border: 1.5px solid #28a745;
-  color: #28a745;
-  &:hover {
-    background-color: #28a745;
-    color: #fff;
-  }
-`
-const RedButton = styled(BlueButton)`
-  border: 1.5px solid #dc3545;
-  color: #dc3545;
-  &:hover {
-    background-color: #dc3545;
-    color: #fff;
-  }
-`
 
 const Product = () => {
   // 모달 오픈

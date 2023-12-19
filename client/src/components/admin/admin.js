@@ -1,9 +1,11 @@
 import styled from "styled-components";
 import { MdOutlinePowerSettingsNew , MdArrowRight, MdRestartAlt, MdOutlineFormatListBulleted, MdLocalShipping, MdPerson, MdLightbulbOutline, MdOutlineStickyNote2, MdSettings, MdHome, MdSell } from "react-icons/md";
 import { useState } from "react";
-import Main from "./main";
-import Product from "./product/product";
-import Category from "./category";
+
+import Category from "./category/category";
+import Product from "./product/product"
+import Main from "./main/main"
+
 const AdminBox = styled.div`
   width: 100%;
   height: fit-content;
@@ -87,7 +89,7 @@ const ContentNavBox = styled.div`
 
 const ContentBox = styled.div`
   width: 100%;
-  min-height: calc(var(--vh, 1vh) * 100);
+  min-height: calc(var(--vh, 1vh) * 106);
   margin-left: 250px;
   background-color: #eee;
   display: flex;
