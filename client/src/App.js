@@ -31,9 +31,7 @@ function App() {
         <Route path="/product" element={<><GlobalStyle/><ProductHome/><Top/></>}/>
         <Route path="/admintest" element={<><GlobalStyle/><Admin/></>}/>
         <Route path="/detail" element={<><GlobalStyle/><DetailHome/><Top/></>}/>
-        <Route path="/community" element={<><GlobalStyle/><CommunityHome/><Top/></>}/>
         <Route path="/community/:path" element={<><GlobalStyle/><CommunityHome/><Top/></>}/>
-        <Route path="/community/notice/1" element={<><GlobalStyle/><div>1</div><Top/></>}/>
         <Route path="/member/:path" element={<><GlobalStyle/><MemberHome/><Top/></>}/>
         <Route path="/member/:path/:whatfind" element={<><GlobalStyle/><MemberHome/><Top/></>}/>
         <Route path="/mypage" element={<><GlobalStyle/><MyPageHome/><Top/></>}/>

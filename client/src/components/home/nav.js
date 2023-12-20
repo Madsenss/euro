@@ -454,12 +454,12 @@ const Nav = () => {
           </CategoryButton>
           <NavMenu onClick={() => { navigate('/company'); window.scrollTo({top: 0, behavior: 'auto'}); }}>회사소개</NavMenu>
           <NavMenu onClick={() => { navigate('/product'); window.scrollTo({top: 0, behavior: 'auto'}); }}>제품소개</NavMenu>
-          <NavMenu onClick={() => { navigate('/community'); window.scrollTo({top: 0, behavior: 'auto'}); }} onMouseOver={()=>{setShowCommunity(true);}} onMouseLeave={()=>{setShowCommunity(false);}}>커뮤니티</NavMenu>
+          <NavMenu onClick={() => { navigate('/community/notice'); window.scrollTo({top: 0, behavior: 'auto'}); }} onMouseOver={()=>{setShowCommunity(true);}} onMouseLeave={()=>{setShowCommunity(false);}}>커뮤니티</NavMenu>
           <CommunityBox className={showCommunity ? 'show' : 'hide'} onMouseOver={()=>{setShowCommunity(true);}} onMouseLeave={()=>{setShowCommunity(false);}}>
             <div className="item" onClick={()=>{ navigate('/community/notice'); setShowCommunity(false); window.scrollTo({top: 0, behavior: 'auto'}); }}>공지사항</div>
             <div className="item" onClick={()=>{ navigate('/community/faq'); setShowCommunity(false); window.scrollTo({top: 0, behavior: 'auto'}); }}>자주묻는 질문</div>
-            <div className="item" onClick={()=>{ navigate('/community/qna'); setShowCommunity(false); window.scrollTo({top: 0, behavior: 'auto'}); }}>상품문의</div>
-            <div className="item" onClick={()=>{ navigate('/community/review'); setShowCommunity(false); window.scrollTo({top: 0, behavior: 'auto'}); }}>상품후기</div>
+            <div className="item" onClick={()=>{ navigate('/community/qna'); setShowCommunity(false); window.scrollTo({top: 0, behavior: 'auto'}); }}>1:1 문의</div>
+            <div className="item" onClick={()=>{ navigate('/community/estimate'); setShowCommunity(false); window.scrollTo({top: 0, behavior: 'auto'}); }}>견적/제휴 문의</div>
           </CommunityBox>
           <CategoryMenu height={menuHeight()} className={dropdown ? "a" : 'b'}>
             {

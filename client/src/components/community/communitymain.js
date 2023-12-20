@@ -117,8 +117,8 @@ const CommunityMain = (props) => {
               <span className="roottext">
                 {path === 'notice' ? '공지사항' : null}
                 {path === 'faq' ? '자주묻는 질문' : null}
-                {path === 'qna' ? '상품문의' : null}
-                {path === 'review' ? '상품후기' : null}
+                {path === 'qna' ? '1:1문의' : null}
+                {path === 'estimate' ? '견적/제휴 문의' : null}
               </span>
             </>
           : null
@@ -136,12 +136,12 @@ const CommunityMain = (props) => {
               <span>자주묻는 질문</span>
               <MdOutlineKeyboardArrowRight className="icon" />
             </SideNavItem>
-            <SideNavItem className={nav === '상품문의' ? 'active' : ''} onClick={()=>{ setNav('상품문의'); navigate('/community/qna'); window.scrollTo({top: 0, behavior: 'auto'}); }}>
-              <span>상품문의</span>
+            <SideNavItem className={nav === '1:1 문의' ? 'active' : ''} onClick={()=>{ setNav('1:1 문의'); navigate('/community/qna'); window.scrollTo({top: 0, behavior: 'auto'}); }}>
+              <span>1:1 문의</span>
               <MdOutlineKeyboardArrowRight className="icon" />
             </SideNavItem>
-            <SideNavItem className={nav === '상품후기' ? 'active' : ''} onClick={()=>{ setNav('상품후기'); navigate('/community/review'); window.scrollTo({top: 0, behavior: 'auto'}); }}>
-              <span>상품후기</span>
+            <SideNavItem className={nav === '견적/제휴 문의' ? 'active' : ''} onClick={()=>{ setNav('견적/제휴 문의'); navigate('/community/estimate'); window.scrollTo({top: 0, behavior: 'auto'}); }}>
+              <span>견적/제휴 문의</span>
               <MdOutlineKeyboardArrowRight className="icon" />
             </SideNavItem>
           </div>
