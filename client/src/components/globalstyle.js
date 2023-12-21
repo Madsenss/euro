@@ -18,7 +18,7 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
 
-  h1, h2, h3, h4, h5, p, span {
+  h1, h2, h3, h4, h5, p, span, input, textarea {
     padding: 0;
     margin: 0;
   }

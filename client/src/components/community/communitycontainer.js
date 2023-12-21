@@ -22,7 +22,6 @@ const RootBox = styled.div`
     color: #555;
   }
 `
-
 const MainBox = styled.div`
   width: 1100px;
   height: fit-content;
@@ -38,7 +37,6 @@ const MainBox = styled.div`
     align-items: start;
   }
 `
-
 const SideNav = styled.div`
   width: 200px;
   height: fit-content;
@@ -92,16 +90,13 @@ const SideNavItem = styled.div`
 `
 
 const CommunityMain = (props) => {
-  const pathname = window.location.pathname;
   const path = props.path;
   const [nav, setNav] = useState('');
   const navigate = useNavigate();
 
-  useEffect(()=>{
-    if(pathname === '/community'){
-      setNav('');
-    }
-  }, [pathname]);
+  useEffect(() => {
+    setNav(path && path);
+  }, [path && path]);
   
   return (
     <MainBox>
@@ -128,19 +123,19 @@ const CommunityMain = (props) => {
         <SideNav>
           <div className="title">커뮤니티</div>
           <div className="outer">
-            <SideNavItem className={nav === '공지사항' ? 'active' : ''} onClick={()=>{ setNav('공지사항'); navigate('/community/notice'); window.scrollTo({top: 0, behavior: 'auto'}); }}>
+            <SideNavItem className={nav === 'notice' ? 'active' : ''} onClick={()=>{ setNav('notice'); navigate('/community/notice'); window.scrollTo({top: 0, behavior: 'auto'}); }}>
               <span>공지사항</span>
               <MdOutlineKeyboardArrowRight className="icon" />
             </SideNavItem>
-            <SideNavItem className={nav === '자주묻는 질문' ? 'active' : ''} onClick={()=>{ setNav('자주묻는 질문'); navigate('/community/faq'); window.scrollTo({top: 0, behavior: 'auto'}); }}>
+            <SideNavItem className={nav === 'faq' ? 'active' : ''} onClick={()=>{ setNav('faq'); navigate('/community/faq'); window.scrollTo({top: 0, behavior: 'auto'}); }}>
               <span>자주묻는 질문</span>
               <MdOutlineKeyboardArrowRight className="icon" />
             </SideNavItem>
-            <SideNavItem className={nav === '1:1 문의' ? 'active' : ''} onClick={()=>{ setNav('1:1 문의'); navigate('/community/qna'); window.scrollTo({top: 0, behavior: 'auto'}); }}>
+            <SideNavItem className={nav === 'qna' ? 'active' : ''} onClick={()=>{ setNav('qna'); navigate('/community/qna'); window.scrollTo({top: 0, behavior: 'auto'}); }}>
               <span>1:1 문의</span>
               <MdOutlineKeyboardArrowRight className="icon" />
             </SideNavItem>
-            <SideNavItem className={nav === '견적/제휴 문의' ? 'active' : ''} onClick={()=>{ setNav('견적/제휴 문의'); navigate('/community/estimate'); window.scrollTo({top: 0, behavior: 'auto'}); }}>
+            <SideNavItem className={nav === 'estimate' ? 'active' : ''} onClick={()=>{ setNav('estimate'); navigate('/community/estimate'); window.scrollTo({top: 0, behavior: 'auto'}); }}>
               <span>견적/제휴 문의</span>
               <MdOutlineKeyboardArrowRight className="icon" />
             </SideNavItem>
@@ -152,5 +147,6 @@ const CommunityMain = (props) => {
     </MainBox>
   )
 };
+
 
 export default CommunityMain;
