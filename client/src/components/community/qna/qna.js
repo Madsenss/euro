@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import styled from "styled-components"
 import CreateModal from "./createmodal"
+import DeleteModal from "./deletemodal"
 
 const PartsBox = styled.div`
   width: 100%;
@@ -32,6 +33,17 @@ const AccordionBox = styled.div`
   height: fit-content;
   display: flex;
   flex-direction: column;
+  .empty {
+    width: 100%;
+    height: 250px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #aaa;
+  }
 `
 const AccordionHeader = styled.div`
   width: 100%;
@@ -158,7 +170,7 @@ const AccordionBottom = styled.div`
 `
 const QuestionButton = styled.div`
   cursor: pointer;
-  margin: 20px 20px 0px auto;
+  margin: 40px 0px 0px auto;
   width: fit-content;
   height: fit-content;
   border-radius: 4px;
@@ -174,9 +186,12 @@ const QuestionButton = styled.div`
   }
 `
 
-const QNA = () => {
+const QNA = ({ qnaData }) => {
   const [accordion, setAccordion] = useState([]);
   const [openCreate, setOpenCreate] = useState(false);
+  const [openModify, setOpenModify] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [selectedDate, setSelectedData] = useState(null);
   const toggleAccordion = (i) => {
     var copyAccordion = [...accordion];
     copyAccordion[i] = !copyAccordion[i];
@@ -190,7 +205,8 @@ const QNA = () => {
 
   return (
     <>
-      <CreateModal open={openCreate} onClose={() => { setOpenCreate(false); }}/>
+      <CreateModal open={openCreate} onClose={() => { setOpenCreate(false); }} />
+      <DeleteModal open={openDelete} onClose={() => { setOpenDelete(false); }} />
       <PartsBox>
         <PartsHeader>
           <span className="title">1:1 문의</span>
@@ -203,38 +219,48 @@ const QNA = () => {
             <div className="part status">답변상태</div>
           </AccordionHeader>
           {
-            initCount.map((item, i) => {
-              return (
-                <AccordionOuter open={accordion[i]}>
-                  <AccordionTop onClick={() => { toggleAccordion(i) }}>
-                    <div className="part title">재고가 있나요?</div>
-                    <div className="part date">2023-12-20</div>
-                    <div className="part status">답변대기</div>
-                  </AccordionTop>
-                  <AccordionBottom>
-                    <span className="question-category">[상품] 관련 문의</span>
-                    <div className="question-box">
-                      <div className="question">Q</div>
-                      <span className="">재고가 있나요?고가 나요?재고가 있나요?재고가 있나요?재고가 있나요?</span>
-                    </div>
-                    <div className="answer-box">
-                      <div className="answer">A</div>
-                      <span className="">안녕하세요 고객님 유로시스템입니다. 재고 있습니다. 감사합니다. 저희 사이트를 이용해주셔서 감사합니다 감사합니다 감사합니다 감사합니다</span>
-                    </div>
-                    <div className="mode">
-                      <span className="mode-item" onClick={(e) => {
-                        e.stopPropagation();
-
-                      }}>수정</span>
-                      <span className="mode-item" onClick={(e) => {
-                        e.stopPropagation();
-
-                      }}>삭제</span>
-                    </div>
-                  </AccordionBottom>
-                </AccordionOuter>
-              )
-            })
+            qnaData && qnaData.length > 0
+              ? qnaData && qnaData.map((item, i) => {
+                return (
+                  <AccordionOuter open={accordion[i]}>
+                    <AccordionTop onClick={() => { toggleAccordion(i) }}>
+                      <div className="part title">{item.title}</div>
+                      <div className="part date">{item.date}</div>
+                      <div className="part status">{item.answerStatus ? '답변완료' : '답변대기'}</div>
+                    </AccordionTop>
+                    <AccordionBottom>
+                      <span className="question-category">[{item.category}] 관련 문의</span>
+                      <div className="question-box">
+                        <div className="question">Q</div>
+                        <span className="">{item.content}</span>
+                      </div>
+                      {
+                        item.answerStatus
+                          ? <div className="answer-box">
+                              <div className="answer">A</div>
+                              <span className="">{item.answerText}</span>
+                            </div>
+                          : null
+                      }
+                      {
+                        item.answerStatus
+                          ? null
+                          : <div className="mode">
+                              <span className="mode-item" onClick={(e) => {
+                                e.stopPropagation();
+                              }}>수정</span>
+                              <span className="mode-item" onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedData(item);
+                                setOpenDelete(true);
+                              }}>삭제</span>
+                            </div>
+                      }
+                    </AccordionBottom>
+                  </AccordionOuter>
+                )
+              })
+              : <div className="empty">문의내역이 존재하지 않습니다</div>
           }
           <QuestionButton onClick={() => { setOpenCreate(true); }}>문의하기</QuestionButton>
         </AccordionBox>

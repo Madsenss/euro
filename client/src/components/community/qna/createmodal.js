@@ -112,13 +112,17 @@ const Modal = styled.div`
       .img-item {
         cursor: pointer;
         position: relative;
-        width: fit-content;
-        height: fit-content;
-        border-radius: 6px;
+        width: 75px;
+        height: 75px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         border: 1px solid #aaa;
+        border-radius: 12px;
         img {
-          width: 75px;
-          height: 75px;
+          width: 100%;
+          height: 100%;
+          border-radius: 12px;
         }
         .delete {
           position: absolute;
@@ -131,7 +135,7 @@ const Modal = styled.div`
           padding: 3px;
           transition: all 0.25s;
           &:hover {
-            opacity: 0.7;
+            filter: brightness(1.15);
           }
         }
       }
@@ -139,7 +143,6 @@ const Modal = styled.div`
   }
 `
 const SubmitButton = styled.div`
-  margin-top: 20px;
   cursor: pointer;
   width: fit-content;
   height: fit-content;
@@ -151,6 +154,8 @@ const SubmitButton = styled.div`
   font-weight: bold;
   padding: 12px 40px 12px 40px;
   transition: 0.25s;
+  margin-left: auto;
+  margin-top: ${props => props.true ? '20px' : '0px'};
   &:hover {
     opacity: 0.7;
   }
@@ -241,7 +246,58 @@ const CreateModal = ({ open, onClose }) => {
   const [openFilter, setOpenFilter] = useState(false);
   const [category, setCategory] = useState('문의유형을 선택해주세요');
   const option = ['상품', '배송', '주문/결제', '취소/교환/반품', '서비스/오류/기타'];
-  const initImg = [1,1,1,1,1,1,1,1];
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [image, setImage] = useState([]);
+  const [imageName, setImageName] = useState([]);
+  const [imagePreview, setImagePreview] = useState([]);
+  const handleTitle = (e) => {
+    const value = e.target.value;
+    setTitle(value);
+  };
+  const handleContent = (e) => {
+    const value = e.target.value;
+    setContent(value);
+  };
+
+  const handleImage = (e) => {
+    const file = e.target.files;
+    const fileArray = Array.from(file);
+    const nameArray = fileArray.map((file) => file.name);
+
+    setImageName(nameArray);
+    setImage(fileArray);
+
+    const previewArray = [];
+    fileArray.forEach((file) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        previewArray.push({
+          name: file.name,
+          image: reader.result
+        });
+        if (previewArray.length === fileArray.length) {
+          setImagePreview([...previewArray]);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+
+  }
+  const handleDeleteImage = (i) => {
+    const copyPreview = [...imagePreview];
+    copyPreview.splice(i, 1);
+    setImagePreview(copyPreview);
+
+    const copyImage = [...image];
+    copyImage.splice(i, 1);
+    setImage(copyImage);
+
+    const copyImageName = [...imageName];
+    copyImageName.splice(i, 1);
+    setImageName(copyImageName);
+  };
+
   const handleClose = () => {
     onClose();
   };
@@ -274,11 +330,11 @@ const CreateModal = ({ open, onClose }) => {
           </div>
           <div className="input-box">
             <span className="input-title">제목</span>
-            <Input type="text" spellCheck="false" placeholder="제목을 입력해주세요"/>
+            <Input type="text" spellCheck="false" placeholder="제목을 입력해주세요" onChange={handleTitle}/>
           </div>
           <div className="input-box">
             <span className="input-title top">내용</span>
-            <Textarea spellCheck="false" placeholder="내용을 입력해주세요"/>
+            <Textarea spellCheck="false" placeholder="내용을 입력해주세요" onChange={handleContent}/>
           </div>
           <div className="input-box">
             <span className="input-title">이미지</span>
@@ -287,25 +343,24 @@ const CreateModal = ({ open, onClose }) => {
               <span className="upload-text">이미지형식(JPG, JPEG, PNG)만 첨부 가능합니다</span>
               <span className="upload-text">이미지는 최대 10장까지 첨부 가능합니다</span>
             </label>
-            <Input id="file" type="file" multiple/>
+            <Input id="file" type="file" multiple onChange={handleImage}/>
           </div>
           <div className="img-box">
             {
-              1 === 1
-              ? initImg.map((item, i) => {
+              imagePreview.length > 0
+              ? imagePreview.map((item, i) => {
                   return (
-                    <div className="img-item">
-                      <MdClose className="delete"/>
-                      <img src={process.env.PUBLIC_URL + '/a.png'}/>
+                    <div className="img-item" key={i}>
+                      <img src={item.image} alt={item.name}/>
+                      <MdClose className="delete" onClick={() => {handleDeleteImage(i);}} />
                     </div>
                   )
                 })
               : null
             }
-
           </div>
         </div>
-        <SubmitButton>등록하기</SubmitButton>
+        <SubmitButton true={imagePreview.length > 0}>등록하기</SubmitButton>
       </Modal>
     </Overley>
   )

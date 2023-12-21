@@ -734,7 +734,7 @@ const ModifyProduct = ({ productData, open, onClose, initCategory, initSubCatego
   const handleModifySubImg = (e) => {
     const file = e.target.files;
     const fileArray = Array.from(file);
-    const nameArray = fileArray.map((item) => file.name);
+    const nameArray = fileArray.map((file) => file.name);
 
     setModifySubFile(fileArray);
     setModifySubImageName(nameArray);

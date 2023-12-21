@@ -7,14 +7,32 @@ const ContainerBox = styled.div`
   width: 850px;
   height: fit-content;
   min-height: calc(var(--vh, 1vh) * 100);
-  border: 1px solid red;
+  /* border: 1px solid red; */
 `
 
-const Container = ({ path, setNav }) => {
+const Container = ({ path }) => {
+  const initQNA = [
+    {
+      category: '상품',
+      title : '재고가 있나요?',
+      content: '대량구매를 하려는데 재고가 있나요?',
+      date : '2023-12-20',
+      answerStatus: false,
+      answerText: ''
+    },
+    {
+      category: '배송',
+      title : '배송은 얼마나 걸리나요?',
+      content: '오늘 시켰는데 언제도착하나요?',
+      date : '2023-12-20',
+      answerStatus: true,
+      answerText: '안녕하세요 고객님 유로시스템입니다. 금일 발송해서 모레 전까지 도착 예정입니다. 감사합니다.'
+    }
+  ];
   const Parts = {
     notice : <Notice/>,
     faq: <FAQ/>,
-    qna: <QNA/>,
+    qna: <QNA qnaData={initQNA}/>,
     estimate: <div>1</div>
   };
   const part = Parts[path && path] || null;

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Nav from "../home/nav";
 import Footer from "../home/footer";
 import { useParams } from "react-router-dom";
-import CommunityMain from "./communitycontainer";
+import CommunityMain from "./communitymain";
 
 const CommunityHomeBox = styled.div`
   width: 100%;
