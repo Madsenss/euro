@@ -7,7 +7,6 @@ const ContainerBox = styled.div`
   width: 850px;
   height: fit-content;
   min-height: calc(var(--vh, 1vh) * 100);
-  /* border: 1px solid red; */
 `
 
 const Container = ({ path }) => {
@@ -39,7 +38,6 @@ const Container = ({ path }) => {
     notice : <Notice/>,
     faq: <FAQ/>,
     qna: <QNA qnaData={initQNA}/>,
-    estimate: <div>1</div>
   };
   const part = Parts[path && path] || null;
 

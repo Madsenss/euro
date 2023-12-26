@@ -459,7 +459,7 @@ const Nav = () => {
             <div className="item" onClick={()=>{ navigate('/community/notice'); setShowCommunity(false); window.scrollTo({top: 0, behavior: 'auto'}); }}>공지사항</div>
             <div className="item" onClick={()=>{ navigate('/community/faq'); setShowCommunity(false); window.scrollTo({top: 0, behavior: 'auto'}); }}>자주묻는 질문</div>
             <div className="item" onClick={()=>{ navigate('/community/qna'); setShowCommunity(false); window.scrollTo({top: 0, behavior: 'auto'}); }}>1:1 문의</div>
-            <div className="item" onClick={()=>{ navigate('/community/estimate'); setShowCommunity(false); window.scrollTo({top: 0, behavior: 'auto'}); }}>견적/제휴 문의</div>
+            <div className="item" onClick={()=>{ navigate('/inquiry'); setShowCommunity(false); window.scrollTo({top: 0, behavior: 'auto'}); }}>견적/제휴 문의</div>
           </CommunityBox>
           <CategoryMenu height={menuHeight()} className={dropdown ? "a" : 'b'}>
             {

@@ -11,6 +11,7 @@ import DetailHome from "./components/detail/detailhome";
 import CommunityHome from "./components/community/communityhome";
 import MemberHome from "./components/member/memberhome";
 import MyPageHome from "./components/mypage/mypagehome";
+import Inquiry from "./components/inquiry/inquiry.js";
 
 function App() {
   const setScreenSize = () => {
@@ -31,6 +32,7 @@ function App() {
         <Route path="/product" element={<><GlobalStyle/><ProductHome/><Top/></>}/>
         <Route path="/admintest" element={<><GlobalStyle/><Admin/></>}/>
         <Route path="/detail" element={<><GlobalStyle/><DetailHome/><Top/></>}/>
+        <Route path="/inquiry" element={<><GlobalStyle/><Inquiry/></>}/>
         <Route path="/community/notice/:noticeNum" element={<><GlobalStyle/><CommunityHome/><Top/></>}/>
         <Route path="/community/:path" element={<><GlobalStyle/><CommunityHome/><Top/></>}/>
         <Route path="/member/:path" element={<><GlobalStyle/><MemberHome/><Top/></>}/>

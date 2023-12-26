@@ -61,7 +61,6 @@ const NoticeItem = styled.div`
   border-bottom: 1px solid black;
   padding: 50px 10px 100px 10px;
 `
-
 const Button = styled.div`
   cursor: pointer;
   margin: 40px 0px 0px auto;
@@ -79,6 +78,7 @@ const Button = styled.div`
     opacity: 0.7;
   }
 `
+
 const NoticeDetail = ({ noticeNum }) => {
   const navigate = useNavigate();
   const initNoticeData = [
@@ -105,7 +105,6 @@ const NoticeDetail = ({ noticeNum }) => {
     },
   ];
   const selectedNotice = initNoticeData.filter((v) => v.id === parseInt(noticeNum && noticeNum));
-  console.log(selectedNotice);
   return (
     <NoticeDetailBox>
       <span className="title">공지사항</span>

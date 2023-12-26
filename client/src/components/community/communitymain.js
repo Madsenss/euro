@@ -96,8 +96,7 @@ const CommunityMain = ({ path, noticeNum }) => {
   const roots = {
     notice: '공지사항',
     faq: '자주묻는 질문',
-    qna: '1:1문의',
-    estimate: '견적/제휴 문의'
+    qna: '1:1문의'
   };
   const selectedRoot = noticeNum ? '공지사항' : roots[path] || '';
 
@@ -134,7 +133,7 @@ const CommunityMain = ({ path, noticeNum }) => {
                     <span>1:1 문의</span>
                     <MdOutlineKeyboardArrowRight className="icon" />
                   </SideNavItem>
-                  <SideNavItem className={nav === 'estimate' ? 'active' : ''} onClick={() => { setNav('estimate'); navigate('/community/estimate'); window.scrollTo({ top: 0, behavior: 'auto' }); }}>
+                  <SideNavItem onClick={() => { navigate('/inquiry'); window.scrollTo({ top: 0, behavior: 'auto' }); }}>
                     <span>견적/제휴 문의</span>
                     <MdOutlineKeyboardArrowRight className="icon" />
                   </SideNavItem>

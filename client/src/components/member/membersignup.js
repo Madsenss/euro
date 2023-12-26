@@ -232,7 +232,6 @@ const MemberSignup = () => {
         <div className="item">
           <div className="input-title">이름</div>
           <Input type="text" placeholder="이름을 입력해 주세요" />
-          <Button>중복확인</Button>
         </div>
         <div className="item">
           <div className="input-title">이메일</div>
@@ -258,12 +257,6 @@ const MemberSignup = () => {
             인풋 리드온리에 메인주소 , 그 밑에 상세주소 인풋창 만들고
             상단 리드온리 우측에 재검색 버튼으로 폼 변경해야함
           */}
-        </div>
-        <div className="item">
-          <div className="input-title">성별</div>
-        </div>
-        <div className="item">
-          <div className="input-title">생년월일</div>
         </div>
       </div>
       <div className="agree-box">
