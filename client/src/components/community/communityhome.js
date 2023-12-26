@@ -14,12 +14,12 @@ const CommunityHomeBox = styled.div`
 
 const CommunityHome = () => {
 
-  const { path } = useParams();
+  const { path, noticeNum } = useParams();
   
   return (
     <CommunityHomeBox>
       <Nav />
-      <CommunityMain path={path}/>
+      <CommunityMain path={path} noticeNum={noticeNum}/>
       <Footer />
     </CommunityHomeBox>
   )

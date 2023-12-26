@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdAddAPhoto, MdClose } from "react-icons/md";
 import styled from "styled-components";
 
@@ -241,7 +241,8 @@ const FilterList = styled.div`
     }
   }
 `
-const CreateModal = ({ open, onClose }) => {
+
+const ModifyModal = ({ selectedData, open, onClose }) => {
 
   const [openFilter, setOpenFilter] = useState(false);
   const [category, setCategory] = useState('문의유형을 선택해주세요');
@@ -249,7 +250,8 @@ const CreateModal = ({ open, onClose }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [image, setImage] = useState([]);
-  const [imageName, setImageName] = useState([]);
+  const [imageName, setImageName] = useState([null]);
+  const [modifyImageName, setModifyImageName] = useState([]);
   const [imagePreview, setImagePreview] = useState([]);
   const handleTitle = (e) => {
     const value = e.target.value;
@@ -259,13 +261,12 @@ const CreateModal = ({ open, onClose }) => {
     const value = e.target.value;
     setContent(value);
   };
-
   const handleImage = (e) => {
     const file = e.target.files;
     const fileArray = Array.from(file);
     const nameArray = fileArray.map((file) => file.name);
 
-    setImageName(nameArray);
+    setModifyImageName(nameArray);
     setImage(fileArray);
 
     const previewArray = [];
@@ -293,19 +294,25 @@ const CreateModal = ({ open, onClose }) => {
     copyImage.splice(i, 1);
     setImage(copyImage);
 
-    const copyImageName = [...imageName];
+    const copyImageName = [...modifyImageName];
     copyImageName.splice(i, 1);
-    setImageName(copyImageName);
+    setModifyImageName(copyImageName);
   };
-
   const handleClose = () => {
     onClose();
   };
 
+  useEffect(() => {
+    setCategory(selectedData && selectedData.category);
+    setTitle(selectedData && selectedData.title);
+    setContent(selectedData && selectedData.content);
+    setImageName(selectedData && selectedData.image);
+  }, [selectedData && selectedData])
+
   return (
     <Overley className={open ? 'show' : 'hide'}>
       <Modal>
-        <MdClose className="close" onClick={handleClose}/>
+        <MdClose className="close" onClick={handleClose} />
         <span className="title">1:1 문의</span>
         <div className="form-box">
           <div className="input-box">
@@ -330,40 +337,50 @@ const CreateModal = ({ open, onClose }) => {
           </div>
           <div className="input-box">
             <span className="input-title">제목</span>
-            <Input type="text" spellCheck="false" placeholder="제목을 입력해주세요" onChange={handleTitle}/>
+            <Input type="text" spellCheck="false" placeholder="제목을 입력해주세요" value={title && title} onChange={handleTitle} />
           </div>
           <div className="input-box">
             <span className="input-title top">내용</span>
-            <Textarea spellCheck="false" placeholder="내용을 입력해주세요" onChange={handleContent}/>
+            <Textarea spellCheck="false" placeholder="내용을 입력해주세요" value={content && content} onChange={handleContent} />
           </div>
           <div className="input-box">
             <span className="input-title">이미지</span>
-            <label htmlFor="file">
-              <MdAddAPhoto className="icon"/>
+            <label htmlFor="modify-file">
+              <MdAddAPhoto className="icon" />
               <span className="upload-text">이미지형식(JPG, JPEG, PNG)만 첨부 가능합니다</span>
               <span className="upload-text">이미지는 최대 10장까지 첨부 가능합니다</span>
             </label>
-            <Input id="file" type="file" multiple onChange={handleImage}/>
+            <Input id="modify-file" type="file" multiple onChange={handleImage} />
           </div>
           <div className="img-box">
             {
               imagePreview.length > 0
-              ? imagePreview.map((item, i) => {
+                ? imagePreview.map((item, i) => {
                   return (
                     <div className="img-item" key={i}>
-                      <img src={item.image} alt={item.name}/>
-                      <MdClose className="delete" onClick={() => {handleDeleteImage(i);}} />
+                      <img src={item.image} alt={item.name} />
+                      <MdClose className="delete" onClick={() => { handleDeleteImage(i); }} />
                     </div>
                   )
                 })
-              : null
+                : imageName?.map((item, i) => {
+                  return (
+                    <div className="img-item" key={i}>
+                      <img src={item} alt={item} />
+                      <MdClose className="delete" onClick={() => {
+                        // 얘는 서버에다 이미지삭제 요청해야함
+                        alert('삭제할꺼야?');
+                      }} />
+                    </div>
+                  )
+                })
             }
           </div>
         </div>
-        <SubmitButton true={imagePreview.length > 0}>등록하기</SubmitButton>
+        <SubmitButton true={imagePreview.length > 0 || imageName?.length > 0}>등록하기</SubmitButton>
       </Modal>
     </Overley>
   )
 };
 
-export default CreateModal;
+export default ModifyModal;

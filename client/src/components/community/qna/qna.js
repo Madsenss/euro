@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import styled from "styled-components"
 import CreateModal from "./createmodal"
 import DeleteModal from "./deletemodal"
+import ModifyModal from "./modifymodal"
 
 const PartsBox = styled.div`
   width: 100%;
@@ -191,7 +192,7 @@ const QNA = ({ qnaData }) => {
   const [openCreate, setOpenCreate] = useState(false);
   const [openModify, setOpenModify] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
-  const [selectedDate, setSelectedData] = useState(null);
+  const [selectedData, setSelectedData] = useState(null);
   const toggleAccordion = (i) => {
     var copyAccordion = [...accordion];
     copyAccordion[i] = !copyAccordion[i];
@@ -206,7 +207,8 @@ const QNA = ({ qnaData }) => {
   return (
     <>
       <CreateModal open={openCreate} onClose={() => { setOpenCreate(false); }} />
-      <DeleteModal open={openDelete} onClose={() => { setOpenDelete(false); }} />
+      <ModifyModal selectedData={selectedData} open={openModify} onClose={() => { setOpenModify(false); }} />
+      <DeleteModal selectedData={selectedData} open={openDelete} onClose={() => { setOpenDelete(false); }} />
       <PartsBox>
         <PartsHeader>
           <span className="title">1:1 문의</span>
@@ -222,7 +224,7 @@ const QNA = ({ qnaData }) => {
             qnaData && qnaData.length > 0
               ? qnaData && qnaData.map((item, i) => {
                 return (
-                  <AccordionOuter open={accordion[i]}>
+                  <AccordionOuter key={i} open={accordion[i]}>
                     <AccordionTop onClick={() => { toggleAccordion(i) }}>
                       <div className="part title">{item.title}</div>
                       <div className="part date">{item.date}</div>
@@ -248,6 +250,8 @@ const QNA = ({ qnaData }) => {
                           : <div className="mode">
                               <span className="mode-item" onClick={(e) => {
                                 e.stopPropagation();
+                                setSelectedData(item);
+                                setOpenModify(true);
                               }}>수정</span>
                               <span className="mode-item" onClick={(e) => {
                                 e.stopPropagation();

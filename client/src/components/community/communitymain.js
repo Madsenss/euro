@@ -3,6 +3,7 @@ import { MdHome, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Container from "./container";
+import NoticeDetail from "./notice/noticedetail";
 
 const RootBox = styled.div`
   padding: 15px 0px 50px 0px;
@@ -89,15 +90,21 @@ const SideNavItem = styled.div`
   }
 `
 
-const CommunityMain = (props) => {
-  const path = props.path;
+const CommunityMain = ({ path, noticeNum }) => {
   const [nav, setNav] = useState('');
   const navigate = useNavigate();
+  const roots = {
+    notice: '공지사항',
+    faq: '자주묻는 질문',
+    qna: '1:1문의',
+    estimate: '견적/제휴 문의'
+  };
+  const selectedRoot = noticeNum ? '공지사항' : roots[path] || '';
 
   useEffect(() => {
     setNav(path && path);
   }, [path && path]);
-  
+
   return (
     <MainBox>
       <RootBox>
@@ -105,44 +112,39 @@ const CommunityMain = (props) => {
         <span className="roottext">Home</span>
         <MdOutlineKeyboardArrowRight className="icon" />
         <span className="roottext">커뮤니티</span>
-        {
-          path && path.length > 0
-          ? <>
-              <MdOutlineKeyboardArrowRight className="icon" />
-              <span className="roottext">
-                {path === 'notice' ? '공지사항' : null}
-                {path === 'faq' ? '자주묻는 질문' : null}
-                {path === 'qna' ? '1:1문의' : null}
-                {path === 'estimate' ? '견적/제휴 문의' : null}
-              </span>
-            </>
-          : null
-        }
+        <MdOutlineKeyboardArrowRight className="icon" />
+        <span className="roottext">{selectedRoot}</span>
       </RootBox>
       <div className="inner">
-        <SideNav>
-          <div className="title">커뮤니티</div>
-          <div className="outer">
-            <SideNavItem className={nav === 'notice' ? 'active' : ''} onClick={()=>{ setNav('notice'); navigate('/community/notice'); window.scrollTo({top: 0, behavior: 'auto'}); }}>
-              <span>공지사항</span>
-              <MdOutlineKeyboardArrowRight className="icon" />
-            </SideNavItem>
-            <SideNavItem className={nav === 'faq' ? 'active' : ''} onClick={()=>{ setNav('faq'); navigate('/community/faq'); window.scrollTo({top: 0, behavior: 'auto'}); }}>
-              <span>자주묻는 질문</span>
-              <MdOutlineKeyboardArrowRight className="icon" />
-            </SideNavItem>
-            <SideNavItem className={nav === 'qna' ? 'active' : ''} onClick={()=>{ setNav('qna'); navigate('/community/qna'); window.scrollTo({top: 0, behavior: 'auto'}); }}>
-              <span>1:1 문의</span>
-              <MdOutlineKeyboardArrowRight className="icon" />
-            </SideNavItem>
-            <SideNavItem className={nav === 'estimate' ? 'active' : ''} onClick={()=>{ setNav('estimate'); navigate('/community/estimate'); window.scrollTo({top: 0, behavior: 'auto'}); }}>
-              <span>견적/제휴 문의</span>
-              <MdOutlineKeyboardArrowRight className="icon" />
-            </SideNavItem>
-          </div>
+        {
+          typeof noticeNum == 'undefined' && noticeNum == null
+            ? <>
+              <SideNav>
+                <div className="title">커뮤니티</div>
+                <div className="outer">
+                  <SideNavItem className={nav === 'notice' ? 'active' : ''} onClick={() => { setNav('notice'); navigate('/community/notice'); window.scrollTo({ top: 0, behavior: 'auto' }); }}>
+                    <span>공지사항</span>
+                    <MdOutlineKeyboardArrowRight className="icon" />
+                  </SideNavItem>
+                  <SideNavItem className={nav === 'faq' ? 'active' : ''} onClick={() => { setNav('faq'); navigate('/community/faq'); window.scrollTo({ top: 0, behavior: 'auto' }); }}>
+                    <span>자주묻는 질문</span>
+                    <MdOutlineKeyboardArrowRight className="icon" />
+                  </SideNavItem>
+                  <SideNavItem className={nav === 'qna' ? 'active' : ''} onClick={() => { setNav('qna'); navigate('/community/qna'); window.scrollTo({ top: 0, behavior: 'auto' }); }}>
+                    <span>1:1 문의</span>
+                    <MdOutlineKeyboardArrowRight className="icon" />
+                  </SideNavItem>
+                  <SideNavItem className={nav === 'estimate' ? 'active' : ''} onClick={() => { setNav('estimate'); navigate('/community/estimate'); window.scrollTo({ top: 0, behavior: 'auto' }); }}>
+                    <span>견적/제휴 문의</span>
+                    <MdOutlineKeyboardArrowRight className="icon" />
+                  </SideNavItem>
+                </div>
 
-        </SideNav>
-        <Container path={path} setNav={setNav}/>
+              </SideNav>
+              <Container path={path}/>
+            </>
+            : <NoticeDetail noticeNum={noticeNum}/>
+        }
       </div>
     </MainBox>
   )

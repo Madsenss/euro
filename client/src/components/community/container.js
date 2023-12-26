@@ -13,18 +13,24 @@ const ContainerBox = styled.div`
 const Container = ({ path }) => {
   const initQNA = [
     {
+      id: 0,
+      writer: 'madsens',
       category: '상품',
-      title : '재고가 있나요?',
+      title: '재고가 있나요?',
       content: '대량구매를 하려는데 재고가 있나요?',
-      date : '2023-12-20',
+      image: ['a.png', 'b.png'],
+      date: '2023-12-20',
       answerStatus: false,
       answerText: ''
     },
     {
+      id: 1,
+      writer: 'madsens2',
       category: '배송',
-      title : '배송은 얼마나 걸리나요?',
+      title: '배송은 얼마나 걸리나요?',
       content: '오늘 시켰는데 언제도착하나요?',
-      date : '2023-12-20',
+      image: ['a.png'],
+      date: '2023-12-20',
       answerStatus: true,
       answerText: '안녕하세요 고객님 유로시스템입니다. 금일 발송해서 모레 전까지 도착 예정입니다. 감사합니다.'
     }
