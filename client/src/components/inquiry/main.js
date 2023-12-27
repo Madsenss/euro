@@ -1,16 +1,13 @@
-import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-const InquiryBox = styled.div`
-  width: 100%;
-  height: calc(var(--vh, 1vh) * 100);
+const MainBox = styled.div`
+  width: fit-content;
+  height: fit-content;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  /* background-color: #b0d6f5; */
-  background-color: rgb(250, 250, 250);
   .logo {
     width: 300px;
     margin-bottom: 20px;
@@ -23,14 +20,7 @@ const InquiryBox = styled.div`
     align-items: center;
     justify-content: center;
   }
-  .back {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    border: 1px solid black;
-  }
 `
-
 const Card = styled.div`
   cursor: pointer;
   width: 350px;
@@ -43,6 +33,7 @@ const Card = styled.div`
   justify-content: center;
   margin: 0px 10px 0px 10px;
   border-radius: 4px;
+  box-shadow: 0px 0px 4px 1px rgb(0, 0, 0, 0.2);
   img {
     z-index: 1;
     width: 100%;
@@ -71,6 +62,13 @@ const ExtenderBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  .title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    position: absolute;
+    top: 40%;
+  }
   .edge {
     width: 120px;
     height: 40px;
@@ -79,6 +77,7 @@ const ExtenderBox = styled.div`
     align-items: center;
     justify-content: center;
     position: absolute;
+    bottom: 25%;
     transition: all 0.3s;
     font-size: 15px;
     font-weight: bold;
@@ -155,66 +154,37 @@ const ExtenderLR = styled.div`
   }
 `;
 
-const ArrowBox = styled.div`
-  z-index: 999;
-  cursor: pointer;
-  width: 40px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 2px;
-  position: fixed;
-  bottom: 30px;
-  right: 40px;
-  background-color: rgb(0, 0, 0, 0.4);
-  transition: all 0.25s;
-  .icon {
-    transition: all 0.25s;
-    font-size: 40px;
-    color: #eee;
-  }
-  &:hover {
-    background-color: transparent;
-    .icon {
-      transform: translateX(-5px);
-      color: #555;
-    }
-  }
-`
-
-const Inquiry = () => {
+const Main = () => {
   const navigate = useNavigate();
   return (
-    <InquiryBox>
+    <MainBox>
       <img className="logo" src={process.env.PUBLIC_URL + '/logo2.png'} alt="logo" />
       <div className="card-box">
-        <Card>
+        <Card onClick={() => { navigate('/inquiry/product'); }}>
           <img src={process.env.PUBLIC_URL + '/many2.jpg'} alt="many" />
           <ExtenderBox>
             <ExtenderTB>
               <ExtenderLR>
               </ExtenderLR>
             </ExtenderTB>
-            <div className="edge">견적 문의</div>
+            <span className="title">견적/대량구매 문의</span>
+            <div className="edge">바로가기</div>
           </ExtenderBox>
         </Card>
-        <Card>
+        <Card onClick={() => { navigate('/inquiry/partnership'); }}>
           <img src={process.env.PUBLIC_URL + '/pt2.jpg'} alt="pt" />
           <ExtenderBox>
             <ExtenderTB>
               <ExtenderLR>
               </ExtenderLR>
             </ExtenderTB>
-            <div className="edge">제휴 문의</div>
+            <span className="title">업무제휴 문의</span>
+            <div className="edge">바로가기</div>
           </ExtenderBox>
         </Card>
       </div>
-      <ArrowBox onClick={() => { navigate(-1); }}>
-        <MdKeyboardDoubleArrowLeft className="icon" />
-      </ArrowBox>     
-    </InquiryBox>
+    </MainBox>
   )
 };
 
-export default Inquiry;
+export default Main;
