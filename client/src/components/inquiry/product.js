@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { MdClose, MdKeyboardArrowDown, MdOutlineRemoveCircle, MdRemove, MdSearch } from "react-icons/md";
+import { MdCheck, MdClose, MdKeyboardArrowDown, MdOutlineRemoveCircle, MdRemove, MdSearch } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
+
+// 폼 레이아웃
 const fadeIn = keyframes`
   from {
     opacity: 0;
@@ -12,7 +14,7 @@ const fadeIn = keyframes`
 `;
 const FormBox = styled.div`
   width: 100%;
-  height: 1200px;
+  height: fit-content;
   display: flex;
   flex-direction: column;
   background-color: #fff;
@@ -51,6 +53,8 @@ const FormItem = styled.div`
   }
 `
 
+
+// 하단 버튼
 const ButtonBox = styled.div`
   width: 100%;
   height: fit-content;
@@ -80,6 +84,111 @@ const Button = styled.div`
   }
 `
 
+
+// 약관동의박스
+const ScrollBox = styled.div`
+  width: 100%;
+  height: 100px;
+  overflow-y: scroll;
+  border: 1.5px solid #ddd;
+  color: #555;
+  padding: 20px;
+  .scroll-text {
+    font-size: 12px;
+  }
+`
+const ScrollInner = styled.div`
+  width: 100%;
+  height: fit-content;
+  display: block;
+  margin-top: 10px;
+`
+const InnerItem = styled.div`
+  width: ${props => props.width};
+  height: fit-content;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  vertical-align: top;
+  .inner-title {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 0px 8px 0px;
+    font-size: 12px;
+    font-weight: bold;
+    border-top: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
+    border-left: 1px solid #aaa;
+    &.br {
+      border-right: 1px solid #aaa;
+    }
+  }
+  .inner-text-box {
+    width: 100%;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #aaa;
+    border-left: 1px solid #aaa;
+    &.br {
+      border-right: 1px solid #aaa;
+    }
+    padding: 10px;
+    .inner-text {
+      font-size: 12px;
+      margin-bottom: 3px;
+      &.bold {
+        font-weight: bold;
+        text-decoration-line: underline;
+        font-size: 14px;
+      }
+    }
+  }
+`
+const AgreeBox = styled.div`
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  .agree-title {
+    font-weight: bold;
+    font-size: 14px;
+    margin: 20px 0px 10px 0px;
+  }
+  .check-box {
+    margin-top: 20px;
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .check {
+      cursor: pointer;
+      font-size: 16px;
+      color: #aaa;
+      padding: 1px;
+      border: 1.5px solid #ddd;
+      border-radius: 50%;
+      margin-right: 5px;
+      &.active {
+        background-color: var(--color);
+        border: 1.5px solid var(--color);
+        color: #fff;
+      }
+    }
+    .check-text {
+      font-size: 14px;
+    }
+  }
+`
+
+
+// 인풋
 const InputBox = styled.div`
   width: 100%;
   height: fit-content;
@@ -137,6 +246,9 @@ const Textarea = styled.textarea`
   }
   resize: none;
 `
+
+
+// 모달오픈
 const SearchBox = styled.div`
   cursor: pointer;
   width: 500px;
@@ -161,6 +273,8 @@ const SearchBox = styled.div`
   }
 `
 
+
+// 모달
 const Overley = styled.div`
   z-index: 999;
   width: 100%;
@@ -321,6 +435,7 @@ const SelectedItem = styled(SelectedHeader)`
     color: var(--color);
   }
 `
+
 const Product = () => {
   const navigate = useNavigate();
   const [openSearch, setOpenSearch] = useState(false);
@@ -332,7 +447,7 @@ const Product = () => {
   const [subCategory, setSubCategory] = useState('');
   const [product, setProduct] = useState('');
   const [selectedProduct, setSelectedProduct] = useState([]);
-
+  const [agree, setAgree] = useState(false);
   const initCategory = [
     { id: 0, name: '명품', text: '명품들을 모아뒀습니다.', src: 'A.PNG' },
     { id: 1, name: '라면', text: '라면들을 모아뒀습니다.', src: 'B.PNG' },
@@ -562,6 +677,39 @@ const Product = () => {
 
       <FormItem>
         <span className="item-header-title">견적 문의 서비스 약관동의</span>
+        <AgreeBox>
+          <span className="agree-title">개인정보 수집 및 이용 동의</span>
+          <ScrollBox>
+            <span className="scroll-text">※ 귀하께서는 필수항목 수집·이용에 대한 동의를 거부하실 수 있으나, 이는 서비스 제공에 필수적으로 제공되어야 하는 정보이므로, 동의를 거부하실 경우 견적문의 신청 서비스 이용을 하실 수 없습니다.</span>
+            <ScrollInner>
+              <InnerItem width="30%">
+                <div className="inner-title">수집항목</div>
+                <div className="inner-text-box">
+                  <p className="inner-text">□ 이름, 휴대폰번호, 이메일, 제목, 견적문의 제품</p>
+                  <p className="inner-text">□ 추가 요청사항(신청자가 기재한 경우에 한함)</p>
+                </div>
+              </InnerItem>
+              <InnerItem width="40%">
+                <div className="inner-title">수집목적</div>
+                <div className="inner-text-box">
+                  <p className="inner-text">□ 견적문의 신청 서비스 제공</p>
+                  <p className="inner-text">□ 서비스 개선 및 신규 서비스 개발</p>
+                  <p className="inner-text">□ 고객 문의 응대 및 분쟁 처리</p>
+                </div>
+              </InnerItem>
+              <InnerItem width="30%">
+                <div className="inner-title br">보유기간</div>
+                <div className="inner-text-box br">
+                  <p className="inner-text bold">수집일로부터 2년</p>
+                </div>
+              </InnerItem>
+            </ScrollInner>
+          </ScrollBox>
+          <div className="check-box">
+            <MdCheck className={`check ${agree ? ' active' : ''}`} onClick={() => { setAgree(!agree); }}/>
+            <span className="check-text">위의 개인정보 수집 및 이용에 동의합니다. (필수)</span>
+          </div>
+        </AgreeBox>
       </FormItem>
       <ButtonBox>
         <Button onClick={() => { navigate(-1); }}>취소</Button>
