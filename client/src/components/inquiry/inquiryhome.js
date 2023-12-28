@@ -31,7 +31,7 @@ const Container = styled.div`
   justify-content: center;
 `
 const ArrowBox = styled.div`
-  z-index: 999;
+  z-index: 998;
   cursor: pointer;
   width: 40px;
   height: 50px;
