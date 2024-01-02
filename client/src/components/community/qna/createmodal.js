@@ -110,7 +110,6 @@ const Modal = styled.div`
       grid-template-columns: repeat(5, 1fr);
       gap: 24px;
       .img-item {
-        cursor: pointer;
         position: relative;
         width: 75px;
         height: 75px;
@@ -125,6 +124,7 @@ const Modal = styled.div`
           border-radius: 12px;
         }
         .delete {
+          cursor: pointer;
           position: absolute;
           right: -6px;
           top: -6px;

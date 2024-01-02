@@ -247,7 +247,7 @@ const ProductCategory = () => {
               </div>
 
             </div>
-            <div className="button" onClick={() => { navigate('/estimate') }}>제휴 문의하기</div>
+            <div className="button" onClick={() => { navigate('/inquiry') }}>제휴 문의하기</div>
           </div>
         </div>
       </ContactBox>
