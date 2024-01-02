@@ -383,8 +383,8 @@ const Overley = styled.div`
 const ZipCodeModal = styled.div`
   position: relative;
   z-index: 1000;
-  width: 450px;
-  height: 600px;
+  width: 500px;
+  height: fit-content;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -551,7 +551,7 @@ const PartnerShip = () => {
       </FormItem>
 
       <FormItem>
-        <span className="item-header-title">제품 정보</span>
+        <span className="item-header-title">문의 내용</span>
         <InputBox>
           <span className="input-title">제목</span>
           <Input type="text" spellCheck="false" placeholder="문의 제목을 입력해 주세요" />
@@ -586,7 +586,7 @@ const PartnerShip = () => {
       </FormItem>
 
       <FormItem>
-        <span className="item-header-title">견적 문의 서비스 약관동의</span>
+        <span className="item-header-title">비즈니스 제휴 문의 서비스 약관동의</span>
         <AgreeBox>
           <span className="agree-title">개인정보 수집 및 이용 동의</span>
           <ScrollBox>
