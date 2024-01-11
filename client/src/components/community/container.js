@@ -34,12 +34,12 @@ const Container = ({ path }) => {
       answerText: '안녕하세요 고객님 유로시스템입니다. 금일 발송해서 모레 전까지 도착 예정입니다. 감사합니다.'
     }
   ];
-  const Parts = {
-    notice : <Notice/>,
+  const parts = {
+    notice: <Notice/>,
     faq: <FAQ/>,
     qna: <QNA qnaData={initQNA}/>,
   };
-  const part = Parts[path && path] || null;
+  const part = parts[path && path] || null;
 
   return (
     <ContainerBox>

@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import Nav from "../home/nav";
 import Footer from "../home/footer";
-import MyPageContainer from "./mypagecontainer";
+import MyPageMain from "./mypagemain";
+import { useParams } from "react-router-dom";
 
 const MyPageHomeBox = styled.div`
   width: 100%;
@@ -12,10 +13,13 @@ const MyPageHomeBox = styled.div`
 `
 
 const MyPageHome = () => {
+
+  const {path} = useParams();
+
   return (
     <MyPageHomeBox>
       <Nav/>
-      <MyPageContainer/>
+      <MyPageMain path={path}/>
       <Footer/>
     </MyPageHomeBox>
   )

@@ -422,7 +422,7 @@ const Nav = () => {
         <span className="dash">|</span>
         <div className="item" onClick={()=>{ navigate('/member/login'); window.scrollTo({top: 0, behavior: 'auto'}); }}>로그인</div>
         <span className="dash">|</span>
-        <div className="item" onClick={()=>{ navigate('/mypage'); window.scrollTo({top: 0, behavior: 'auto'}); }}>마이페이지 임시</div>
+        <div className="item" onClick={()=>{ navigate('/mypage/order'); window.scrollTo({top: 0, behavior: 'auto'}); }}>마이페이지 임시</div>
       </LoginBox>
       <TopBox>
         <img onClick={() => { navigate('/'); window.scrollTo({top: 0, behavior: 'auto'}); }} className="logo" src={process.env.PUBLIC_URL + '/logo2.png'} alt="logo" />

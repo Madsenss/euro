@@ -38,7 +38,8 @@ function App() {
         <Route path="/community/:path" element={<><GlobalStyle/><CommunityHome/><Top/></>}/>
         <Route path="/member/:path" element={<><GlobalStyle/><MemberHome/><Top/></>}/>
         <Route path="/member/:path/:whatfind" element={<><GlobalStyle/><MemberHome/><Top/></>}/>
-        <Route path="/mypage" element={<><GlobalStyle/><MyPageHome/><Top/></>}/>
+        <Route path="/mypage/:path" element={<><GlobalStyle/><MyPageHome/><Top/></>}/>
+        <Route path="*" element={<div>404</div>}/>
       </Routes>
     </div>
   );
