@@ -11,7 +11,6 @@ const MyPageBox = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  border: 1px solid black;
 `
 const SideNav = styled.div`
   width: 200px;
