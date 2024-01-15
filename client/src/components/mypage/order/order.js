@@ -35,7 +35,6 @@ const ItemBox = styled.div`
   display: flex;
   flex-direction: column;
   border-top: 2px solid black;
-  padding-top: 20px;
 `
 
 const Item = styled.div`
@@ -152,27 +151,24 @@ const DialBox = styled.div`
   }
 `
 
-const DialOuter = styled.div`
-  position: absolute;
-  bottom: 45px;
-  width: fit-content;
-  height: fit-content;
-  display: flex;
-  flex-direction: column;
-`
-
 const DialItem = styled.div`
   position: absolute;
   width: 100px;
   height: 30px;
-  border: 1px solid black;
   background-color: #fff;
   border-radius: 4px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-top: 5px;
+  justify-content: center;
   transition: all 0.25s;
+  font-size: 14px;
+  font-weight: bold;
+  border: 1.5px solid var(--color);
+  &:hover {
+    background-color: var(--color);
+    color: #fff;
+  }
   &.show {
     visibility: visible;
     opacity: 1;
@@ -183,15 +179,15 @@ const DialItem = styled.div`
   }
   &.y1 {
     transform: translateY(-45px);
+    transition: all 0.20s;
   }
   &.y2 {
     transform: translateY(-85px);
+    transition: all 0.26s;
   }
   &.y3 {
     transform: translateY(-125px);
-  }
-  &.y4 {
-    transform: translateY(-165px);
+    transition: all 0.32s;
   }
 `
 
@@ -209,7 +205,7 @@ const Order = () => {
   }
 
   useEffect(() => {
-    const copyOpenDial = Array(initCount.length).fill(true);
+    const copyOpenDial = Array(initCount.length).fill(false);
     setOpenDial(copyOpenDial);
   }, []);
 
@@ -226,7 +222,7 @@ const Order = () => {
             initCount.map((item, i) => {
               return (
                 <Item key={i}>
-                  <span className="status">배송중</span>
+                  <span className="status">배송완료</span>
                   <div className="img-box">
                     <img src={process.env.PUBLIC_URL + '/압정.png'} alt="product" />
                     <div className="text-box">
@@ -249,17 +245,14 @@ const Order = () => {
                     <div className="button long">재구매</div>
                     <DialBox className={openDial[i] ? 'active' : ''} onClick={() => { handleDial(i); }}>
                       <MdMoreHoriz />
-                      <DialItem className={openDial[i] ? 'show y4' : 'hide'}>
+                      <DialItem className={openDial[i] ? 'show y3' : 'hide'}>
                         <span className="text">주문상세</span>
                       </DialItem>
-                      <DialItem className={openDial[i] ? 'show y3' : 'hide'}>
+                      <DialItem className={openDial[i] ? 'show y2' : 'hide'}>
                         <span className="text">배송조희</span>
                       </DialItem>
-                      <DialItem className={openDial[i] ? 'show y2' : 'hide'}>
-                        <span className="text">1:1 문의</span>
-                      </DialItem>
                       <DialItem className={openDial[i] ? 'show y1' : 'hide'}>
-                        4
+                        <span className="text">1:1 문의</span>
                       </DialItem>
                     </DialBox>
                   </div>
