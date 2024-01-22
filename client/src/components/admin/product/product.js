@@ -141,7 +141,7 @@ const Product = () => {
   const initProduct = [
     {
       id: 0,
-      number: 'A_A-1_1_20231209',
+      productNumber: 'A_A-1_1_20231209',
       category: '라면',
       subCategory: '농심',
       name: 'AProduct',
@@ -167,7 +167,7 @@ const Product = () => {
     },
     {
       id: 0,
-      number: 'B_B-1_1_20231209',
+      productNumber: 'B_B-1_1_20231209',
       category: '담배',
       subCategory: '에쎄',
       name: 'BProduct',

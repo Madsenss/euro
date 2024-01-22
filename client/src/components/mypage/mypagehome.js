@@ -14,12 +14,12 @@ const MyPageHomeBox = styled.div`
 
 const MyPageHome = () => {
 
-  const {path} = useParams();
+  const {path, orderNumber} = useParams();
 
   return (
     <MyPageHomeBox>
       <Nav/>
-      <MyPageMain path={path}/>
+      <MyPageMain path={path} orderNumber={orderNumber}/>
       <Footer/>
     </MyPageHomeBox>
   )

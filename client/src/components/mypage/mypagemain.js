@@ -64,7 +64,7 @@ const SideNavItem = styled.div`
   }
 `
 
-const MyPageMain = ({ path }) => {
+const MyPageMain = ({ path, orderNumber }) => {
 
   const navigate = useNavigate();
   const [nav, setNav] = useState('order');
@@ -100,7 +100,7 @@ const MyPageMain = ({ path }) => {
           </SideNavItem>
         </div>
       </SideNav>
-      <Container path={path}/>
+      <Container path={path} orderNumber={orderNumber}/>
     </MyPageBox>
   )
 };
